@@ -1,0 +1,39 @@
+.containerSideBar {
+  height: 100vh;
+  max-width: 200px;
+  min-width: 200px;
+  width: 200px;
+  overflow: hidden;
+  //   background-color: rgb(248, 209, 165);
+  background: linear-gradient(to right, rgb(248, 209, 165), rgb(238, 208, 174));
+  .wrapperHome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 65px;
+    font-size: 24px;
+  
+    background-color: rgb(236, 163, 163);
+  }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    gap: 6px;
+    .sideBar {
+      color: black;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 16px 12px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      gap: 8px;
+      &:hover {
+        background-color: rgba(245, 57, 0, 0.133);
+      }
+    }
+  }
+}
