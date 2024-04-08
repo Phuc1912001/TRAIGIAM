@@ -1,7 +1,13 @@
 .containerLayout {
-    display: flex;
-    .content {
-        width: 100%;
-        background-color: rgba(245, 226, 210, 0.133);
-    }
+  display: flex;
+  height: 100%;
+  .sideBar {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+  }
+  .content {
+    width: 100%;
+    background-color: rgba(245, 226, 210, 0.133);
+  }
 }

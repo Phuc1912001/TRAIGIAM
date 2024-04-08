@@ -1,0 +1,7 @@
+.breacrumb {
+    cursor: pointer;
+    &:hover {
+        color: black;
+        text-decoration: underline;
+    }
+}

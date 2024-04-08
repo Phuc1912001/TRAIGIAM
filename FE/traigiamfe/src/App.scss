@@ -1,0 +1,59 @@
+.active {
+  background-color: rgba(245, 57, 0, 0.133);
+  color: black;
+}
+
+.share-border-table.ant-table-wrapper {
+  .ant-table-content {
+    border: 1px solid #e6e7e8;
+    border-radius: 6px;
+  }
+
+  .ant-table-tbody > tr {
+    &:last-of-type {
+      > td {
+        border-bottom: 0px;
+      }
+    }
+  }
+}
+
+.share-sticky {
+  position: sticky;
+  flex-shrink: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.createBtn {
+  // margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background-color: rgba(245, 57, 0, 0.133);
+  height: 40px;
+  padding: 0 8px;
+  width: max-content;
+  border-radius: 4px;
+  font-weight: 600;
+
+  &:hover {
+    background-color: rgba(245, 57, 0, 0.233);
+  }
+}
+
+.editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  border-radius: 4px;
+  &:hover {
+    background-color: rgba(245, 57, 0, 0.233);
+  }
+}
+
+
