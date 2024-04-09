@@ -56,4 +56,36 @@
   }
 }
 
+.mr {
+  margin-right: 8px;
+}
 
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  color: rgba(0, 0, 0, 0.88);
+  border-color: #131212;
+  background: #ffffff;
+}
+
+.btn-orange {
+  padding: 4px 15px;
+  line-height: 1.5714285714285714;
+  border: 1px solid rgba(245, 57, 0, 0.233);
+  border-radius: 6px;
+  background-color: rgba(245, 57, 0, 0.233);
+  cursor: pointer;
+  &:hover {
+    border-color: red;
+  }
+}
+
+.ant-btn-primary {
+  color: black;
+  background: rgba(245, 57, 0, 0.233);
+  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+  border: 1px solid rgba(245, 57, 0, 0.233);
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+    color: black;
+    background: rgba(245, 57, 0, 0.433);
+}

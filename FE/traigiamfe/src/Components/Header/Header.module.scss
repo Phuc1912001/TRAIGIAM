@@ -1,9 +1,32 @@
 .containerHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 65px;
-    padding: 0px 20px;
-    border-bottom: 1px solid #e6e7e8;
-    background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 65px;
+  padding: 0px 20px;
+  border-bottom: 1px solid #e6e7e8;
+  background-color: white;
+  .wrapperAcount {
+    cursor: pointer;
+    .avatar {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+}
+
+.popOver {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .item {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    &:hover {
+      background-color: rgba(245, 57, 0, 0.233);
+    }
+  }
 }

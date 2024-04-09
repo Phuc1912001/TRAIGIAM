@@ -9,6 +9,7 @@ import Staff from './Pages/Staff/Staff'
 import InfringementReport from './Pages/InfringementReport/InfringementReport'
 import Statement from './Pages/Statement/Statement'
 import PrisonerDetail from './Pages/Prisoner/PrisonerDetail/PrisonerDetail'
+import MyProfile from './Pages/MyProfile/MyProfile'
 function App() {
 
   const router = createBrowserRouter(
@@ -44,6 +45,10 @@ function App() {
           {
             path: "/:id",
             element: <PrisonerDetail />
+          },
+          {
+            path: "/myProfile",
+            element: <MyProfile />
           },
         ]
       }

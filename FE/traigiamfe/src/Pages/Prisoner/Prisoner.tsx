@@ -1,6 +1,6 @@
 import Header from "../../Components/Header/Header";
 import { Breadcrumb, Button, Layout, Table } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Prisoner.module.scss";
 import { ColumnsType } from "antd/es/table";
 import {
@@ -10,6 +10,9 @@ import {
 } from "@ant-design/icons";
 import { render } from "react-dom";
 import { useNavigate } from "react-router-dom";
+import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
+import avatar from "../../assets/avatar.jpg";
+import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 
 const Prisoner = () => {
     const items = [
@@ -22,6 +25,10 @@ const Prisoner = () => {
     ];
 
     const navigate = useNavigate();
+    const [openCreatePrisoner, setOpenCreatePrisoner] = useState<boolean>(false);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [namePrisoner, setNamePrisoner] = useState<string>('');
 
     const mockData = [
         {
@@ -161,22 +168,48 @@ const Prisoner = () => {
     const handleNavigate = (record: any) => {
         navigate(`/${record.id}`);
     };
+    const handleOpenCreate = () => {
+        setOpenCreatePrisoner(true);
+        setIsEdit(false);
+    };
+
+    const handleOpenEdit = () => {
+        setOpenCreatePrisoner(true);
+        setIsEdit(true);
+    };
+
+    const handleOpenDelete = (record: any) => {
+        setIsOpenModal(true);
+        setNamePrisoner(record.name)
+    };
+
+    const handleDeletePrisoner = () => {
+        console.log("alo");
+    };
 
     const columns: ColumnsType<any> = [
-        {
-            title: "Ma Phạm Nhân",
-            dataIndex: "maPN",
-            key: "maPN",
-        },
         {
             title: "Tên Phạm Nhân",
             dataIndex: "name",
             key: "name",
             render: (_, record) => (
-                <div className={styles.name} onClick={() => handleNavigate(record)}>
-                    {record.name}
+                <div className={styles.containerInfor}>
+                    <div>
+                        <img className={styles.avatar} src={avatar} alt="" />
+                    </div>
+                    <div>
+                        <div className={styles.name} onClick={() => handleNavigate(record)}>
+                            {record.name}
+                        </div>
+                        <div>{`${record.age} tuổi`}</div>
+                    </div>
                 </div>
             ),
+        },
+        {
+            title: "Ma Phạm Nhân",
+            dataIndex: "maPN",
+            key: "maPN",
         },
         {
             title: "Giới Tính",
@@ -197,12 +230,12 @@ const Prisoner = () => {
             title: "Hoạt Động",
             dataIndex: "action",
             key: "action",
-            render: () => (
+            render: (_, record) => (
                 <div className={styles.wrapperAction}>
-                    <div className={"editBtn"}>
+                    <div className={"editBtn"} onClick={handleOpenEdit}>
                         <EditOutlined style={{ fontSize: 18 }} />
                     </div>
-                    <div className={"editBtn"}>
+                    <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
                         <DeleteOutlined style={{ fontSize: 18 }} />
                     </div>
                 </div>
@@ -217,8 +250,8 @@ const Prisoner = () => {
             </div>
 
             <div className={styles.wrapperContent}>
-                <div className={styles.wrapperBtn} >
-                    <div className={'createBtn'}>
+                <div className={styles.wrapperBtn}>
+                    <div className={"createBtn"} onClick={handleOpenCreate}>
                         <PlusCircleOutlined style={{ fontSize: 18 }} />
                         Tạo Phạm Nhân
                     </div>
@@ -231,6 +264,20 @@ const Prisoner = () => {
                     tableLayout="auto"
                 />
             </div>
+            <CreatePrisoner
+                openCreatePrisoner={openCreatePrisoner}
+                setOpenCreatePrisoner={setOpenCreatePrisoner}
+                isEdit={isEdit}
+            />
+            <ModalComponent
+                isOpenModal={isOpenModal}
+                setIsOpenModal={setIsOpenModal}
+                handleDelete={handleDeletePrisoner}
+                title="Xác Nhận Xóa Phạm Nhân"
+                textConfirm="Xóa Phạm Nhân"
+            >
+                <div>{`Bạn có muốn xóa phạm nhân ${namePrisoner}`}</div>
+            </ModalComponent>
         </div>
     );
 };
