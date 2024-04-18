@@ -1,6 +1,7 @@
 .active {
-  background-color: rgba(245, 57, 0, 0.133);
-  color: black;
+  background-color: rgba(250, 174, 151, 0.133);
+  color: rgb(219, 63, 63) !important;
+  border-left: 2px solid red;
 }
 
 .share-border-table.ant-table-wrapper {
@@ -23,6 +24,30 @@
   flex-shrink: 0;
   top: 0;
   z-index: 1;
+}
+
+@media only screen and (max-width: 768px) {
+  .share-sticky {
+      display: none;
+    }
+}
+
+.share-sticky-mobile {
+  position: sticky;
+  flex-shrink: 0;
+  top: 0;
+  z-index: 1;
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .share-sticky-mobile {
+      position: sticky;
+      flex-shrink: 0;
+      top: 0;
+      z-index: 1;
+      display: block;
+    }
 }
 
 .createBtn {
@@ -86,6 +111,13 @@
 }
 
 .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
-    color: black;
-    background: rgba(245, 57, 0, 0.433);
+  color: black;
+  background: rgba(245, 57, 0, 0.433);
+}
+
+.text-item {
+  background-color: rgba(245, 57, 0, 0.133);
+  width: 100px;
+  font-size: 16px;
+  padding: 10px;
 }

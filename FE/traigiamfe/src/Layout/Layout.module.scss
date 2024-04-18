@@ -11,3 +11,10 @@
     background-color: rgba(245, 226, 210, 0.133);
   }
 }
+@media only screen and (max-width: 768px) {
+  .containerLayout {
+      .sideBar {
+        display: none;
+      }
+    }
+}

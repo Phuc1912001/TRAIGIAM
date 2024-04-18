@@ -1,0 +1,15 @@
+export interface PrisonerModel {
+    id?: number,
+    prisonerName?:string,
+    prisonerAge?:string,
+    cccd?:string,
+    mPN?:string,
+    banding?:number,
+    dom?:number,
+    bed?:number,
+    countryside?:string,
+    crime?:string,
+    years?:number,
+    manager?:string,
+    imagePrisoner?:string,
+}

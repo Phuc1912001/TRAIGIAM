@@ -1,0 +1,68 @@
+/********************************************************************
+ *
+ *  PROPRIETARY and CONFIDENTIAL
+ *
+ *  This file is licensed from, and is a trade secret of:
+ *
+ *                   AvePoint, Inc.
+ *                   525 Washington Blvd, Suite 1400
+ *                   Jersey City, NJ 07310
+ *                   United States of America
+ *                   Telephone: +1-201-793-1111
+ *                   WWW: www.avepoint.com
+ *
+ *  Refer to your License Agreement for restrictions on use,
+ *  duplication, or disclosure.
+ *
+ *  RESTRICTED RIGHTS LEGEND
+ *
+ *  Use, duplication, or disclosure by the Government is
+ *  subject to restrictions as set forth in subdivision
+ *  (c)(1)(ii) of the Rights in Technical Data and Computer
+ *  Software clause at DFARS 252.227-7013 (Oct. 1988) and
+ *  FAR 52.227-19 (C) (June 1987).
+ *
+ *  Copyright © 2024 AvePoint® Inc. All Rights Reserved.
+ *
+ *  Unpublished - All rights reserved under the copyright laws of the United States.
+ */
+.hcisComptReporttextitem {
+    display: flex;
+    color: #333333;
+    margin-bottom: 0.25rem;
+
+    .greyedOutLabel {
+        color: #aaaaaa !important;
+        background-color: rgba(245, 57, 0, 0.133);
+
+    }
+
+    .greyedOutText {
+        color: #aaaaaa !important;
+    }
+
+    :global {
+        .hcis-compt-reporttextitem-label {
+            background-color: rgba(245, 57, 0, 0.133);
+            padding: 7px 8px;
+            font-weight: 600;
+            line-height: 19px;
+            border-radius: 4px;
+            width: 8.375rem;
+            font-size: 0.875rem;
+            color: black;
+        }
+
+        .hcis-compt-reporttextitem-text {
+            flex: 1;
+            padding: 7px 8px;
+            word-break: break-word;
+            line-height: 1.25rem;
+            font-size: 0.875rem;
+            padding-right: 1.5rem;
+            color: #222222;
+        }
+    }
+}
+
+

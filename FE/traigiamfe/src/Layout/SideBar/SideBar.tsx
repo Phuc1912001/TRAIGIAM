@@ -42,20 +42,22 @@ const SideBar = () => {
 
     return (
         <div className={styles.containerSideBar}>
-            <div className={styles.wrapperHome} >
-                <div><HomeOutlined /></div>
-                <div>Trại Giam</div>
-            </div>
+            <div className={styles.wrapperSidebar} >
+                <div className={styles.wrapperHome} >
+                    <div><HomeOutlined /></div>
+                    <div>Trại Giam</div>
+                </div>
 
-            <div className={styles.wrapper}>
-                {
-                    listNav.map(item => (
-                        <NavLink to={item.path} className={styles.sideBar}>
-                            <div>{item.icon}</div>
-                            <div>{item.name}</div>
-                        </NavLink>
-                    ))
-                }
+                <div className={styles.wrapper}>
+                    {
+                        listNav.map(item => (
+                            <NavLink to={item.path} className={styles.sideBar}>
+                                <div>{item.icon}</div>
+                                <div>{item.name}</div>
+                            </NavLink>
+                        ))
+                    }
+                </div>
             </div>
         </div>
     );

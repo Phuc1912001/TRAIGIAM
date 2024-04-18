@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
 import avatar from "../../assets/avatar.jpg";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
+import { PrisonerModel } from "../../common/Model/prisoner";
+import MobileHeader from "../../Components/MobileHeader/MobileHeader";
 
 const Prisoner = () => {
     const items = [
@@ -29,6 +31,7 @@ const Prisoner = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [namePrisoner, setNamePrisoner] = useState<string>('');
+    const [currentRecord, setCurrentRecord] = useState<PrisonerModel>()
 
     const mockData = [
         {
@@ -36,132 +39,192 @@ const Prisoner = () => {
             maPN: "PH1",
             name: "Nguyễn Văn A",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 2,
             maPN: "PH1",
             name: "Nguyễn Văn B",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 3,
             maPN: "PH1",
             name: "Nguyễn Văn C",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 4,
             maPN: "PH1",
             name: "Nguyễn Văn D",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 5,
             maPN: "PH1",
             name: "Nguyễn Văn E",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 6,
             maPN: "PH1",
             name: "Nguyễn Văn H",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 7,
             maPN: "PH1",
             name: "Nguyễn Văn I",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 8,
             maPN: "PH1",
             name: "Nguyễn Văn K",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 9,
             maPN: "PH1",
             name: "Nguyễn Văn L",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 10,
             maPN: "PH1",
             name: "Nguyễn Văn M",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 11,
             maPN: "PH1",
             name: "Nguyễn Văn Z",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
         {
             id: 12,
             maPN: "PH1",
             name: "Nguyễn Văn B",
             age: "18",
+            cccd: "1951060922",
             sex: "Nam",
             dateTime: "abc",
             dom: "DOM A",
             bed: "Bed 1",
-            manager: "otis Nguyễn",
+            year: 10,
+            banding: 1,
+            countryside: 'Ha Noi',
+            guilty: 'Trộm Cắp',
+            mananger: "otis Nguyễn",
         },
     ];
 
@@ -173,14 +236,15 @@ const Prisoner = () => {
         setIsEdit(false);
     };
 
-    const handleOpenEdit = () => {
+    const handleOpenEdit = (record: PrisonerModel) => {
         setOpenCreatePrisoner(true);
         setIsEdit(true);
+        setCurrentRecord(record)
     };
 
-    const handleOpenDelete = (record: any) => {
+    const handleOpenDelete = (record: PrisonerModel) => {
         setIsOpenModal(true);
-        setNamePrisoner(record.name)
+        setNamePrisoner(record.prisonerName ?? '')
     };
 
     const handleDeletePrisoner = () => {
@@ -199,9 +263,9 @@ const Prisoner = () => {
                     </div>
                     <div>
                         <div className={styles.name} onClick={() => handleNavigate(record)}>
-                            {record.name}
+                            {record?.name}
                         </div>
-                        <div>{`${record.age} tuổi`}</div>
+                        <div>{`${record?.age} tuổi`}</div>
                     </div>
                 </div>
             ),
@@ -223,8 +287,8 @@ const Prisoner = () => {
         },
         {
             title: "Người Quản Lý",
-            dataIndex: "manager",
-            key: "manager",
+            dataIndex: "mananger",
+            key: "mananger",
         },
         {
             title: "Hoạt Động",
@@ -232,7 +296,7 @@ const Prisoner = () => {
             key: "action",
             render: (_, record) => (
                 <div className={styles.wrapperAction}>
-                    <div className={"editBtn"} onClick={handleOpenEdit}>
+                    <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
                         <EditOutlined style={{ fontSize: 18 }} />
                     </div>
                     <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
@@ -243,10 +307,14 @@ const Prisoner = () => {
         },
     ];
 
+
     return (
         <div>
             <div className="share-sticky">
                 <Header items={items} />
+            </div>
+            <div className="share-sticky-mobile" >
+                <MobileHeader />
             </div>
 
             <div className={styles.wrapperContent}>
@@ -268,6 +336,7 @@ const Prisoner = () => {
                 openCreatePrisoner={openCreatePrisoner}
                 setOpenCreatePrisoner={setOpenCreatePrisoner}
                 isEdit={isEdit}
+                currentRecord={currentRecord}
             />
             <ModalComponent
                 isOpenModal={isOpenModal}

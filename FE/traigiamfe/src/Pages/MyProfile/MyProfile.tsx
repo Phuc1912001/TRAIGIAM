@@ -1,6 +1,10 @@
 import Header from '../../Components/Header/Header'
 import React from 'react'
 import styles from './MyProfile.module.scss'
+import { Col, Row } from 'antd';
+import TextItem from '../../Components/TextItem/TextItem';
+import avatar from '../../assets/avatar.jpg'
+import { EditOutlined } from '@ant-design/icons';
 
 const MyProfile = () => {
     const items = [
@@ -16,12 +20,28 @@ const MyProfile = () => {
             </div>
             <div className={styles.containerProfile}>
                 <h2>Thông Tin Cá Nhân</h2>
-                <div>
-                    <div>
-                        Họ Và Tên :
+                <div className={styles.containerInfor} >
+                    <div className={styles.wrapperInfo} >
+                        <div>
+                            <img className={styles.avatar} src={avatar} alt="" />
+                        </div>
+                        <div>
+                            <h3 >Nguyễn Văn A</h3>
+                            <div className={styles.admin} >
+                                Vai Trò: Quản trị viên
+                            </div>
+                        </div>
                     </div>
-                    <div>N/A</div>
+                    <div className={styles.btnEdit} >
+                        <EditOutlined style={{ fontSize: 18 }} />
+                        <div>Edit</div>
+                    </div>
                 </div>
+                <Row style={{ height: '100%' }}  >
+                    <TextItem label='Email' >nguyenvanphuc1912001@gmail.com</TextItem>
+                    <TextItem label='Số Điện Thoại' >0329609726</TextItem>
+                    <TextItem label='Quê Quán' >  Mai Đình Sóc Sơn Hà Nội </TextItem>
+                </Row>
             </div>
         </div>
     )
