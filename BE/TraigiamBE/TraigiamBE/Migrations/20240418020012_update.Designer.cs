@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraigiamBE.Models;
 
@@ -11,9 +12,10 @@ using TraigiamBE.Models;
 namespace TraigiamBE.Migrations
 {
     [DbContext(typeof(PrisonDBContext))]
-    partial class PrisonDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240418020012_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace TraigiamBE.Migrations
                     b.Property<int?>("Bed")
                         .HasColumnType("int");
 
-                    b.Property<string>("Cccd")
+                    b.Property<string>("CCCD")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Countryside")
@@ -48,16 +50,16 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("Crime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Dom")
+                    b.Property<int>("Dom")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePrisoner")
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Mananger")
+                    b.Property<string>("MPN")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Mpn")
+                    b.Property<string>("Manager")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrisonerAge")
@@ -78,53 +80,6 @@ namespace TraigiamBE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Prisoner");
-                });
-
-            modelBuilder.Entity("TraigiamBE.Models.StaffModel", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Cccd")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Countryside")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageStaff")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IsActive")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Mnv")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StaffAge")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StaffName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StaffSex")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Staff");
                 });
 #pragma warning restore 612, 618
         }

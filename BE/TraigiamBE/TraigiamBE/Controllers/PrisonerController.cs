@@ -26,24 +26,25 @@ namespace TraigiamBE.Controllers
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var listPrisoner = await _context.Prisoner
+                var listPrisoner = (await _context.Prisoner
                 .Select(x => new PrisonerModel
                 {
                     Id = x.Id,
                     PrisonerName = x.PrisonerName,
                     PrisonerAge = x.PrisonerAge,
-                    CCCD = x.CCCD,
-                    MPN = x.MPN,
+                    PrisonerSex = x.PrisonerSex,
+                    Cccd = x.Cccd,
+                    Mpn = x.Mpn,
                     Banding = x.Banding,
                     Dom = x.Dom,
                     Bed = x.Bed,
                     Countryside = x.Countryside,
                     Crime = x.Crime,
                     Years = x.Years,
-                    Manager = x.Manager,
+                    Mananger = x.Mananger,
                     ImagePrisoner = x.ImagePrisoner,
                     ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImagePrisoner)
-                }).ToListAsync();
+                }).ToListAsync()).OrderByDescending(item => item.CreateAt);
 
                 response.Status = true;
                 response.StatusMessage = "Success";
@@ -60,18 +61,56 @@ namespace TraigiamBE.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PrisonerModel>> GetPrisonerById(int id)
+        public async Task<ActionResult<BaseResponseModel>> GetPrisonerById(long id)
         {
-            var prisonerModel = await _context.Prisoner.FindAsync(id);
-            if (prisonerModel == null)
+            BaseResponseModel response = new BaseResponseModel();
+            try
             {
-                return NotFound();
+                var prisonerModel = await _context.Prisoner
+                    .Where(x => x.Id == id)
+                    .Select(x => new PrisonerModel
+                    {
+                        Id = x.Id,
+                        PrisonerName = x.PrisonerName,
+                        PrisonerAge = x.PrisonerAge,
+                        PrisonerSex = x.PrisonerSex,
+                        Cccd = x.Cccd,
+                        Mpn = x.Mpn,
+                        Banding = x.Banding,
+                        Dom = x.Dom,
+                        Bed = x.Bed,
+                        Countryside = x.Countryside,
+                        Crime = x.Crime,
+                        Years = x.Years,
+                        Mananger = x.Mananger,
+                        ImagePrisoner = x.ImagePrisoner,
+                        ImageSrc = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Images/{x.ImagePrisoner}"
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (prisonerModel == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Prisoner not found";
+                    return NotFound(response);
+                }
+
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = prisonerModel;
+                return Ok(response);
             }
-            return prisonerModel;
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "Something went wrong";
+                return BadRequest(response);
+            }
         }
 
+
         [HttpPut("{id}")]
-        public async Task<ActionResult<BaseResponseModel>> EditPrisonerModel(int id, [FromForm] PrisonerModel prisonerModel)
+        public async Task<ActionResult<BaseResponseModel>> EditPrisonerModel(long id, [FromForm] PrisonerModel prisonerModel)
         {
             var response = new BaseResponseModel();
             try
@@ -79,16 +118,18 @@ namespace TraigiamBE.Controllers
                 if (id != prisonerModel.Id)
                     return BadRequest(new BaseResponseModel { Status = false, StatusMessage = "Invalid ID" });
 
-                if (prisonerModel.ImagePrisoner != null)
+                if (prisonerModel.ImagePrisoner != null && prisonerModel.FilePrisoner != null)
                 {
                     DeleteImage(prisonerModel.ImagePrisoner);
                     prisonerModel.ImagePrisoner = await SaveImage(prisonerModel.FilePrisoner);
                 }
+               
 
-                _context.Entry(prisonerModel).State = EntityState.Modified;
+                var data = _context.Entry(prisonerModel).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
                 response.Status = true;
+                response.Data = prisonerModel;
                 response.StatusMessage = "Prisoner updated successfully";
                 return Ok(response);
             }
@@ -121,7 +162,7 @@ namespace TraigiamBE.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    if (employeeModel.FilePrisoner != null)
+                    if (employeeModel.FilePrisoner != null  )
                     {
                         employeeModel.ImagePrisoner = await SaveImage(employeeModel.FilePrisoner);
                     }
@@ -152,7 +193,7 @@ namespace TraigiamBE.Controllers
 
         // DELETE: api/Employee/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BaseResponseModel>> DeletePrisonerModel(int id)
+        public async Task<ActionResult<BaseResponseModel>> DeletePrisonerModel(long id)
         {
             BaseResponseModel response = new BaseResponseModel();
             try

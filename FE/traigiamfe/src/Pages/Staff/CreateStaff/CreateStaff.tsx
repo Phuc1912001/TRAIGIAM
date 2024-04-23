@@ -1,33 +1,23 @@
-import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-    Button,
-    Col,
-    Drawer,
-    Form,
-    Image,
-    Input,
-    InputNumber,
-    Row,
-} from "antd";
-import { useForm } from "antd/es/form/Form";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { PrisonerModel } from "../../../common/Model/prisoner";
-import styles from "./CreatePrisoner.module.scss";
-import defaultImage from "../../../assets/default.jpg";
-import { useLoading } from "../../../common/Hook/useLoading";
-import { useNotification } from "../../../common/Hook/useNotification";
+import { useLoading } from '../../../common/Hook/useLoading'
+import { useNotification } from '../../../common/Hook/useNotification'
+import { CloseOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Col, Drawer, Form, Image, Input, InputNumber, Row, Switch } from 'antd'
+import React, { useState } from 'react'
+import styles from './CreateStaff.module.scss'
+import defaultImage from '../../../assets/default.jpg'
+import { useForm } from 'antd/es/form/Form'
+import axios from 'axios'
 
 interface IInitValue {
     imageName: string;
     imageSrc: any;
     imageFile: any;
 }
-interface ICreatePrisoner {
+
+interface ICreateStaff {
     openCreatePrisoner: boolean;
     setOpenCreatePrisoner: React.Dispatch<React.SetStateAction<boolean>>;
     isEdit: boolean;
-    currentRecord?: PrisonerModel;
     values: IInitValue;
     setValues: React.Dispatch<React.SetStateAction<IInitValue>>;
     showDelete: boolean;
@@ -38,26 +28,15 @@ interface ICreatePrisoner {
     reset: boolean;
 }
 
-const CreatePrisoner = (props: ICreatePrisoner) => {
-    const {
-        openCreatePrisoner,
-        setOpenCreatePrisoner,
-        isEdit,
-        currentRecord,
-        values,
-        setValues,
-        showDelete,
-        setShowDelete,
-        initialFieldValues,
-        recall,
-        setRecall,
-        reset,
-    } = props;
-    const [form] = useForm();
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState("");
+const CreateStaff = (props: ICreateStaff) => {
+
+
+    const { openCreatePrisoner, setOpenCreatePrisoner, isEdit, values, setValues, showDelete, setShowDelete, recall, setRecall } = props
     const { showLoading, closeLoading } = useLoading();
     const notification = useNotification();
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState("");
+    const [form] = useForm();
 
     const [showMessage, setShơwMessage] = useState<boolean>(false)
     const [isConfirm, setIsConfirm] = useState<boolean>(false)
@@ -70,7 +49,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     const handleOnFinish = async () => {
         if (isConfirm) {
             try {
-                showLoading("createPrisoner");
+                showLoading("createStaff");
                 if (values.imageFile === null) {
                     setShơwMessage(true)
                     setIsConfirm(false)
@@ -78,27 +57,25 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 await form.validateFields();
                 const value = await form.getFieldsValue();
                 const formData = new FormData();
-                formData.append("prisonerName", value.prisonerName);
-                formData.append("prisonerAge", value.prisonerAge);
-                formData.append("prisonerSex", value.prisonerSex);
+                formData.append("staffName", value.staffName);
+                formData.append("staffAge", value.staffAge);
+                formData.append("staffSex", value.staffSex);
                 formData.append("cccd", value.cccd);
-                formData.append("mpn", value.mpn);
-                formData.append("banding", value.banding);
-                formData.append("dom", value.dom);
-                formData.append("bed", value.bed);
+                formData.append("mnv", value.mnv);
+                formData.append("position", value.position);
                 formData.append("countryside", value.countryside);
-                formData.append("crime", value.crime);
-                formData.append("years", value.years);
-                formData.append("mananger", value.mananger);
+                formData.append("isActive", value.isActive);
                 formData.append("imagePrisoner", values.imageName);
                 formData.append("filePrisoner", values.imageFile || "");
-                await axios.post("https://localhost:7120/api/Prisoner", formData);
-                setOpenCreatePrisoner(false);
-                setRecall(!recall);
-                notification.success(<div>Tạo Phạm Nhân Thành Công.</div>);
-                closeLoading("createPrisoner");
+                console.log('formData', formData);
+
+                // await axios.post("https://localhost:7120/api/Prisoner", formData);
+                // setOpenCreatePrisoner(false);
+                // setRecall(!recall);
+                // notification.success(<div>Tạo Nhân Viên Thành Công.</div>);
+                closeLoading("createStaff");
             } catch (error) {
-                closeLoading("createPrisoner");
+                closeLoading("createStaff");
             }
         } else {
             setShơwMessage(true)
@@ -108,43 +85,10 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     };
 
     const handleOnEdit = async () => {
-        if (isConfirm) {
-            try {
-                showLoading("editPrisoner");
-                await form.validateFields();
-                const value = await form.getFieldsValue();
-                const formData = new FormData();
-                formData.append("id", String(currentRecord?.id ?? 0));
-                formData.append("prisonerName", value.prisonerName);
-                formData.append("prisonerAge", value.prisonerAge);
-                formData.append("prisonerSex", value.prisonerSex);
-                formData.append("cccd", value.cccd);
-                formData.append("mpn", value.mpn);
-                formData.append("banding", value.banding);
-                formData.append("dom", value.dom);
-                formData.append("bed", value.bed);
-                formData.append("countryside", value.countryside);
-                formData.append("crime", value.crime);
-                formData.append("years", value.years);
-                formData.append("mananger", value.mananger);
-                formData.append("imagePrisoner", String(currentRecord?.imagePrisoner));
-                formData.append("filePrisoner", values.imageFile || "");
-                await axios.put(
-                    `https://localhost:7120/api/Prisoner/${currentRecord?.id}`,
-                    formData
-                );
-                setOpenCreatePrisoner(false);
-                setRecall(!recall);
-                closeLoading("editPrisoner");
-                notification.success(<div>Sửa Phạm Nhân Thành Công.</div>);
-            } catch (error) {
-                closeLoading("editPrisoner");
-            }
-        } else {
-            setShơwMessage(true)
-        }
+
 
     };
+
 
     const filterDrawFooterView = (
         <div className={styles.wrapperBtn}>
@@ -157,7 +101,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 Đóng
             </Button>
             <div onClick={handleOnFinish} className="btn-orange">
-                Tạo Phạm Nhân
+                Tạo Nhân Viên
             </div>
         </div>
     );
@@ -173,26 +117,10 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 Đóng
             </Button>
             <div onClick={handleOnEdit} className="btn-orange">
-                Sửa Phạm Nhân
+                Sửa Nhân Viên
             </div>
         </div>
     );
-
-    useEffect(() => {
-        if (isEdit) {
-            form.setFieldsValue(currentRecord);
-            const arr = currentRecord?.imageSrc?.split("/");
-            const hasNull = arr?.includes("null");
-            const imgURL = hasNull ? defaultImage : currentRecord?.imageSrc;
-            setValues({
-                ...values,
-                imageSrc: imgURL,
-            });
-        } else {
-            form.resetFields();
-            setValues(initialFieldValues);
-        }
-    }, [isEdit, reset]);
 
     const showPreview = (e: any) => {
         if (e.target.files && e.target.files[0]) {
@@ -227,6 +155,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         setIsConfirm(false)
     };
 
+    const onChange = (checked: boolean) => {
+        console.log(`switch to ${checked}`);
+    };
     return (
         <div>
             <Drawer
@@ -297,10 +228,10 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    { required: true, message: "Vui lòng điền tên phạm nhân." },
+                                    { required: true, message: "Vui lòng điền tên nhân viên." },
                                 ]}
-                                name="prisonerName"
-                                label="Tên Phạm Nhân:"
+                                name="staffName"
+                                label="Tên Nhân Viên:"
                             >
                                 <Input maxLength={150} />
                             </Form.Item>
@@ -308,9 +239,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    { required: true, message: "Vui lòng điền tuổi phạm nhân." },
+                                    { required: true, message: "Vui lòng điền tuổi nhân viên." },
                                 ]}
-                                name="prisonerAge"
+                                name="staffAge"
                                 label="Tuổi:"
                             >
                                 <Input maxLength={150} type='number' />
@@ -319,9 +250,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    { required: true, message: "Vui lòng điền giới tính phạm nhân." },
+                                    { required: true, message: "Vui lòng điền Giới tính nhân viên." },
                                 ]}
-                                name="prisonerSex"
+                                name="staffSex"
                                 label="Giới Tính:"
                             >
                                 <Input maxLength={150} />
@@ -344,10 +275,10 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    { required: true, message: "Vui lòng điền mã phạm nhân." },
+                                    { required: true, message: "Vui lòng điền mã nhân viên." },
                                 ]}
-                                name="mpn"
-                                label="Mã Phạm Nhân:"
+                                name="mnv"
+                                label="Mã Nhân Viên:"
                             >
                                 <Input maxLength={150} />
                             </Form.Item>
@@ -357,43 +288,17 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Vui lòng điền cấp bậc của phạm nhân.",
+                                        message: "Vui lòng điền chức vụ của phạm nhân.",
                                     },
                                 ]}
-                                name="banding"
-                                label="Cấp Bậc:"
+                                name="position"
+                                label="Chức Vụ:"
                             >
-                                <Input maxLength={150} type='number' />
+                                <Input maxLength={150} />
                             </Form.Item>
                         </Col>
-                        <Col sm={24}>
-                            <Form.Item
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng điền cấp bậc của phạm nhân.",
-                                    },
-                                ]}
-                                name="dom"
-                                label="Số Phòng:"
-                            >
-                                <Input maxLength={150} type='number' />
-                            </Form.Item>
-                        </Col>
-                        <Col sm={24}>
-                            <Form.Item
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng điền cấp bậc của phạm nhân.",
-                                    },
-                                ]}
-                                name="bed"
-                                label="Số Giường:"
-                            >
-                                <Input maxLength={150} type='number' />
-                            </Form.Item>
-                        </Col>
+
+
                         <Col sm={24}>
                             <Form.Item
                                 rules={[{ required: true, message: "Vui lòng điền quê quán." }]}
@@ -405,40 +310,20 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         </Col>
                         <Col sm={24}>
                             <Form.Item
-                                rules={[{ required: true, message: "Vui lòng điền tội danh." }]}
-                                name="crime"
-                                label="Tội Danh:"
+
+                                name="isActive"
+                                label="Trạng Thái:"
+                                valuePropName="checked"
                             >
-                                <Input.TextArea />
+                                <Switch defaultChecked onChange={onChange} />
                             </Form.Item>
                         </Col>
-                        <Col sm={24}>
-                            <Form.Item
-                                rules={[
-                                    { required: true, message: "Vui lòng điền số năm ngồi tù." },
-                                ]}
-                                name="years"
-                                label="Số Năm:"
-                            >
-                                <InputNumber min={1} />
-                            </Form.Item>
-                        </Col>
-                        <Col sm={24}>
-                            <Form.Item
-                                rules={[
-                                    { required: true, message: "Vui lòng điền người quản lý." },
-                                ]}
-                                name="mananger"
-                                label="Người Quản Lý:"
-                            >
-                                <Input />
-                            </Form.Item>
-                        </Col>
+
                     </Row>
                 </Form>
             </Drawer>
         </div>
-    );
-};
+    )
+}
 
-export default CreatePrisoner;
+export default CreateStaff

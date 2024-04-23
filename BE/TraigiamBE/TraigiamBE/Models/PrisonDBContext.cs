@@ -9,6 +9,7 @@ namespace TraigiamBE.Models
 
         }
         public DbSet<PrisonerModel> Prisoner { get; set; }
+        public DbSet<StaffModel> Staff { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,0 +1,50 @@
+$red: #df1820 !default;
+$information: #0072d0;
+$warning: #e5681f;
+$error: #d01b1b;
+$successful: #02a56f;
+$border-disable: #d9d9d9;
+
+.hcisNotification.hcisCustomNotification {
+  padding: 16px;
+
+  :global {
+    .hcis-notification-success {
+      color: $successful;
+      font-size: 16px;
+    }
+
+    .hcis-notification-error {
+      color: $error;
+      font-size: 16px;
+    }
+
+    .hcis-notification-info {
+      color: $information;
+      font-size: 16px;
+    }
+
+    .hcis-notification-warning {
+      color: $warning;
+      font-size: 16px;
+    }
+
+    .ant-notification-notice-with-icon {
+      .ant-notification-notice-icon {
+        // top: calc(1rem + 2.5px);
+        top: 1rem;
+        left: 1rem;
+      }
+
+      .ant-notification-notice-message {
+        margin-left: 1.5rem;
+        margin-block-end: 0;
+        font-size: 14px;
+      }
+    }
+
+    .ant-notification-notice-close {
+      top: 1rem;
+    }
+  }
+}

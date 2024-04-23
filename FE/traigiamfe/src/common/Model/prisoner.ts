@@ -2,14 +2,17 @@ export interface PrisonerModel {
     id?: number,
     prisonerName?:string,
     prisonerAge?:string,
+    prisonerSex?:string,
     cccd?:string,
-    mPN?:string,
+    mpn?:string,
     banding?:number,
     dom?:number,
     bed?:number,
     countryside?:string,
     crime?:string,
     years?:number,
-    manager?:string,
+    mananger?:string,
     imagePrisoner?:string,
+    imageSrc?:string
+    filePrisoner?:any
 }

@@ -1,0 +1,39 @@
+.wrapperContent {
+    padding: 20px 50px;
+
+    .containerInfor {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .name {
+            cursor: pointer;
+            color: #006677;
+            font-weight: 600;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .wrapperBtn {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .wrapperAction {
+        display: flex;
+        align-items: center;
+        gap: 4;
+    }
+}

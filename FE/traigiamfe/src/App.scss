@@ -121,3 +121,24 @@
   font-size: 16px;
   padding: 10px;
 }
+
+.ant-switch-checked {
+  background: rgba(245, 57, 0, 0.433) !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(187, 186, 186);
+  
+  border-radius: 4px;
+  
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(146, 145, 145);
+  
+}

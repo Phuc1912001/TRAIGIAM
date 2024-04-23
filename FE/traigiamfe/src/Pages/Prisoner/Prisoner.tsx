@@ -1,6 +1,6 @@
 import Header from "../../Components/Header/Header";
 import { Breadcrumb, Button, Layout, Table } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Prisoner.module.scss";
 import { ColumnsType } from "antd/es/table";
 import {
@@ -15,6 +15,11 @@ import avatar from "../../assets/avatar.jpg";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import { PrisonerModel } from "../../common/Model/prisoner";
 import MobileHeader from "../../Components/MobileHeader/MobileHeader";
+import axios from "axios";
+import defaultImage from "../../assets/default.jpg";
+import { useLoading } from "../../common/Hook/useLoading";
+import { useNotification } from "../../common/Hook/useNotification";
+
 
 const Prisoner = () => {
     const items = [
@@ -26,207 +31,51 @@ const Prisoner = () => {
         },
     ];
 
+    const initialFieldValues = {
+        imageName: "",
+        imageSrc: defaultImage,
+        imageFile: null,
+    };
+
     const navigate = useNavigate();
     const [openCreatePrisoner, setOpenCreatePrisoner] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const [namePrisoner, setNamePrisoner] = useState<string>('');
+    const [namePrisoner, setNamePrisoner] = useState<PrisonerModel>();
     const [currentRecord, setCurrentRecord] = useState<PrisonerModel>()
 
-    const mockData = [
-        {
-            id: 1,
-            maPN: "PH1",
-            name: "Nguyễn Văn A",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 2,
-            maPN: "PH1",
-            name: "Nguyễn Văn B",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 3,
-            maPN: "PH1",
-            name: "Nguyễn Văn C",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 4,
-            maPN: "PH1",
-            name: "Nguyễn Văn D",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 5,
-            maPN: "PH1",
-            name: "Nguyễn Văn E",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 6,
-            maPN: "PH1",
-            name: "Nguyễn Văn H",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 7,
-            maPN: "PH1",
-            name: "Nguyễn Văn I",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 8,
-            maPN: "PH1",
-            name: "Nguyễn Văn K",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 9,
-            maPN: "PH1",
-            name: "Nguyễn Văn L",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 10,
-            maPN: "PH1",
-            name: "Nguyễn Văn M",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 11,
-            maPN: "PH1",
-            name: "Nguyễn Văn Z",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-        {
-            id: 12,
-            maPN: "PH1",
-            name: "Nguyễn Văn B",
-            age: "18",
-            cccd: "1951060922",
-            sex: "Nam",
-            dateTime: "abc",
-            dom: "DOM A",
-            bed: "Bed 1",
-            year: 10,
-            banding: 1,
-            countryside: 'Ha Noi',
-            guilty: 'Trộm Cắp',
-            mananger: "otis Nguyễn",
-        },
-    ];
+    const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([])
+    const notification = useNotification();
+
+    const [values, setValues] = useState(initialFieldValues);
+    const [showDelete, setShowDelete] = useState<boolean>(false);
+    const [recall, setRecall] = useState<boolean>(false)
+    const [reset, setReset] = useState<boolean>(false)
+
+    const { showLoading, closeLoading } = useLoading()
+
+
+
+    const handleGetAllPrisoner = async () => {
+        try {
+            showLoading("getAllPrisoner")
+            console.log('alo');
+
+            const { data } = await axios.get('https://localhost:7120/api/prisoner')
+            setDataPrisoner(data.data)
+            closeLoading("getAllPrisoner")
+        } catch (error) {
+            closeLoading("getAllPrisoner")
+        }
+    }
+
+    useEffect(() => {
+        handleGetAllPrisoner()
+    }, [])
+
+    useEffect(() => {
+        handleGetAllPrisoner()
+    }, [recall])
 
     const handleNavigate = (record: any) => {
         navigate(`/${record.id}`);
@@ -234,56 +83,79 @@ const Prisoner = () => {
     const handleOpenCreate = () => {
         setOpenCreatePrisoner(true);
         setIsEdit(false);
+        setReset(!reset)
     };
 
     const handleOpenEdit = (record: PrisonerModel) => {
         setOpenCreatePrisoner(true);
         setIsEdit(true);
         setCurrentRecord(record)
+        setValues({
+            ...values,
+            imageSrc: record.imageSrc as string
+        })
+        setShowDelete(true)
+        setReset(!reset)
     };
 
     const handleOpenDelete = (record: PrisonerModel) => {
         setIsOpenModal(true);
-        setNamePrisoner(record.prisonerName ?? '')
+        setNamePrisoner(record)
     };
 
-    const handleDeletePrisoner = () => {
-        console.log("alo");
+    const handleDeletePrisoner = async () => {
+        try {
+            showLoading("deletePrisoner")
+            await axios.delete(`https://localhost:7120/api/prisoner/${namePrisoner?.id}`)
+            handleGetAllPrisoner()
+            setIsOpenModal(false);
+            notification.success(<div>Xóa Phạm Nhân Thành Công.</div>)
+            closeLoading("deletePrisoner")
+        } catch (error) {
+            setIsOpenModal(true);
+            closeLoading("deletePrisoner")
+
+        }
     };
 
-    const columns: ColumnsType<any> = [
+    const columns: ColumnsType<PrisonerModel> = [
         {
             title: "Tên Phạm Nhân",
-            dataIndex: "name",
-            key: "name",
-            render: (_, record) => (
-                <div className={styles.containerInfor}>
+            dataIndex: "prisonerName",
+            key: "prisonerName",
+            render: (_, record) => {
+                const arr = record?.imageSrc?.split('/')
+                const hasNull = arr?.includes("null");
+                const imgURL = hasNull ? defaultImage : record.imageSrc
+                return (<div className={styles.containerInfor}>
                     <div>
-                        <img className={styles.avatar} src={avatar} alt="" />
+                        <img className={styles.avatar} src={imgURL} alt="" />
                     </div>
                     <div>
                         <div className={styles.name} onClick={() => handleNavigate(record)}>
-                            {record?.name}
+                            {record?.prisonerName}
                         </div>
-                        <div>{`${record?.age} tuổi`}</div>
+                        <div>{`${record?.prisonerAge} tuổi`}</div>
                     </div>
-                </div>
-            ),
+                </div>)
+            }
+
+
         },
         {
             title: "Ma Phạm Nhân",
-            dataIndex: "maPN",
-            key: "maPN",
+            dataIndex: "mpn",
+            key: "mpn",
         },
         {
             title: "Giới Tính",
-            dataIndex: "sex",
-            key: "sex",
+            dataIndex: "prisonerSex",
+            key: "prisonerSex",
         },
         {
-            title: "Giường",
-            dataIndex: "bed",
-            key: "bed",
+            title: "Trại",
+            dataIndex: "dom",
+            key: "dom",
         },
         {
             title: "Người Quản Lý",
@@ -327,8 +199,8 @@ const Prisoner = () => {
                 </div>
                 <Table
                     columns={columns}
-                    dataSource={mockData}
-                    className={` ${styles.prisonerTable} share-border-table`}
+                    dataSource={dataPrisoner}
+                    className={`${styles.prisonerTable} share-border-table`}
                     tableLayout="auto"
                 />
             </div>
@@ -337,6 +209,15 @@ const Prisoner = () => {
                 setOpenCreatePrisoner={setOpenCreatePrisoner}
                 isEdit={isEdit}
                 currentRecord={currentRecord}
+                values={values}
+                setValues={setValues}
+                showDelete={showDelete}
+                setShowDelete={setShowDelete}
+                initialFieldValues={initialFieldValues}
+                setRecall={setRecall}
+                recall={recall}
+                reset={reset}
+
             />
             <ModalComponent
                 isOpenModal={isOpenModal}
@@ -345,7 +226,7 @@ const Prisoner = () => {
                 title="Xác Nhận Xóa Phạm Nhân"
                 textConfirm="Xóa Phạm Nhân"
             >
-                <div>{`Bạn có muốn xóa phạm nhân ${namePrisoner}`}</div>
+                <div>{`Bạn có muốn xóa phạm nhân ${namePrisoner?.prisonerName}`}</div>
             </ModalComponent>
         </div>
     );

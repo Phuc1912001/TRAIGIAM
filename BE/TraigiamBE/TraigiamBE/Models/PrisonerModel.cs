@@ -6,17 +6,18 @@ namespace TraigiamBE.Models
     {
         public string? PrisonerName { get; set; }
         public string? PrisonerAge { get; set; }
-        public string? CCCD { get; set; }
-        public string? MPN { get; set; }
+        public string? PrisonerSex { get; set; }
+        public string? Cccd { get; set; }
+        public string? Mpn { get; set; }
         public int? Banding { get; set; }
-        public int Dom {  get; set; }
+        public int? Dom {  get; set; }
         public int? Bed { get; set; }
         public string? Countryside { get; set; }
         public string? Crime { get; set; }
 
         public int? Years { get; set; }
 
-        public string? Manager { get; set; }
+        public string? Mananger { get; set; }
         [Column(TypeName = "nvarchar(100)")]
 
         public string? ImagePrisoner { get; set; }

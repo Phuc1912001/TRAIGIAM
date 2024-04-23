@@ -1,0 +1,46 @@
+.wrapperBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wrapperImage {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .chosseFile {
+        display: none;
+    }
+
+    .labelImage {
+        width: 80px;
+        height: 80px;
+        border: 1px dashed gray;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .imageChoose {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .images {
+            img {
+                height: 80px;
+                width: 80px;
+                object-fit: cover;
+                border-radius: 4px;
+            }
+        }
+
+        .icon {
+
+            cursor: pointer;
+        }
+    }
+}
