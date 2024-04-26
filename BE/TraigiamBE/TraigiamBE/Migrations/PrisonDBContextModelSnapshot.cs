@@ -54,8 +54,8 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("ImagePrisoner")
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Mananger")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long?>("Mananger")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Mpn")
                         .HasColumnType("nvarchar(max)");
@@ -100,8 +100,8 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("ImageStaff")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IsActive")
-                        .HasColumnType("int");
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Mnv")
                         .HasColumnType("nvarchar(max)");

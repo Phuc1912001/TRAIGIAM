@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Hosting;
 using TraigiamBE.Models;
 
@@ -24,41 +25,56 @@ namespace TraigiamBE.Controllers
         public async Task<ActionResult<IEnumerable<PrisonerModel>>> GetAllPrisoner()
         {
             BaseResponseModel response = new BaseResponseModel();
+
             try
             {
-                var listPrisoner = (await _context.Prisoner
-                .Select(x => new PrisonerModel
-                {
-                    Id = x.Id,
-                    PrisonerName = x.PrisonerName,
-                    PrisonerAge = x.PrisonerAge,
-                    PrisonerSex = x.PrisonerSex,
-                    Cccd = x.Cccd,
-                    Mpn = x.Mpn,
-                    Banding = x.Banding,
-                    Dom = x.Dom,
-                    Bed = x.Bed,
-                    Countryside = x.Countryside,
-                    Crime = x.Crime,
-                    Years = x.Years,
-                    Mananger = x.Mananger,
-                    ImagePrisoner = x.ImagePrisoner,
-                    ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImagePrisoner)
-                }).ToListAsync()).OrderByDescending(item => item.CreateAt);
+                var staff = _context.Staff;
+
+                var test = await _context.Prisoner.ToListAsync();
+
+                var listPrisoner = await _context.Prisoner
+                    .Join(staff, p => p.Mananger, s => s.Id, (p, s) => new { p, s })
+                    .Select(x => new PrisonerModel
+                    {
+                        Id = x.p.Id,
+                        PrisonerName = x.p.PrisonerName,
+                        PrisonerAge = x.p.PrisonerAge,
+                        PrisonerSex = x.p.PrisonerSex,
+                        Cccd = x.p.Cccd,
+                        Mpn = x.p.Mpn,
+                        Banding = x.p.Banding,
+                        Dom = x.p.Dom,
+                        Bed = x.p.Bed,
+                        Countryside = x.p.Countryside,
+                        Crime = x.p.Crime,
+                        Years = x.p.Years,
+                        Mananger = x.p.Mananger,
+                        ManangerName = x.s.StaffName,
+                        ImagePrisoner = x.p.ImagePrisoner,
+                        ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.p.ImagePrisoner),
+                        CreateAt = x.p.CreateAt 
+                    })
+                    .OrderByDescending(item => item.CreateAt) 
+                    .ToListAsync();
 
                 response.Status = true;
                 response.StatusMessage = "Success";
                 response.Data = listPrisoner;
+
                 return Ok(response);
             }
             catch (Exception ex)
             {
+               
+                Console.Error.WriteLine($"Error fetching prisoners: {ex.Message}");
+
                 response.Status = false;
-                response.StatusMessage = "something went wrong";
+                response.StatusMessage = "Something went wrong: " + ex.Message;
                 return BadRequest(response);
             }
-             
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BaseResponseModel>> GetPrisonerById(long id)
@@ -66,6 +82,7 @@ namespace TraigiamBE.Controllers
             BaseResponseModel response = new BaseResponseModel();
             try
             {
+               
                 var prisonerModel = await _context.Prisoner
                     .Where(x => x.Id == id)
                     .Select(x => new PrisonerModel

@@ -1,12 +1,23 @@
-import { useLoading } from '../../../common/Hook/useLoading'
-import { useNotification } from '../../../common/Hook/useNotification'
-import { CloseOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Col, Drawer, Form, Image, Input, InputNumber, Row, Switch } from 'antd'
-import React, { useState } from 'react'
-import styles from './CreateStaff.module.scss'
-import defaultImage from '../../../assets/default.jpg'
-import { useForm } from 'antd/es/form/Form'
-import axios from 'axios'
+import { useLoading } from "../../../common/Hook/useLoading";
+import { useNotification } from "../../../common/Hook/useNotification";
+import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    Button,
+    Col,
+    Drawer,
+    Form,
+    Image,
+    Input,
+    InputNumber,
+    Row,
+    Switch,
+} from "antd";
+import React, { useEffect, useState } from "react";
+import styles from "./CreateStaff.module.scss";
+import defaultImage from "../../../assets/default.jpg";
+import { useForm } from "antd/es/form/Form";
+import axios from "axios";
+import { StaffModel } from "@/common/Model/staff";
 
 interface IInitValue {
     imageName: string;
@@ -26,24 +37,37 @@ interface ICreateStaff {
     recall: boolean;
     setRecall: React.Dispatch<React.SetStateAction<boolean>>;
     reset: boolean;
+    currentRecord?: StaffModel;
 }
 
 const CreateStaff = (props: ICreateStaff) => {
-
-
-    const { openCreatePrisoner, setOpenCreatePrisoner, isEdit, values, setValues, showDelete, setShowDelete, recall, setRecall } = props
+    const {
+        openCreatePrisoner,
+        setOpenCreatePrisoner,
+        isEdit,
+        values,
+        setValues,
+        showDelete,
+        setShowDelete,
+        recall,
+        setRecall,
+        currentRecord,
+        reset,
+        initialFieldValues,
+    } = props;
     const { showLoading, closeLoading } = useLoading();
     const notification = useNotification();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [form] = useForm();
 
-    const [showMessage, setShơwMessage] = useState<boolean>(false)
-    const [isConfirm, setIsConfirm] = useState<boolean>(false)
+    const [showMessage, setShơwMessage] = useState<boolean>(false);
+    const [isConfirm, setIsConfirm] = useState<boolean>(true);
     const onClose = () => {
         setOpenCreatePrisoner(false);
-        setIsConfirm(false)
-        setShơwMessage(false)
+        setIsConfirm(true)
+
+        setShơwMessage(false);
     };
 
     const handleOnFinish = async () => {
@@ -51,8 +75,8 @@ const CreateStaff = (props: ICreateStaff) => {
             try {
                 showLoading("createStaff");
                 if (values.imageFile === null) {
-                    setShơwMessage(true)
-                    setIsConfirm(false)
+                    setShơwMessage(true);
+                    setIsConfirm(false);
                 }
                 await form.validateFields();
                 const value = await form.getFieldsValue();
@@ -64,31 +88,55 @@ const CreateStaff = (props: ICreateStaff) => {
                 formData.append("mnv", value.mnv);
                 formData.append("position", value.position);
                 formData.append("countryside", value.countryside);
-                formData.append("isActive", value.isActive);
-                formData.append("imagePrisoner", values.imageName);
-                formData.append("filePrisoner", values.imageFile || "");
-                console.log('formData', formData);
-
-                // await axios.post("https://localhost:7120/api/Prisoner", formData);
-                // setOpenCreatePrisoner(false);
-                // setRecall(!recall);
-                // notification.success(<div>Tạo Nhân Viên Thành Công.</div>);
+                formData.append("isActive", value.isActive ?? true);
+                formData.append("imageStaff", values.imageName);
+                formData.append("fileStaff", values.imageFile || "");
+                await axios.post("https://localhost:7120/api/Staff", formData);
+                setOpenCreatePrisoner(false);
+                setRecall(!recall);
+                notification.success(<div>Tạo Nhân Viên Thành Công.</div>);
                 closeLoading("createStaff");
             } catch (error) {
                 closeLoading("createStaff");
             }
         } else {
-            setShơwMessage(true)
+            setShơwMessage(true);
         }
-
-
     };
 
     const handleOnEdit = async () => {
+        console.log('isConfirm', isConfirm);
 
+        if (isConfirm) {
+            try {
+                showLoading("editStaff");
+                await form.validateFields();
+                const value = await form.getFieldsValue();
+                const formData = new FormData();
+                formData.append("id", String(currentRecord?.id ?? 0))
+                formData.append("staffName", value.staffName);
+                formData.append("staffAge", value.staffAge);
+                formData.append("staffSex", value.staffSex);
+                formData.append("cccd", value.cccd);
+                formData.append("mnv", value.mnv);
+                formData.append("position", value.position);
+                formData.append("countryside", value.countryside);
+                formData.append("isActive", value.isActive ?? true);
+                formData.append("imageStaff", String(currentRecord?.imageStaff));
+                formData.append("fileStaff", values.imageFile || "");
+                await axios.put(`https://localhost:7120/api/Staff/${currentRecord?.id}`, formData);
+                setOpenCreatePrisoner(false);
+                setRecall(!recall);
+                closeLoading("editStaff");
+                notification.success(<div>Sửa Phạm Nhân Thành Công.</div>);
+            } catch (error) {
+                closeLoading("editStaff");
+            }
+        } else {
+            setShơwMessage(true)
+        }
 
     };
-
 
     const filterDrawFooterView = (
         <div className={styles.wrapperBtn}>
@@ -134,8 +182,8 @@ const CreateStaff = (props: ICreateStaff) => {
                 });
             };
             setShowDelete(true);
-            setIsConfirm(true)
-            setShơwMessage(false)
+            setIsConfirm(true);
+            setShơwMessage(false);
             reader.readAsDataURL(imageFile);
         } else {
             setValues({
@@ -152,16 +200,32 @@ const CreateStaff = (props: ICreateStaff) => {
             imageSrc: defaultImage,
         });
         setShowDelete(false);
-        setIsConfirm(false)
+        setIsConfirm(false);
     };
 
     const onChange = (checked: boolean) => {
         console.log(`switch to ${checked}`);
     };
+
+    useEffect(() => {
+        if (isEdit) {
+            form.setFieldsValue(currentRecord);
+            const arr = currentRecord?.imageSrc?.split("/");
+            const hasNull = arr?.includes("null");
+            const imgURL = hasNull ? defaultImage : currentRecord?.imageSrc;
+            setValues({
+                ...values,
+                imageSrc: imgURL,
+            });
+        } else {
+            form.resetFields();
+            setValues(initialFieldValues);
+        }
+    }, [isEdit, reset]);
     return (
         <div>
             <Drawer
-                title={isEdit ? "Sửa Phạm Nhân" : "Tạo Phạm Nhân"}
+                title={isEdit ? "Sửa Nhân Viên" : "Tạo Nhân Viên"}
                 open={openCreatePrisoner}
                 placement="right"
                 closable={false}
@@ -175,10 +239,7 @@ const CreateStaff = (props: ICreateStaff) => {
                 <Form layout="vertical" form={form}>
                     <Row>
                         <Col sm={24}>
-                            <Form.Item
-                                name="img"
-                                label="Chọn Ảnh Đại Diện:"
-                            >
+                            <Form.Item name="img" label="Chọn Ảnh Đại Diện:">
                                 <div className={styles.wrapperImage}>
                                     <div>
                                         <label htmlFor="image-uploader">
@@ -217,12 +278,12 @@ const CreateStaff = (props: ICreateStaff) => {
                                             )}
                                         </div>
                                     </div>
-
                                 </div>
-                                {
-                                    showMessage && <div style={{ color: 'red', marginTop: "10px" }}>Vui lòng chọn ảnh đại diện.</div>
-                                }
-
+                                {showMessage && (
+                                    <div style={{ color: "red", marginTop: "10px" }}>
+                                        Vui lòng chọn ảnh đại diện.
+                                    </div>
+                                )}
                             </Form.Item>
                         </Col>
                         <Col sm={24}>
@@ -244,13 +305,16 @@ const CreateStaff = (props: ICreateStaff) => {
                                 name="staffAge"
                                 label="Tuổi:"
                             >
-                                <Input maxLength={150} type='number' />
+                                <Input maxLength={150} type="number" />
                             </Form.Item>
                         </Col>
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    { required: true, message: "Vui lòng điền Giới tính nhân viên." },
+                                    {
+                                        required: true,
+                                        message: "Vui lòng điền Giới tính nhân viên.",
+                                    },
                                 ]}
                                 name="staffSex"
                                 label="Giới Tính:"
@@ -269,7 +333,7 @@ const CreateStaff = (props: ICreateStaff) => {
                                 name="cccd"
                                 label="Căn Cước Công Dân:"
                             >
-                                <Input maxLength={150} type='number' />
+                                <Input maxLength={150} type="number" />
                             </Form.Item>
                         </Col>
                         <Col sm={24}>
@@ -298,7 +362,6 @@ const CreateStaff = (props: ICreateStaff) => {
                             </Form.Item>
                         </Col>
 
-
                         <Col sm={24}>
                             <Form.Item
                                 rules={[{ required: true, message: "Vui lòng điền quê quán." }]}
@@ -310,20 +373,21 @@ const CreateStaff = (props: ICreateStaff) => {
                         </Col>
                         <Col sm={24}>
                             <Form.Item
-
                                 name="isActive"
                                 label="Trạng Thái:"
                                 valuePropName="checked"
                             >
-                                <Switch defaultChecked onChange={onChange} />
+                                <Switch
+                                    checked={currentRecord?.isActive === true}
+                                    onChange={onChange}
+                                />
                             </Form.Item>
                         </Col>
-
                     </Row>
                 </Form>
             </Drawer>
         </div>
-    )
-}
+    );
+};
 
-export default CreateStaff
+export default CreateStaff;

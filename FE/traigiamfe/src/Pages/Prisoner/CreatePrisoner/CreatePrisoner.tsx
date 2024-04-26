@@ -8,6 +8,7 @@ import {
     Input,
     InputNumber,
     Row,
+    Select,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
@@ -17,6 +18,7 @@ import styles from "./CreatePrisoner.module.scss";
 import defaultImage from "../../../assets/default.jpg";
 import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
+import { StaffModel } from "@/common/Model/staff";
 
 interface IInitValue {
     imageName: string;
@@ -36,6 +38,11 @@ interface ICreatePrisoner {
     recall: boolean;
     setRecall: React.Dispatch<React.SetStateAction<boolean>>;
     reset: boolean;
+}
+
+interface IOptionValue {
+    label?: string;
+    value?: string | number;
 }
 
 const CreatePrisoner = (props: ICreatePrisoner) => {
@@ -60,12 +67,33 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     const notification = useNotification();
 
     const [showMessage, setShơwMessage] = useState<boolean>(false)
-    const [isConfirm, setIsConfirm] = useState<boolean>(false)
+    const [isConfirm, setIsConfirm] = useState<boolean>(true)
     const onClose = () => {
         setOpenCreatePrisoner(false);
-        setIsConfirm(false)
+        setIsConfirm(true)
         setShơwMessage(false)
     };
+    const [dataStaff, setDataStaff] = useState<StaffModel[]>([])
+    const [optionStaff, setOptionStaff] = useState<IOptionValue[]>([])
+
+    const getAllStaff = async () => {
+        try {
+            showLoading("getAllStaff")
+            const { data } = await axios.get('https://localhost:7120/api/staff')
+            setDataStaff(data.data)
+            let newData = data.data.map((item: StaffModel) => ({
+                label: item.staffName,
+                value: item.id
+            }));
+            setOptionStaff(newData)
+            closeLoading("getAllStaff")
+        } catch (error) {
+            closeLoading("getAllStaff")
+        }
+    }
+    useEffect(() => {
+        getAllStaff()
+    }, [openCreatePrisoner])
 
     const handleOnFinish = async () => {
         if (isConfirm) {
@@ -108,6 +136,8 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     };
 
     const handleOnEdit = async () => {
+        console.log('isConfirm', isConfirm);
+
         if (isConfirm) {
             try {
                 showLoading("editPrisoner");
@@ -226,6 +256,10 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         setShowDelete(false);
         setIsConfirm(false)
     };
+
+    const filterOption = (input: string, option?: IOptionValue) =>
+        (option?.label ?? '').toLowerCase().includes(input.toLowerCase()) ||
+        ((option as any)?.email || '').toLowerCase().includes(input.toLowerCase());
 
     return (
         <div>
@@ -431,7 +465,14 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                                 name="mananger"
                                 label="Người Quản Lý:"
                             >
-                                <Input />
+                                <Select
+                                    rootClassName={styles.emFilterSelectMultiple}
+                                    mode="multiple"
+                                    placeholder="Select YGM(s)"
+                                    // loading={!ygm}
+                                    options={optionStaff}
+                                    filterOption={filterOption}
+                                />
                             </Form.Item>
                         </Col>
                     </Row>

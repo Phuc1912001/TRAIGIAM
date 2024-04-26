@@ -59,8 +59,6 @@ const Prisoner = () => {
     const handleGetAllPrisoner = async () => {
         try {
             showLoading("getAllPrisoner")
-            console.log('alo');
-
             const { data } = await axios.get('https://localhost:7120/api/prisoner')
             setDataPrisoner(data.data)
             closeLoading("getAllPrisoner")
@@ -159,8 +157,8 @@ const Prisoner = () => {
         },
         {
             title: "Người Quản Lý",
-            dataIndex: "mananger",
-            key: "mananger",
+            dataIndex: "manangerName",
+            key: "manangerName",
         },
         {
             title: "Hoạt Động",

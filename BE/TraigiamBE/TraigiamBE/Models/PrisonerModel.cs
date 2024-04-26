@@ -17,10 +17,14 @@ namespace TraigiamBE.Models
 
         public int? Years { get; set; }
 
-        public string? Mananger { get; set; }
+        public long? Mananger { get; set; }
+       
         [Column(TypeName = "nvarchar(100)")]
 
         public string? ImagePrisoner { get; set; }
+
+        [NotMapped]
+        public string? ManangerName { get; set; }
 
         [NotMapped] 
         public IFormFile? FilePrisoner { get; set; }

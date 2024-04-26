@@ -4,6 +4,7 @@ using TraigiamBE.Models;
 
 namespace TraigiamBE.Controllers
 {
+    [Route("api/[controller]")]
     public class StaffController : ControllerBase
     {
         private readonly PrisonDBContext _context;
@@ -101,12 +102,7 @@ namespace TraigiamBE.Controllers
                     return BadRequest(response);
                 }
 
-                if (!ModelState.IsValid)
-                {
-                    response.Status = false;
-                    response.StatusMessage = "Invalid model state";
-                    return BadRequest(response);
-                }
+               
 
                 if (staffModel.FileStaff != null)
                 {

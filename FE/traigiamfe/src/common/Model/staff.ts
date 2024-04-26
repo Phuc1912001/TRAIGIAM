@@ -7,7 +7,7 @@ export interface StaffModel {
     mnv?:string,
     position?:string,
     countryside?:string,
-    isActive?:number,
+    isActive?:boolean,
     imageStaff?:string,
     imageSrc?:string,
     fileStaff?:any

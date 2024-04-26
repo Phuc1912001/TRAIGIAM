@@ -11,7 +11,7 @@ namespace TraigiamBE.Models
         public string? Mnv {  get; set; } 
         public string Position { get; set; }
         public string? Countryside { get; set; }
-        public int? IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public string? ImageStaff { get; set; }
 
         [NotMapped]

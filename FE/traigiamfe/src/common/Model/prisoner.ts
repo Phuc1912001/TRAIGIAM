@@ -11,7 +11,8 @@ export interface PrisonerModel {
     countryside?:string,
     crime?:string,
     years?:number,
-    mananger?:string,
+    mananger?:number,
+    manangerName?:string,
     imagePrisoner?:string,
     imageSrc?:string
     filePrisoner?:any

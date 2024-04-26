@@ -12,8 +12,8 @@ using TraigiamBE.Models;
 namespace TraigiamBE.Migrations
 {
     [DbContext(typeof(PrisonDBContext))]
-    [Migration("20240418031536_update3")]
-    partial class update3
+    [Migration("20240426094345_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,14 +50,14 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("Crime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Dom")
+                    b.Property<int?>("Dom")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePrisoner")
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Mananger")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long?>("Mananger")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Mpn")
                         .HasColumnType("nvarchar(max)");
@@ -80,6 +80,53 @@ namespace TraigiamBE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Prisoner");
+                });
+
+            modelBuilder.Entity("TraigiamBE.Models.StaffModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Cccd")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Countryside")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageStaff")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Mnv")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StaffAge")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StaffName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StaffSex")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Staff");
                 });
 #pragma warning restore 612, 618
         }
