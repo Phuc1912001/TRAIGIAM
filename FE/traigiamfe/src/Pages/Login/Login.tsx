@@ -3,6 +3,8 @@ import styles from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "antd/es/form/Form";
+import axios from "axios";
+import { useLoading } from "../../common/Hook/useLoading";
 
 interface loginModel {
     username?: string;
@@ -14,12 +16,20 @@ const Login = () => {
     const [form] = useForm();
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
     const navigate = useNavigate();
-    const onFinish = (value: loginModel) => {
+    const { showLoading, closeLoading } = useLoading();
+
+    const onFinish = async (value: loginModel) => {
         if (isSignUp) {
-            console.log('value', value);
-            setIsSignUp(false)
+            const { data } = await axios.post("https://localhost:7120/api/Register/register", value);
+            if (data.status) {
+                setIsSignUp(false)
+            }
         } else {
-            navigate("/prisoner");
+            const { data } = await axios.post("https://localhost:7120/api/Register/login", value);
+            if (data.status) {
+                navigate("/prisoner");
+            }
+
         }
     };
     const handleSwitchLogin = async () => {
@@ -37,7 +47,7 @@ const Login = () => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[{ required: true, message: "Vui lòng điền tên đăng nhập." }]}
-                                name="username"
+                                name="userName"
                                 label="Tên Đăng Nhập"
                             >
                                 <Input maxLength={150} />

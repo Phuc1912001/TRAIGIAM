@@ -11,6 +11,7 @@ namespace TraigiamBE.Models
         public DbSet<PrisonerModel> Prisoner { get; set; }
         public DbSet<StaffModel> Staff { get; set; }
         public DbSet<PunishmentModel> Punishment { get; set; }
+        public DbSet<RegisterModel> RegisterModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
