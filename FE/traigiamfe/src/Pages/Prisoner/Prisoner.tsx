@@ -76,7 +76,7 @@ const Prisoner = () => {
     }, [recall])
 
     const handleNavigate = (record: any) => {
-        navigate(`/${record.id}`);
+        navigate(`/prisoner/${record.id}`);
     };
     const handleOpenCreate = () => {
         setOpenCreatePrisoner(true);
@@ -215,7 +215,6 @@ const Prisoner = () => {
                 setRecall={setRecall}
                 recall={recall}
                 reset={reset}
-
             />
             <ModalComponent
                 isOpenModal={isOpenModal}

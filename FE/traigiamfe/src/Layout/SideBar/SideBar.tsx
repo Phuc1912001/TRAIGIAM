@@ -1,9 +1,12 @@
 import {
+    BookOutlined,
+    CommentOutlined,
     ExceptionOutlined,
     FileDoneOutlined,
     HomeOutlined,
     IdcardOutlined,
     ReconciliationOutlined,
+    SelectOutlined,
     TeamOutlined,
 } from "@ant-design/icons/lib/icons";
 import React, { useState } from "react";
@@ -16,7 +19,7 @@ const SideBar = () => {
     const listNav = [
         {
             id: 1,
-            path: "/",
+            path: "/prisoner",
             name: "Phạm Nhân",
             icon: <TeamOutlined />,
         },
@@ -37,6 +40,24 @@ const SideBar = () => {
             path: "/statement",
             name: "Lời Khai",
             icon: <FileDoneOutlined />,
+        },
+        {
+            id: 5,
+            path: "/punishment",
+            name: "Hình Phạt",
+            icon: < BookOutlined />,
+        },
+        {
+            id: 6,
+            path: "/externalmoment",
+            name: "Xuất Nhập",
+            icon: < SelectOutlined />,
+        },
+        {
+            id: 7,
+            path: "/visit",
+            name: "Thăm Khám",
+            icon: < CommentOutlined />,
         },
     ];
 

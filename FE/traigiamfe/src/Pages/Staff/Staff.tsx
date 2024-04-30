@@ -71,7 +71,7 @@ const Staff = () => {
 
 
     const handleNavigate = (record: StaffModel) => {
-        navigate(`/${record.id}`);
+        navigate(`/staff/${record.id}`);
     };
 
     const handleOpenEdit = (record: StaffModel) => {
@@ -127,8 +127,6 @@ const Staff = () => {
                     </div>
                 </div>)
             }
-
-
         },
         {
             title: "Ma Nhân Viên",

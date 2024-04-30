@@ -19,7 +19,7 @@ const Login = () => {
             console.log('value', value);
             setIsSignUp(false)
         } else {
-            navigate("/");
+            navigate("/prisoner");
         }
     };
     const handleSwitchLogin = async () => {

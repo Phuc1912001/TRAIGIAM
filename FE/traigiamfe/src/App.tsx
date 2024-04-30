@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.scss";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider, useNavigate } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
 import Layout from "./Layout/Layout";
@@ -12,8 +12,13 @@ import PrisonerDetail from "./Pages/Prisoner/PrisonerDetail/PrisonerDetail";
 import MyProfile from "./Pages/MyProfile/MyProfile";
 import { useLoading } from "./common/Hook/useLoading";
 import LazyLoading from "./LazyLoading/LazyLoading";
+import StaffDetail from "./Pages/Staff/StaffDetail/StaffDetail";
+import Punishment from "./Pages/Punishment/Punishment";
+import CheckInCheckOut from "./Pages/CheckInCheckOut/CheckInCheckOut";
+import Visit from "./Pages/Visit/Visit";
 function App() {
   const { isLoading } = useLoading();
+
 
   const router = createBrowserRouter([
     {
@@ -25,11 +30,15 @@ function App() {
       element: <SignUp />,
     },
     {
+      path: '/',
+      element: <Navigate to={true ? '/prisoner' : '/login'} />
+    },
+    {
       path: "/",
       element: <Layout />,
       children: [
         {
-          path: "",
+          path: "/prisoner",
           element: <Prisoner />,
         },
         {
@@ -45,16 +54,34 @@ function App() {
           element: <Statement />,
         },
         {
-          path: "/:id",
+          path: "prisoner/:id",
           element: <PrisonerDetail />,
         },
         {
           path: "/myProfile",
           element: <MyProfile />,
         },
+        {
+          path: "staff/:id",
+          element: <StaffDetail />,
+        },
+        {
+          path: "/punishment",
+          element: <Punishment />,
+        },
+        {
+          path: "/externalmoment",
+          element: <CheckInCheckOut />,
+        },
+        {
+          path: "/visit",
+          element: <Visit />,
+        },
       ],
     },
   ]);
+
+
 
 
   return (
