@@ -12,6 +12,7 @@ namespace TraigiamBE.Models
         public DbSet<StaffModel> Staff { get; set; }
         public DbSet<PunishmentModel> Punishment { get; set; }
         public DbSet<RegisterModel> RegisterModels { get; set; }
+        public DbSet<ExternalModel> ExternalModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

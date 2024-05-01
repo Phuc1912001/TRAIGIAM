@@ -46,7 +46,7 @@ const PrisonerDetail = () => {
     }
     useEffect(() => {
         handelGetDetail()
-    }, [])
+    }, [id])
 
 
 
@@ -54,6 +54,9 @@ const PrisonerDetail = () => {
         <div>
             <div className="share-sticky">
                 <Header items={items} />
+            </div>
+            <div className="share-sticky-mobile" >
+                <MobileHeader />
             </div>
             <div className={styles.containerDetail} >
                 <h2>Chi Tiết Phạm Nhân</h2>

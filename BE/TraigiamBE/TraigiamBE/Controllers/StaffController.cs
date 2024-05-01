@@ -54,8 +54,11 @@ namespace TraigiamBE.Controllers
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var staffDetail = await _context.Staff.Where(item => item.Id == id).
-                    Select(x => new StaffModel
+                var prisoner = _context.Prisoner;
+
+                var staffDetail = await _context.Staff
+                    .Where(item => item.Id == id)
+                    .Select(x => new StaffModelDto
                     {
                         Id = x.Id,
                         StaffName = x.StaffName,
@@ -67,7 +70,26 @@ namespace TraigiamBE.Controllers
                         Countryside = x.Countryside,
                         IsActive = x.IsActive,
                         ImageStaff = x.ImageStaff,
-                        ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageStaff)
+                        ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageStaff),
+                        ListPrisoner = prisoner
+                            .Where(p => p.Mananger == x.Id )
+                            .Select( x => new PrisonerModel
+                            {
+                                PrisonerName = x.PrisonerName,
+                                PrisonerAge = x.PrisonerAge,
+                                PrisonerSex = x.PrisonerSex,
+                                Cccd = x.Cccd,
+                                Mpn = x.Mpn,
+                                Banding = x.Banding,
+                                Dom = x.Dom,
+                                Bed = x.Bed,
+                                Countryside = x.Countryside,
+                                Crime = x.Crime,
+                                Years = x.Years,
+                                Mananger = x.Mananger,
+                                ImagePrisoner = x.ImagePrisoner,
+                                ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImagePrisoner),
+                            }).ToList()
                     }).FirstOrDefaultAsync();
                 if (staffDetail == null)
                 {

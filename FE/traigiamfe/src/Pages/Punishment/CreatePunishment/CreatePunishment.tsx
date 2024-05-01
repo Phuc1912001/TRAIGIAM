@@ -11,7 +11,7 @@ import { PunishmentModel } from "@/common/Model/punishment";
 import TextItem from "../../../Components/TextItem/TextItem";
 
 interface ICreatePunish {
-    openCreatePunish: boolean;
+    openCreateExternal: boolean;
     setOpenCreatePunish: React.Dispatch<React.SetStateAction<boolean>>;
     isEdit: boolean;
     showDelete: boolean;
@@ -22,8 +22,6 @@ interface ICreatePunish {
     currentRecord?: PunishmentModel;
     isView?: boolean;
     setIsView: React.Dispatch<React.SetStateAction<boolean>>;
-
-
 }
 
 const CreatePunishment = (props: ICreatePunish) => {
@@ -31,8 +29,6 @@ const CreatePunishment = (props: ICreatePunish) => {
         openCreatePunish,
         setOpenCreatePunish,
         isEdit,
-        showDelete,
-        setShowDelete,
         recall,
         setRecall,
         reset,

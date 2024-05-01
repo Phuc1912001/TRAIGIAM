@@ -1,0 +1,32 @@
+.breacrumb {
+    cursor: pointer;
+
+    &:hover {
+        color: black;
+        text-decoration: underline;
+    }
+}
+
+.containerDetail {
+    padding: 20px 100px;
+
+    .wrapperInfor {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        .avatar {
+            height: 100px;
+            width: 100px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .age {
+            margin-top: 10px;
+            color: rgb(124, 122, 122);
+        }
+    }
+}
