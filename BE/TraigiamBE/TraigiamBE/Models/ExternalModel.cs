@@ -2,8 +2,8 @@
 {
     public class ExternalModel : BaseEntity
     {
-        public int? PrisonerId { get; set; }
-        public string? Emtype { get; set; }
+        public long? PrisonerId { get; set; }
+        public int? Emtype { get; set; }
         public string? Desc { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

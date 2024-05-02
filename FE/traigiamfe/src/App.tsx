@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import "./App.scss";
-import { createBrowserRouter, Navigate, RouterProvider, useNavigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import SignUp from "./Pages/SignUp/SignUp";
 import Layout from "./Layout/Layout";
@@ -16,8 +21,25 @@ import StaffDetail from "./Pages/Staff/StaffDetail/StaffDetail";
 import Punishment from "./Pages/Punishment/Punishment";
 import CheckInCheckOut from "./Pages/CheckInCheckOut/CheckInCheckOut";
 import Visit from "./Pages/Visit/Visit";
+import { UserModel } from "./common/Model/user";
+import Dom from "./Pages/Dom/Dom";
+import Banding from "./Pages/Banding/Banding";
+
+export const contextUser = createContext<any>({});
+
 function App() {
   const { isLoading } = useLoading();
+
+  const [data, setData] = useState<any>();
+
+  const storedUserDataString = localStorage.getItem("userData");
+  useEffect(() => {
+    if (storedUserDataString) {
+      const storedUserData = JSON.parse(storedUserDataString ?? "");
+      setData(storedUserData);
+    }
+  }, [storedUserDataString]);
+
 
 
   const router = createBrowserRouter([
@@ -26,12 +48,12 @@ function App() {
       element: <Login />,
     },
     {
-      path: "/sign",
+      path: "/signup",
       element: <SignUp />,
     },
     {
-      path: '/',
-      element: <Navigate to={true ? '/prisoner' : '/login'} />
+      path: "/",
+      element: <Navigate to={data !== undefined ? "/prisoner" : "/login"} />,
     },
     {
       path: "/",
@@ -77,18 +99,30 @@ function App() {
           path: "/visit",
           element: <Visit />,
         },
+        {
+          path: "/dom",
+          element: <Dom />,
+        },
+        {
+          path: "/banding",
+          element: <Banding />,
+        },
       ],
     },
   ]);
 
-
-
+  const [user, setUser] = useState<UserModel>({});
 
   return (
-    <>
+    <contextUser.Provider
+      value={{
+        user,
+        setUser,
+      }}
+    >
       {isLoading && <LazyLoading />}
       <RouterProvider router={router} />
-    </>
+    </contextUser.Provider>
   );
 }
 

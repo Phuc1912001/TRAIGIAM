@@ -467,7 +467,6 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                             >
                                 <Select
                                     rootClassName={styles.emFilterSelectMultiple}
-                                    mode="multiple"
                                     placeholder="Select YGM(s)"
                                     // loading={!ygm}
                                     options={optionStaff}

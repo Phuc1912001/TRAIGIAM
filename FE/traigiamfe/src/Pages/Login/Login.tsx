@@ -1,10 +1,11 @@
 import { Button, Col, Form, Input, Row } from "antd";
 import styles from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useLoading } from "../../common/Hook/useLoading";
+import { contextUser } from "../../App";
 
 interface loginModel {
     username?: string;
@@ -12,6 +13,7 @@ interface loginModel {
 }
 
 const Login = () => {
+    const { setUser, user } = useContext(contextUser)
 
     const [form] = useForm();
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -19,19 +21,38 @@ const Login = () => {
     const { showLoading, closeLoading } = useLoading();
 
     const onFinish = async (value: loginModel) => {
-        if (isSignUp) {
-            const { data } = await axios.post("https://localhost:7120/api/Register/register", value);
-            if (data.status) {
-                setIsSignUp(false)
+        try {
+            let response;
+            if (isSignUp) {
+                response = await axios.post("https://localhost:7120/api/Register/register", value);
+            } else {
+                response = await axios.post("https://localhost:7120/api/Register/login", value);
             }
-        } else {
-            const { data } = await axios.post("https://localhost:7120/api/Register/login", value);
+
+            const { data } = response;
             if (data.status) {
-                navigate("/prisoner");
+                if (!isSignUp) {
+                    navigate("/prisoner");
+
+                    // Kiểm tra xem data.data có hợp lệ không
+                    if (data.data && typeof data.data === 'object') {
+                        const userDataString = JSON.stringify(data.data);
+                        localStorage.setItem("userData", userDataString);
+                        setUser(data.data)
+
+                    } else {
+                        console.warn("Data structure is not as expected.");
+                    }
+                } else {
+                    setIsSignUp(false);
+                }
             }
+        } catch (error: any) {
+            console.log(error);
 
         }
     };
+
     const handleSwitchLogin = async () => {
         setIsSignUp(!isSignUp);
         await form.resetFields();

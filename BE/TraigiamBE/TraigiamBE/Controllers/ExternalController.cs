@@ -23,8 +23,29 @@ namespace TraigiamBE.Controllers
             try
             {
                 var externalModels = await _context.ExternalModels.ToListAsync();
+
+                var prisoners = await _context.Prisoner.ToListAsync();
+                var users = await _context.RegisterModels.ToListAsync();
+
+                var externalModelDtos = externalModels.Select(x => new ExternalModelDto
+                {
+                    Id = x.Id,
+                    PrisonerId = x.PrisonerId,
+                    Emtype = x.Emtype,
+                    Desc = x.Desc,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Status = x.Status,
+                    CreatedBy = x.CreatedBy,
+                    CreatedByName = users.FirstOrDefault(u => u.Id == x.CreatedBy)?.UserName,
+                    ModifiedBy = x.ModifiedBy,
+                    ModifiedByName = users.FirstOrDefault( u => u.Id == x.ModifiedBy)?.UserName,
+                    PrisonerName = prisoners.FirstOrDefault(p => p.Id == x.PrisonerId)?.PrisonerName,
+                    CreateAt = x.CreateAt
+                }).OrderByDescending(x => x.CreateAt).ToList();
+
                 response.Status = true;
-                response.Data = externalModels;
+                response.Data = externalModelDtos;
                 response.StatusMessage = "Successfully retrieved all External models";
                 return Ok(response);
             }
@@ -35,6 +56,7 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+
 
         [HttpGet("id")]
         public async Task<ActionResult<BaseResponseModel>> GetDetailById (int id)
@@ -76,6 +98,7 @@ namespace TraigiamBE.Controllers
                     response.StatusMessage = "External model is null.";
                     return BadRequest(response);
                 }
+                
                 _context.ExternalModels.Add(externalModel);
                 await _context.SaveChangesAsync();
 
@@ -93,7 +116,7 @@ namespace TraigiamBE.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BaseResponseModel>> EditExternalModel(long id, PunishmentModel externalModel)
+        public async Task<ActionResult<BaseResponseModel>> EditExternalModel(long id, ExternalModel externalModel)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
@@ -148,7 +171,7 @@ namespace TraigiamBE.Controllers
             }
         }
         [HttpPut("{id}/confirm")]  // Endpoint cho hành động xác nhận
-        public async Task<ActionResult<BaseResponseModel>> ConfirmExternal(long id)
+        public async Task<ActionResult<BaseResponseModel>> ConfirmExternal(long id , ConfirmModel confirmModel )
         {
             BaseResponseModel response = new BaseResponseModel();
             try
@@ -162,10 +185,19 @@ namespace TraigiamBE.Controllers
                     return NotFound(response);
                 }
 
-                // Cập nhật trạng thái thành 1
-                externalModel.Status = 1;
-                //externalModel.ModifiedBy = 0;  
-                //externalModel.ModifiedByName = "Confirmed";  
+                // Kiểm tra nếu Status đã đạt đến mức tối đa là 3
+                if (externalModel.Status > 3)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Status cannot be increased beyond 3";
+                    return BadRequest(response);  // Trả về phản hồi lỗi 400
+                }
+
+                // Nếu chưa đạt đến mức tối đa, tăng giá trị của Status
+                externalModel.Status++;  // Tăng 1 cho giá trị Status
+                externalModel.ModifiedBy = confirmModel.UserId;
+
+                // Bạn có thể cập nhật các trường khác nếu cần thiết
                 _context.Entry(externalModel).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
@@ -182,5 +214,6 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+
     }
 }

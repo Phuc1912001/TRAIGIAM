@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21.085" height="23.994" viewBox="0 0 21.085 23.994">
+  <g id="icon_diamond" transform="translate(0 0)">
+    <path id="Path_31716" data-name="Path 31716" d="M0,6.568V17.425a1.14,1.14,0,0,0,.57.987l9.4,5.428a1.14,1.14,0,0,0,1.14,0l9.4-5.428a1.14,1.14,0,0,0,.57-.987V6.568a1.14,1.14,0,0,0-.57-.987L11.113.152a1.14,1.14,0,0,0-1.14,0L.57,5.581A1.14,1.14,0,0,0,0,6.568" transform="translate(0 0)" fill="#77849f"/>
+    <path id="Path_31717" data-name="Path 31717" d="M29.408,39.316v8.437a1.14,1.14,0,0,0,.57.987l7.307,4.219a1.14,1.14,0,0,0,1.14,0l7.307-4.219a1.14,1.14,0,0,0,.57-.987V39.316a1.14,1.14,0,0,0-.57-.987L38.425,34.11a1.14,1.14,0,0,0-1.14,0l-7.307,4.219a1.14,1.14,0,0,0-.57.987" transform="translate(-27.312 -31.538)" fill="#051537"/>
+    <path id="Path_31718" data-name="Path 31718" d="M39.16,50.175V57.81a1.14,1.14,0,0,0,.57.987l6.612,3.817a1.14,1.14,0,0,0,1.14,0L54.094,58.8a1.14,1.14,0,0,0,.57-.987V50.175a1.14,1.14,0,0,0-.57-.987L47.482,45.37a1.14,1.14,0,0,0-1.14,0L39.73,49.188a1.14,1.14,0,0,0-.57.987" transform="translate(-36.369 -41.995)" fill="#0a44be"/>
+    <path id="Path_31719" data-name="Path 31719" d="M64.112,104.323l-6.968,7.451-6.969-7.451,3.109-3.52H61Z" transform="translate(-46.599 -93.62)" fill="#e8e5ff"/>
+    <path id="Path_31720" data-name="Path 31720" d="M53.283,100.8v3.52H50.174Z" transform="translate(-46.599 -93.62)" fill="#e5e4ff"/>
+    <path id="Path_31721" data-name="Path 31721" d="M97.66,100.8l-3.86,3.52V100.8Z" transform="translate(-87.116 -93.62)" fill="#d6e2fe"/>
+    <path id="Path_31722" data-name="Path 31722" d="M202.128,100.8v3.52h3.109Z" transform="translate(-187.724 -93.62)" fill="#b9c9fd"/>
+    <path id="Path_31723" data-name="Path 31723" d="M147.964,100.8l3.86,3.52V100.8Z" transform="translate(-137.42 -93.62)" fill="#d4dafe"/>
+    <path id="Path_31724" data-name="Path 31724" d="M53.283,150.2l3.86,7.451L50.174,150.2Z" transform="translate(-46.599 -139.495)" fill="#8d94cf"/>
+    <path id="Path_31725" data-name="Path 31725" d="M154.941,150.2l-6.968,7.451,3.859-7.451Z" transform="translate(-137.429 -139.495)" fill="#667bbc"/>
+  </g>
+</svg>

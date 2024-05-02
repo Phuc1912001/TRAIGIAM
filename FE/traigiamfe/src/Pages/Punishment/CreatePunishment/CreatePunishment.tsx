@@ -11,7 +11,7 @@ import { PunishmentModel } from "@/common/Model/punishment";
 import TextItem from "../../../Components/TextItem/TextItem";
 
 interface ICreatePunish {
-    openCreateExternal: boolean;
+    openCreatePunish: boolean;
     setOpenCreatePunish: React.Dispatch<React.SetStateAction<boolean>>;
     isEdit: boolean;
     showDelete: boolean;
@@ -166,9 +166,9 @@ const CreatePunishment = (props: ICreatePunish) => {
             >
                 {
                     isView ? <div>
-                        <TextItem label='Tên Hình Phạt' >{currentRecord?.punishName}</TextItem>
-                        <TextItem label='Mô Tả' >{currentRecord?.desc}</TextItem>
-                        <TextItem label='Trạng Thái' >{currentRecord?.status ? 'Hiệu Lực' : 'Tạm Ngưng'}</TextItem>
+                        <TextItem label='Tên Hình Phạt' textItemProps={{ isCol: true, spanNumber: 24 }}  >{currentRecord?.punishName}</TextItem>
+                        <TextItem label='Mô Tả' textItemProps={{ isCol: true, spanNumber: 24 }}  >{currentRecord?.desc}</TextItem>
+                        <TextItem label='Trạng Thái' textItemProps={{ isCol: true, spanNumber: 24 }}  >{currentRecord?.status ? 'Hiệu Lực' : 'Tạm Ngưng'}</TextItem>
                     </div> : <Form layout="vertical" form={form}>
                         <Row>
                             <Col sm={24}>

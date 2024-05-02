@@ -8,8 +8,8 @@ interface IModalComponent {
     setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
     handleDelete?: () => void;
     children: React.ReactNode;
-    title: string;
-    textConfirm: string;
+    title: any;
+    textConfirm: any;
 }
 
 const ModalComponent = (props: IModalComponent) => {

@@ -1,18 +1,15 @@
 import {
     BookOutlined,
-    CommentOutlined,
-    ExceptionOutlined,
-    FileDoneOutlined,
+    CommentOutlined, FileDoneOutlined,
     HomeOutlined,
     IdcardOutlined,
     ReconciliationOutlined,
     SelectOutlined,
-    TeamOutlined,
+    TeamOutlined
 } from "@ant-design/icons/lib/icons";
-import React, { useState } from "react";
-import styles from "./SideBar.module.scss";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from '../../assets/logo.jpg'
+import styles from "./SideBar.module.scss";
 
 const SideBar = () => {
     const [isActive, setIsActive] = useState<boolean>(false);
@@ -58,6 +55,18 @@ const SideBar = () => {
             path: "/visit",
             name: "Thăm Khám",
             icon: < CommentOutlined />,
+        },
+        {
+            id: 8,
+            path: "/dom",
+            name: "Phòng Ban",
+            icon: < HomeOutlined />,
+        },
+        {
+            id: 9,
+            path: "/banding",
+            name: "Cấp Bậc",
+            icon: < HomeOutlined />,
         },
     ];
 
