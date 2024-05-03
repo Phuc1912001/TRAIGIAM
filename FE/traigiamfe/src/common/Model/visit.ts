@@ -1,6 +1,7 @@
 export interface VisitModel {
   id?: number;
   prisonerId?: number;
+  prisonerName?:string;
   startDate?: string;
   endDate?: string;
   desc?: string;

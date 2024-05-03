@@ -1,37 +1,28 @@
-import { useLoading } from "../../../common/Hook/useLoading";
-import { useNotification } from "../../../common/Hook/useNotification";
-import { CheckInCheckOutModel } from "@/common/Model/checkincheckout";
-import { useForm } from "antd/es/form/Form";
-import React, { useContext, useEffect, useState } from "react";
-import styles from "./CreateExternal.module.scss";
-import {
-    Button,
-    Col,
-    DatePicker,
-    Drawer,
-    Form,
-    Input,
-    Row,
-    Select,
-} from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import TextItem from "../../../Components/TextItem/TextItem";
-import TextArea from "antd/es/input/TextArea";
-import { PrisonerModel } from "@/common/Model/prisoner";
-import axios from "axios";
-import dayjs from "dayjs";
-import StatusExternal from "../StatusExternal/StatusExternal";
-import { contextUser } from "../../../App";
-import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
 
-interface ICreateExternal {
-    openCreateExternal: boolean;
-    setOpenCreateExternal: React.Dispatch<React.SetStateAction<boolean>>;
+import { useLoading } from '../../../common/Hook/useLoading';
+import { useNotification } from '../../../common/Hook/useNotification';
+import { PrisonerModel } from '@/common/Model/prisoner';
+import { VisitModel } from '@/common/Model/visit';
+import ModalComponent from '../../../Components/ModalDelete/ModalComponent';
+import TextItem from '../../../Components/TextItem/TextItem';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Drawer, Form, Row, Select } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import TextArea from 'antd/es/input/TextArea';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react'
+import styles from './CreateVisit.module.scss'
+import StatusVisit from '../StatusVisit/StatusVisit';
+
+interface ICreateVisit {
+    openCreateVisit: boolean;
+    setOpenCreateVisit: React.Dispatch<React.SetStateAction<boolean>>;
     isEdit: boolean;
     recall: boolean;
     setRecall: React.Dispatch<React.SetStateAction<boolean>>;
     reset: boolean;
-    currentRecord?: CheckInCheckOutModel;
+    currentRecord?: VisitModel;
     isView?: boolean;
     setIsView: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -41,10 +32,11 @@ interface IOptionValue {
     value?: string | number;
 }
 
-const CreateExternal = (props: ICreateExternal) => {
+const CreateVisit = (props: ICreateVisit) => {
+
     const {
-        openCreateExternal,
-        setOpenCreateExternal,
+        openCreateVisit,
+        setOpenCreateVisit,
         isEdit,
         recall,
         setRecall,
@@ -57,20 +49,14 @@ const CreateExternal = (props: ICreateExternal) => {
     const [form] = useForm();
     const notification = useNotification();
     const { showLoading, closeLoading } = useLoading();
-    const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([]);
+
+    const [dataPrisoner, setDataPrisoner] = useState<VisitModel[]>([]);
     const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
     const [data, setData] = useState<any>();
 
     const storedUserDataString = localStorage.getItem("userData");
-
-    useEffect(() => {
-        if (storedUserDataString) {
-            const storedUserData = JSON.parse(storedUserDataString ?? "");
-            setData(storedUserData);
-        }
-    }, [storedUserDataString]);
 
     const handleGetAllPrisoner = async () => {
         try {
@@ -90,22 +76,31 @@ const CreateExternal = (props: ICreateExternal) => {
 
     useEffect(() => {
         handleGetAllPrisoner();
-    }, [openCreateExternal]);
+    }, [openCreateVisit]);
+
+    useEffect(() => {
+        if (storedUserDataString) {
+            const storedUserData = JSON.parse(storedUserDataString ?? "");
+            setData(storedUserData);
+        }
+    }, [storedUserDataString]);
 
     const onClose = () => {
-        setOpenCreateExternal(false);
+        setOpenCreateVisit(false);
         setIsView(false);
     };
 
     const handleOnFinish = async () => {
         try {
-            showLoading("createExternal");
+            showLoading("CreateVisit");
             const value = await form.getFieldsValue();
             await form.validateFields();
+            const startDate = await form.getFieldValue('startDate')
+            console.log('startDate', dayjs(startDate).format("DD MM YYYY HH:mm"));
 
             const currentDateTime = dayjs();
 
-            const model: CheckInCheckOutModel = {
+            const model: VisitModel = {
                 ...value,
                 startDate: dayjs(value.startDate)
                     .hour(currentDateTime.hour())
@@ -117,27 +112,26 @@ const CreateExternal = (props: ICreateExternal) => {
                     .minute(currentDateTime.minute())
                     .second(currentDateTime.second())
                     .format(),
-                createdBy: data.id,
-            };
-
-            await axios.post("https://localhost:7120/api/External", model);
-            notification.success(<div>Tạo Xuất Nhập thành công.</div>);
-            setOpenCreateExternal(false);
+                createdBy: data.id
+            }
+            await axios.post("https://localhost:7120/api/Visit", model);
+            notification.success(<div>Tạo Phiếu Thăm Khám thành công.</div>);
+            setOpenCreateVisit(false);
             setRecall(!recall);
-            closeLoading("createExternal");
+            closeLoading("CreateVisit");
         } catch (error) {
-            closeLoading("createExternal");
+            closeLoading("CreateVisit");
         }
     };
 
     const handleOnEdit = async () => {
         try {
-            showLoading("editExternal");
+            showLoading("EditVisit");
             const value = await form.getFieldsValue();
             await form.validateFields();
             const currentDateTime = dayjs();
 
-            const model: CheckInCheckOutModel = {
+            const model: VisitModel = {
                 ...value,
                 startDate: dayjs(value.startDate)
                     .hour(currentDateTime.hour())
@@ -151,47 +145,46 @@ const CreateExternal = (props: ICreateExternal) => {
                     .format(),
                 id: currentRecord?.id,
             };
+
             await axios.put(
-                `https://localhost:7120/api/External/${currentRecord?.id}`,
+                `https://localhost:7120/api/Visit/${currentRecord?.id}`,
                 model
             );
-            notification.success(<div>Sửa Xuất Nhập thành công.</div>);
-            setOpenCreateExternal(false);
+            notification.success(<div>Sửa Phiếu Thăm Khám thành công.</div>);
+            setOpenCreateVisit(false);
             setRecall(!recall);
-            closeLoading("editExternal");
+            closeLoading("EditVisit");
         } catch (error) {
-            closeLoading("editExternal");
+            closeLoading("EditVisit");
         }
     };
 
     const handleConfirm = async () => {
         try {
-            showLoading("confirmExternal");
+            showLoading("ConfirmVisit");
             const model = {
-                userId: data.id,
-            };
+                userId: data.id
+            }
             await axios.put(
-                `https://localhost:7120/api/External/${currentRecord?.id}/confirm`,
-                model
+                `https://localhost:7120/api/Visit/${currentRecord?.id}/confirm`, model
             );
             notification.success(<div>Cặp nhập thành công.</div>);
-            setOpenCreateExternal(false);
+            setOpenCreateVisit(false);
             setRecall(!recall);
-            setIsOpenModal(false);
-            closeLoading("confirmExternal");
+            setIsOpenModal(false)
+            closeLoading("ConfirmVisit");
         } catch (error) {
-            closeLoading("confirmExternal");
+            closeLoading("ConfirmVisit");
         }
     };
+
 
     const renderBtn = (status: number) => {
         switch (status) {
             case 0:
                 return <div>Chấp Nhận</div>;
             case 1:
-                return <div>Ra Ngoài</div>;
-            case 2:
-                return <div>Vào Trong</div>;
+                return <div>Đã Xong</div>;
             default:
                 break;
         }
@@ -200,43 +193,16 @@ const CreateExternal = (props: ICreateExternal) => {
     const renderContent = (status: number) => {
         switch (status) {
             case 0:
-                return (
-                    <div>
-                        Bạn có chấp nhận cho phạm nhân{" "}
-                        <span style={{ fontWeight: "600" }}>
-                            {currentRecord?.prisonerName}
-                        </span>{" "}
-                        ra ngoài.
-                    </div>
-                );
+                return <div>Bạn có chấp nhận cho phạm nhân <span style={{ fontWeight: '600' }}>{currentRecord?.prisonerName}</span> Được thăm gia đình.</div>
             case 1:
-                return (
-                    <div>
-                        Nhân nút ra ngoài để phạm nhân{" "}
-                        <span style={{ fontWeight: "600" }}>
-                            {currentRecord?.prisonerName}
-                        </span>{" "}
-                        hoàn thành xác nhận ra ngoài.
-                    </div>
-                );
-            case 2:
-                return (
-                    <div>
-                        Nhân nút vào trong để xác nhận phạm nhân{" "}
-                        <span style={{ fontWeight: "600" }}>
-                            {currentRecord?.prisonerName}
-                        </span>{" "}
-                        đã trở lại.
-                    </div>
-                );
+                return <div>Phạm Nhân <span style={{ fontWeight: '600' }}>{currentRecord?.prisonerName}</span> đã hoàn thành việc thăm khám.</div>
             default:
                 break;
         }
-    };
-
+    }
     const handleOpenModel = () => {
-        setIsOpenModal(true);
-    };
+        setIsOpenModal(true)
+    }
 
     const filterDrawFooterView = (
         <div className={styles.wrapperBtn}>
@@ -249,7 +215,7 @@ const CreateExternal = (props: ICreateExternal) => {
                 Đóng
             </Button>
             <div onClick={handleOnFinish} className="btn-orange">
-                Tạo Xuất Nhập
+                Tạo Phiếm Thăm
             </div>
         </div>
     );
@@ -265,7 +231,7 @@ const CreateExternal = (props: ICreateExternal) => {
                 Đóng
             </Button>
             <div onClick={handleOnEdit} className="btn-orange">
-                Sửa Xuất Nhập
+                Sửa Phiếu Thăm
             </div>
         </div>
     );
@@ -288,16 +254,6 @@ const CreateExternal = (props: ICreateExternal) => {
         </div>
     );
 
-    const filterOption = (input: string, option?: IOptionValue) =>
-        (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-        ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
-
-    const optionEMType = [
-        { label: "Nhập Viện", value: 1 },
-        { label: "Ra Tòa", value: 2 },
-        { label: "Đi Điều Tra", value: 3 },
-    ];
-
     useEffect(() => {
         if (isEdit) {
             const formatData = {
@@ -311,17 +267,23 @@ const CreateExternal = (props: ICreateExternal) => {
         }
     }, [isEdit, reset]);
 
+
+    const filterOption = (input: string, option?: IOptionValue) =>
+        (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
+        ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+
+
     return (
         <div>
             <Drawer
                 title={
                     isView
-                        ? "Chi tiết Xuất Nhập"
+                        ? "Chi tiết Phiếu Thăm Khám"
                         : isEdit
-                            ? "Sửa Xuất Nhập"
-                            : "Tạo Xuất Nhập"
+                            ? "Sửa Thăm Khám"
+                            : "Tạo Thăm Khám"
                 }
-                open={openCreateExternal}
+                open={openCreateVisit}
                 placement="right"
                 closable={false}
                 rootClassName={styles.EditInfringement}
@@ -342,9 +304,6 @@ const CreateExternal = (props: ICreateExternal) => {
                         <Row style={{ height: "100%" }}>
                             <TextItem label="Tên Phạm Nhân">
                                 {currentRecord?.prisonerName}
-                            </TextItem>
-                            <TextItem label="Loại Xuất Nhập">
-                                {currentRecord?.emtype}
                             </TextItem>
                             <TextItem label="Ngày Bắt Đầu">
                                 {dayjs(currentRecord?.startDate).format("DD-MM-YYYY")}
@@ -369,7 +328,7 @@ const CreateExternal = (props: ICreateExternal) => {
                             textItemProps={{ isCol: true, spanNumber: 24 }}
                             label="Trạng Thái"
                         >
-                            <StatusExternal status={currentRecord?.status} />
+                            <StatusVisit status={currentRecord?.status} />
                         </TextItem>
                     </div>
                 ) : (
@@ -392,32 +351,13 @@ const CreateExternal = (props: ICreateExternal) => {
                                     />
                                 </Form.Item>
                             </Col>
-                            <Col sm={24}>
-                                <Form.Item
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Vui lòng điền loại xuất nhập.",
-                                        },
-                                    ]}
-                                    name="emtype"
-                                    label="Loại xuất nhập:"
-                                >
-                                    <Select
-                                        rootClassName={styles.emFilterSelectMultiple}
-                                        placeholder="Chọn loại xuất nhập"
-                                        // loading={!ygm}
-                                        options={optionEMType}
-                                        filterOption={filterOption}
-                                    />
-                                </Form.Item>
-                            </Col>
+
 
                             <Col sm={24}>
                                 <Form.Item
-                                    rules={[{ required: true, message: "Vui lòng điền Lý do." }]}
+                                    rules={[{ required: true, message: "Vui lòng điền Mô tả." }]}
                                     name="desc"
-                                    label="Lý Do:"
+                                    label="Mô Tả:"
                                 >
                                     <TextArea />
                                 </Form.Item>
@@ -465,13 +405,13 @@ const CreateExternal = (props: ICreateExternal) => {
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
                 handleDelete={handleConfirm}
-                title="Xác Nhận Đơn Xuất Nhập"
+                title="Xác Nhận Phiếu Thăm Khám"
                 textConfirm={renderBtn(currentRecord?.status ?? 0)}
             >
                 <div>{renderContent(currentRecord?.status ?? 0)}</div>
             </ModalComponent>
         </div>
-    );
-};
+    )
+}
 
-export default CreateExternal;
+export default CreateVisit

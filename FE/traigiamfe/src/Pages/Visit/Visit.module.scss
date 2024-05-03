@@ -1,0 +1,26 @@
+.wrapperContent {
+    padding: 20px 50px;
+
+    .name {
+        cursor: pointer;
+        color: #006677;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .wrapperBtn {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .wrapperAction {
+        display: flex;
+        align-items: center;
+        gap: 4;
+    }
+}
