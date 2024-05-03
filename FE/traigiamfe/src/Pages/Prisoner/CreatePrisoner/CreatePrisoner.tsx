@@ -19,6 +19,7 @@ import defaultImage from "../../../assets/default.jpg";
 import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
 import { StaffModel } from "@/common/Model/staff";
+import { BandingEnum, BandingModel, IBandingTextMap } from "../../../common/Model/banding";
 
 interface IInitValue {
     imageName: string;
@@ -75,6 +76,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     };
     const [dataStaff, setDataStaff] = useState<StaffModel[]>([])
     const [optionStaff, setOptionStaff] = useState<IOptionValue[]>([])
+    const [optionBanding, setOptionBanding] = useState<IOptionValue[]>([])
 
     const getAllStaff = async () => {
         try {
@@ -91,8 +93,24 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
             closeLoading("getAllStaff")
         }
     }
+    const getAllBanding = async () => {
+        try {
+            showLoading("GetAllBanding")
+            const { data } = await axios.get('https://localhost:7120/api/banding')
+            setDataStaff(data.data)
+            let newData = data.data.map((item: BandingModel) => ({
+                label: <div>{IBandingTextMap.get(item.bandingID ?? BandingEnum.Entry)}</div>,
+                value: item.bandingID
+            }));
+            setOptionBanding(newData)
+            closeLoading("GetAllBanding")
+        } catch (error) {
+            closeLoading("GetAllBanding")
+        }
+    }
     useEffect(() => {
         getAllStaff()
+        getAllBanding()
     }, [openCreatePrisoner])
 
     const handleOnFinish = async () => {
@@ -111,7 +129,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 formData.append("prisonerSex", value.prisonerSex);
                 formData.append("cccd", value.cccd);
                 formData.append("mpn", value.mpn);
-                formData.append("banding", value.banding);
+                formData.append("bandingID", value.bandingID);
                 formData.append("dom", value.dom);
                 formData.append("bed", value.bed);
                 formData.append("countryside", value.countryside);
@@ -150,7 +168,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 formData.append("prisonerSex", value.prisonerSex);
                 formData.append("cccd", value.cccd);
                 formData.append("mpn", value.mpn);
-                formData.append("banding", value.banding);
+                formData.append("bandingID", value.bandingID);
                 formData.append("dom", value.dom);
                 formData.append("bed", value.bed);
                 formData.append("countryside", value.countryside);
@@ -389,15 +407,18 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng điền cấp bậc của phạm nhân.",
-                                    },
+                                    { required: true, message: "Vui lòng chọn cấp bậc." },
                                 ]}
-                                name="banding"
+                                name="bandingID"
                                 label="Cấp Bậc:"
                             >
-                                <Input maxLength={150} type='number' />
+                                <Select
+                                    rootClassName={styles.emFilterSelectMultiple}
+                                    placeholder="chọn cấp bậc"
+                                    // loading={!ygm}
+                                    options={optionBanding}
+                                    filterOption={filterOption}
+                                />
                             </Form.Item>
                         </Col>
                         <Col sm={24}>
@@ -467,7 +488,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                             >
                                 <Select
                                     rootClassName={styles.emFilterSelectMultiple}
-                                    placeholder="Select YGM(s)"
+                                    placeholder="Chọn người quản lý"
                                     // loading={!ygm}
                                     options={optionStaff}
                                     filterOption={filterOption}

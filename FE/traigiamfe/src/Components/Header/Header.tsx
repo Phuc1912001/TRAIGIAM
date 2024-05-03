@@ -60,9 +60,6 @@ const Header = (props: IHeader) => {
         }
     }
 
-
-
-
     const content = (
         <div className={styles.popOver}>
             <h3>{data?.userName}</h3>

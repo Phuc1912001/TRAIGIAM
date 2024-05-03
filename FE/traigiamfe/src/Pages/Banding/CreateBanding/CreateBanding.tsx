@@ -1,31 +1,35 @@
-import { useNotification } from "../../../common/Hook/useNotification";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Input, Row, Switch } from "antd";
-import { useForm } from "antd/es/form/Form";
-import TextArea from "antd/es/input/TextArea";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import styles from "./CreatePunishment.module.scss";
-import { useLoading } from "../../../common/Hook/useLoading";
-import { PunishmentModel } from "@/common/Model/punishment";
-import TextItem from "../../../Components/TextItem/TextItem";
-import StatusPunish from "../StatusPunish/StatusPunish";
+import { useLoading } from '../../../common/Hook/useLoading';
+import { useNotification } from '../../../common/Hook/useNotification';
+import { BandingModel, IBandingMap, IBandingTextMap } from '../../../common/Model/banding';
+import { BandingEnum } from '../../../common/Model/banding'
+import { useForm } from 'antd/es/form/Form';
+import React, { useEffect } from 'react'
+import styles from './CreateBanding.module.scss'
+import { Button, Col, Drawer, Form, Input, Row, Select, Switch } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
+import TextItem from '../../../Components/TextItem/TextItem';
+import TextArea from 'antd/es/input/TextArea';
+import axios from 'axios';
+import StatusPunish from '../../../Pages/Punishment/StatusPunish/StatusPunish';
 
-interface ICreatePunish {
+interface ICreateBanding {
     openCreatePunish: boolean;
     setOpenCreatePunish: React.Dispatch<React.SetStateAction<boolean>>;
     isEdit: boolean;
-    showDelete: boolean;
-    setShowDelete: React.Dispatch<React.SetStateAction<boolean>>;
     recall: boolean;
     setRecall: React.Dispatch<React.SetStateAction<boolean>>;
     reset: boolean;
-    currentRecord?: PunishmentModel;
+    currentRecord?: BandingModel;
     isView?: boolean;
     setIsView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreatePunishment = (props: ICreatePunish) => {
+interface IOptionValue {
+    label?: string;
+    value?: string | number;
+}
+
+const CreateBanding = (props: ICreateBanding) => {
     const {
         openCreatePunish,
         setOpenCreatePunish,
@@ -38,61 +42,56 @@ const CreatePunishment = (props: ICreatePunish) => {
         setIsView
     } = props;
 
-    const [isConfirm, setIsConfirm] = useState<boolean>(true);
     const [form] = useForm();
     const notification = useNotification();
     const { showLoading, closeLoading } = useLoading();
-
     const onClose = () => {
         setOpenCreatePunish(false);
-        setIsConfirm(true);
         setIsView(false)
     };
 
     const handleOnFinish = async () => {
         try {
-            showLoading("createPunish");
+            showLoading("createBanding");
             const value = await form.getFieldsValue();
             await form.validateFields();
-            const model: PunishmentModel = {
-                punishName: value.punishName,
+            const model: BandingModel = {
+                bandingID: value.bandingID,
                 desc: value.desc,
                 status: value.status ?? true
             }
-            await axios.post("https://localhost:7120/api/Punish", model);
-            notification.success(<div>Tạo Hình Phạt Thành Công.</div>);
+            await axios.post("https://localhost:7120/api/Banding", model);
+            notification.success(<div>Tạo Cấp Bậc Thành Công.</div>);
             setOpenCreatePunish(false);
             setRecall(!recall);
-            closeLoading("createPunish");
+            closeLoading("createBanding");
         } catch (error) {
-            closeLoading("createPunish");
+            closeLoading("createBanding");
 
         }
     };
-
 
     const handleOnEdit = async () => {
         try {
-            showLoading("editPunish");
+            showLoading("editBanding");
             const value = await form.getFieldsValue();
             await form.validateFields();
-            const model: PunishmentModel = {
+            const model: BandingModel = {
                 id: currentRecord?.id,
-                punishName: value.punishName,
+                bandingID: value.bandingID,
                 desc: value.desc,
                 status: value.status ?? true
             }
-            await axios.put(`https://localhost:7120/api/Punish/${currentRecord?.id}`, model);
-            notification.success(<div>Sửa Hình Phạt Thành Công.</div>);
+            await axios.put(`https://localhost:7120/api/Banding/${currentRecord?.id}`, model);
+            notification.success(<div>Sửa Cấp Bậc Thành Công.</div>);
             setOpenCreatePunish(false);
             setRecall(!recall);
-            closeLoading("editPunish");
+            closeLoading("editBanding");
         } catch (error) {
-            closeLoading("editPunish");
+            closeLoading("editBanding");
 
         }
     };
-
     useEffect(() => {
         if (isEdit) {
             form.setFieldsValue(currentRecord);
@@ -100,7 +99,6 @@ const CreatePunishment = (props: ICreatePunish) => {
             form.resetFields();
         }
     }, [isEdit, reset]);
-
 
     const filterDrawFooterView = (
         <div className={styles.wrapperBtn}>
@@ -113,7 +111,7 @@ const CreatePunishment = (props: ICreatePunish) => {
                 Đóng
             </Button>
             <div onClick={handleOnFinish} className="btn-orange">
-                Tạo Hình Phạt
+                Tạo Cấp Bậc
             </div>
         </div>
     );
@@ -129,7 +127,7 @@ const CreatePunishment = (props: ICreatePunish) => {
                 Đóng
             </Button>
             <div onClick={handleOnEdit} className="btn-orange">
-                Sửa Hình Phạt
+                Sửa Cấp Bậc
             </div>
         </div>
     );
@@ -150,10 +148,23 @@ const CreatePunishment = (props: ICreatePunish) => {
     const onChange = (checked: boolean) => {
         console.log(`switch to ${checked}`);
     };
+
+    const filterOption = (input: string, option?: IOptionValue) =>
+        (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
+        ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+
+    const optionBaningType = [
+        { label: "Người Mới", value: BandingEnum.Entry },
+        { label: "Đồng", value: BandingEnum.Bronze },
+        { label: "Bạc", value: BandingEnum.Silver },
+        { label: "Vàng", value: BandingEnum.Gold },
+        { label: "Kim Cương", value: BandingEnum.Diamond },
+    ];
+
     return (
         <div>
             <Drawer
-                title={isView ? "Chi tiết hình phạt" : isEdit ? "Sửa Hình Phạt" : "Tạo Hình Phạt"}
+                title={isView ? "Chi tiết Cấp Bậc" : isEdit ? "Sửa Cấp Bậc" : "Tạo Cấp Bậc"}
                 open={openCreatePunish}
                 placement="right"
                 closable={false}
@@ -166,7 +177,12 @@ const CreatePunishment = (props: ICreatePunish) => {
             >
                 {
                     isView ? <div>
-                        <TextItem label='Tên Hình Phạt' textItemProps={{ isCol: true, spanNumber: 24 }}  >{currentRecord?.punishName}</TextItem>
+                        <TextItem label='Tên Cấp Bậc' textItemProps={{ isCol: true, spanNumber: 24 }}  >
+                            <div className={styles.bandingName}  >
+                                <img alt="banding" src={IBandingMap.get((currentRecord?.bandingID ?? 10) as BandingEnum)} />
+                                {IBandingTextMap.get(currentRecord?.bandingID ?? BandingEnum.Entry)}
+                            </div>
+                        </TextItem>
                         <TextItem label='Mô Tả' textItemProps={{ isCol: true, spanNumber: 24 }}  >{currentRecord?.desc}</TextItem>
                         <TextItem label='Trạng Thái' textItemProps={{ isCol: true, spanNumber: 24 }}  >
                             <StatusPunish status={currentRecord?.status} />
@@ -176,12 +192,21 @@ const CreatePunishment = (props: ICreatePunish) => {
                             <Col sm={24}>
                                 <Form.Item
                                     rules={[
-                                        { required: true, message: "Vui lòng điền tên hình phạt." },
+                                        {
+                                            required: true,
+                                            message: "Vui lòng chọn loại cấp bậc.",
+                                        },
                                     ]}
-                                    name="punishName"
-                                    label="Tên Hình Phạt:"
+                                    name="bandingID"
+                                    label="Loại Cấp bậc:"
                                 >
-                                    <Input maxLength={150} />
+                                    <Select
+                                        rootClassName={styles.emFilterSelectMultiple}
+                                        placeholder="Chọn loại cấp bậc"
+                                        // loading={!ygm}
+                                        options={optionBaningType}
+                                        filterOption={filterOption}
+                                    />
                                 </Form.Item>
                             </Col>
                             <Col sm={24}>
@@ -208,12 +233,10 @@ const CreatePunishment = (props: ICreatePunish) => {
                             </Col>
                         </Row>
                     </Form>
-
                 }
-
             </Drawer>
         </div>
-    );
-};
+    )
+}
 
-export default CreatePunishment;
+export default CreateBanding

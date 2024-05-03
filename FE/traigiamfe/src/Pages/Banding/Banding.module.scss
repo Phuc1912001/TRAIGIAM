@@ -1,11 +1,12 @@
 .wrapperContent {
     padding: 20px 50px;
 
-    .name {
+    .bandingName {
         cursor: pointer;
         color: #006677;
         font-weight: 600;
-
+        display: flex;
+        gap: 12px;
         &:hover {
             text-decoration: underline;
         }

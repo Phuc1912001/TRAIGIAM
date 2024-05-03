@@ -87,7 +87,6 @@ const Punishment = () => {
         } catch (error) {
             setIsOpenModal(true);
             closeLoading("deletePunish")
-
         }
     };
 

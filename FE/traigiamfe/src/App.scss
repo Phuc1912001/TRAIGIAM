@@ -142,3 +142,37 @@
   background-color: rgb(146, 145, 145);
   
 }
+
+
+.hcis-one-rows,
+.hcis-two-rows,
+.hcis-three-rows,
+.hcis-four-rows {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+  cursor: pointer;
+}
+
+.hcis-one-rows {
+  -webkit-line-clamp: 1;
+}
+
+.hcis-two-rows {
+  -webkit-line-clamp: 2;
+}
+
+.hcis-three-rows {
+  -webkit-line-clamp: 3;
+}
+
+.hcis-four-rows {
+  -webkit-line-clamp: 4;
+}
+
+.customTooltip {
+  color: #222222;
+}

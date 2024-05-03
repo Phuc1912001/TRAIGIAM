@@ -9,7 +9,7 @@ namespace TraigiamBE.Models
         public string? PrisonerSex { get; set; }
         public string? Cccd { get; set; }
         public string? Mpn { get; set; }
-        public int? Banding { get; set; }
+        public long? BandingID { get; set; }
         public int? Dom {  get; set; }
         public int? Bed { get; set; }
         public string? Countryside { get; set; }

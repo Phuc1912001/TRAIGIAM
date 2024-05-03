@@ -5,7 +5,7 @@ export interface PrisonerModel {
     prisonerSex?:string,
     cccd?:string,
     mpn?:string,
-    banding?:number,
+    bandingID?:number,
     dom?:number,
     bed?:number,
     countryside?:string,

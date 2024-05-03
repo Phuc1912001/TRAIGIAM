@@ -19,7 +19,7 @@ import axios from "axios";
 import defaultImage from "../../assets/default.jpg";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
-
+import { BandingEnum, IBandingMap } from "../../common/Model/banding";
 
 const Prisoner = () => {
     const items = [
@@ -42,38 +42,36 @@ const Prisoner = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [namePrisoner, setNamePrisoner] = useState<PrisonerModel>();
-    const [currentRecord, setCurrentRecord] = useState<PrisonerModel>()
+    const [currentRecord, setCurrentRecord] = useState<PrisonerModel>();
 
-    const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([])
+    const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([]);
     const notification = useNotification();
 
     const [values, setValues] = useState(initialFieldValues);
     const [showDelete, setShowDelete] = useState<boolean>(false);
-    const [recall, setRecall] = useState<boolean>(false)
-    const [reset, setReset] = useState<boolean>(false)
+    const [recall, setRecall] = useState<boolean>(false);
+    const [reset, setReset] = useState<boolean>(false);
 
-    const { showLoading, closeLoading } = useLoading()
-
-
+    const { showLoading, closeLoading } = useLoading();
 
     const handleGetAllPrisoner = async () => {
         try {
-            showLoading("getAllPrisoner")
-            const { data } = await axios.get('https://localhost:7120/api/prisoner')
-            setDataPrisoner(data.data)
-            closeLoading("getAllPrisoner")
+            showLoading("getAllPrisoner");
+            const { data } = await axios.get("https://localhost:7120/api/prisoner");
+            setDataPrisoner(data.data);
+            closeLoading("getAllPrisoner");
         } catch (error) {
-            closeLoading("getAllPrisoner")
+            closeLoading("getAllPrisoner");
         }
-    }
+    };
 
     useEffect(() => {
-        handleGetAllPrisoner()
-    }, [])
+        handleGetAllPrisoner();
+    }, []);
 
     useEffect(() => {
-        handleGetAllPrisoner()
-    }, [recall])
+        handleGetAllPrisoner();
+    }, [recall]);
 
     const handleNavigate = (record: any) => {
         navigate(`/prisoner/${record.id}`);
@@ -81,38 +79,39 @@ const Prisoner = () => {
     const handleOpenCreate = () => {
         setOpenCreatePrisoner(true);
         setIsEdit(false);
-        setReset(!reset)
+        setReset(!reset);
     };
 
     const handleOpenEdit = (record: PrisonerModel) => {
         setOpenCreatePrisoner(true);
         setIsEdit(true);
-        setCurrentRecord(record)
+        setCurrentRecord(record);
         setValues({
             ...values,
-            imageSrc: record.imageSrc as string
-        })
-        setShowDelete(true)
-        setReset(!reset)
+            imageSrc: record.imageSrc as string,
+        });
+        setShowDelete(true);
+        setReset(!reset);
     };
 
     const handleOpenDelete = (record: PrisonerModel) => {
         setIsOpenModal(true);
-        setNamePrisoner(record)
+        setNamePrisoner(record);
     };
 
     const handleDeletePrisoner = async () => {
         try {
-            showLoading("deletePrisoner")
-            await axios.delete(`https://localhost:7120/api/prisoner/${namePrisoner?.id}`)
-            handleGetAllPrisoner()
+            showLoading("deletePrisoner");
+            await axios.delete(
+                `https://localhost:7120/api/prisoner/${namePrisoner?.id}`
+            );
+            handleGetAllPrisoner();
             setIsOpenModal(false);
-            notification.success(<div>Xóa Phạm Nhân Thành Công.</div>)
-            closeLoading("deletePrisoner")
+            notification.success(<div>Xóa Phạm Nhân Thành Công.</div>);
+            closeLoading("deletePrisoner");
         } catch (error) {
             setIsOpenModal(true);
-            closeLoading("deletePrisoner")
-
+            closeLoading("deletePrisoner");
         }
     };
 
@@ -122,33 +121,37 @@ const Prisoner = () => {
             dataIndex: "prisonerName",
             key: "prisonerName",
             render: (_, record) => {
-                const arr = record?.imageSrc?.split('/')
+                const arr = record?.imageSrc?.split("/");
                 const hasNull = arr?.includes("null");
-                const imgURL = hasNull ? defaultImage : record.imageSrc
-                return (<div className={styles.containerInfor}>
-                    <div>
-                        <img className={styles.avatar} src={imgURL} alt="" />
-                    </div>
-                    <div>
-                        <div className={styles.name} onClick={() => handleNavigate(record)}>
-                            {record?.prisonerName}
+                const imgURL = hasNull ? defaultImage : record.imageSrc;
+                return (
+                    <div className={styles.wrapperInfor}>
+                        <div className={styles.containerInfor}>
+                            <div>
+                                <img className={styles.avatar} src={imgURL} alt="" />
+                            </div>
+                            <div>
+                                <div
+                                    className={styles.name}
+                                    onClick={() => handleNavigate(record)}
+                                >
+                                    {record?.prisonerName}
+                                </div>
+                                <div>{`${record?.prisonerAge} tuổi`}</div>
+                            </div>
                         </div>
-                        <div>{`${record?.prisonerAge} tuổi`}</div>
+                        <img
+                            alt="banding"
+                            src={IBandingMap.get((record?.bandingID ?? 10) as BandingEnum)}
+                        />
                     </div>
-                </div>)
-            }
-
-
+                );
+            },
         },
         {
             title: "Ma Phạm Nhân",
             dataIndex: "mpn",
             key: "mpn",
-        },
-        {
-            title: "Giới Tính",
-            dataIndex: "prisonerSex",
-            key: "prisonerSex",
         },
         {
             title: "Trại",
@@ -177,13 +180,12 @@ const Prisoner = () => {
         },
     ];
 
-
     return (
         <div>
             <div className="share-sticky">
                 <Header items={items} />
             </div>
-            <div className="share-sticky-mobile" >
+            <div className="share-sticky-mobile">
                 <MobileHeader />
             </div>
 

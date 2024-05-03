@@ -80,7 +80,7 @@ namespace TraigiamBE.Controllers
                                 PrisonerSex = x.PrisonerSex,
                                 Cccd = x.Cccd,
                                 Mpn = x.Mpn,
-                                Banding = x.Banding,
+                                BandingID = x.BandingID,
                                 Dom = x.Dom,
                                 Bed = x.Bed,
                                 Countryside = x.Countryside,
