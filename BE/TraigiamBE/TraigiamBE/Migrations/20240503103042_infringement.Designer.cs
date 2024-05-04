@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraigiamBE.Models;
 
@@ -11,9 +12,10 @@ using TraigiamBE.Models;
 namespace TraigiamBE.Migrations
 {
     [DbContext(typeof(PrisonDBContext))]
-    partial class PrisonDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240503103042_infringement")]
+    partial class infringement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,22 +112,10 @@ namespace TraigiamBE.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Desc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedByName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mvp")

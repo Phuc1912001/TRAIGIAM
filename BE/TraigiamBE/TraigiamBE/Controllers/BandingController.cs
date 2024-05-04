@@ -43,6 +43,28 @@ namespace TraigiamBE.Controllers
             }
         }
 
+
+        [HttpGet("isActive")]
+        public async Task<ActionResult<IEnumerable<BandingModel>>> GetBandingActive()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var listBanding = (await _context.BandingModels.Where(b=> b.Status == true).ToListAsync()).OrderByDescending(item => item.BandingID);
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = listBanding;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong";
+                return BadRequest(response);
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<BaseResponseModel>> CreateBanding(BandingModel bandingModel)
         {

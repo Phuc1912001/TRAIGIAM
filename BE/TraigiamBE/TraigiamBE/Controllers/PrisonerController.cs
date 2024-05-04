@@ -32,9 +32,22 @@ namespace TraigiamBE.Controllers
 
                 var test = await _context.Prisoner.ToListAsync();
 
+                var bandings = await _context.BandingModels.ToListAsync();
+
                 var listPrisoner = await _context.Prisoner
-                    .Join(staff, p => p.Mananger, s => s.Id, (p, s) => new { p, s })
-                    .Select(x => new PrisonerModel
+                    .Join(
+                        staff,
+                        p => p.Mananger,
+                        s => s.Id,
+                        (p, s) => new { p, s }
+                    )
+                    .Join(
+                        _context.BandingModels,
+                        ps => ps.p.BandingID,
+                        b => b.BandingID,
+                        (ps, b) => new { ps.p, ps.s, b }
+                    )
+                    .Select(x => new PrisonerModelDto
                     {
                         Id = x.p.Id,
                         PrisonerName = x.p.PrisonerName,
@@ -43,6 +56,7 @@ namespace TraigiamBE.Controllers
                         Cccd = x.p.Cccd,
                         Mpn = x.p.Mpn,
                         BandingID = x.p.BandingID,
+                        IsActiveBanding = x.b.Status, // Now the status is obtained from the inner join
                         Dom = x.p.Dom,
                         Bed = x.p.Bed,
                         Countryside = x.p.Countryside,
@@ -51,10 +65,10 @@ namespace TraigiamBE.Controllers
                         Mananger = x.p.Mananger,
                         ManangerName = x.s.StaffName,
                         ImagePrisoner = x.p.ImagePrisoner,
-                        ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.p.ImagePrisoner),
-                        CreateAt = x.p.CreateAt 
+                        ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.p.ImagePrisoner),
+                        CreateAt = x.p.CreateAt
                     })
-                    .OrderByDescending(item => item.CreateAt) 
+                    .OrderByDescending(item => item.CreateAt)
                     .ToListAsync();
 
                 response.Status = true;

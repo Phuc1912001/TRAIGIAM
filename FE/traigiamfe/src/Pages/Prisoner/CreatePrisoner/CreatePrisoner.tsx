@@ -96,7 +96,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     const getAllBanding = async () => {
         try {
             showLoading("GetAllBanding")
-            const { data } = await axios.get('https://localhost:7120/api/banding')
+            const { data } = await axios.get('https://localhost:7120/api/banding/isActive')
             setDataStaff(data.data)
             let newData = data.data.map((item: BandingModel) => ({
                 label: <div>{IBandingTextMap.get(item.bandingID ?? BandingEnum.Entry)}</div>,

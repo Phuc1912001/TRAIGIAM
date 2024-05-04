@@ -15,6 +15,8 @@ namespace TraigiamBE.Models
         public DbSet<ExternalModel> ExternalModels { get; set; }
         public DbSet<BandingModel> BandingModels { get; set; }
         public DbSet<VisitModel> VisitModels { get; set; }
+        public DbSet<InfringementModel> InfringementModels { get; set; }
+        public DbSet<YouthIRModel> YouthIRModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
