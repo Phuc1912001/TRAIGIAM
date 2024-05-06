@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { Popover } from 'antd';
 import ModalComponent from '../../Components/ModalDelete/ModalComponent';
 import StatusInfringement from './StatusInfringement/StatusInfringement';
+import { useNavigate } from 'react-router-dom';
 
 
 const InfringementReport = () => {
@@ -35,6 +36,7 @@ const InfringementReport = () => {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const { showLoading, closeLoading } = useLoading();
     const notification = useNotification();
+    const navigate = useNavigate()
 
     const getAllInfringement = async () => {
         try {
@@ -91,18 +93,22 @@ const InfringementReport = () => {
         }
     };
 
+    const handleToView = (record: InfringementResponse) => {
+        navigate(`/infringement/${record.id}`)
+    }
+
     const columns: ColumnsType<InfringementResponse> = [
         {
             title: "Mã Vi Phạm",
             dataIndex: "mvp",
-            key: "mvp"
-            // render: (_, record) => {
-            //     return (
-            //         <div onClick={() => handleToView(record)} className={styles.name}>
-            //             {record.prisonerName}
-            //         </div>
-            //     );
-            // },
+            key: "mvp",
+            render: (_, record) => {
+                return (
+                    <div onClick={() => handleToView(record)} className={styles.name}>
+                        {record.mvp}
+                    </div>
+                );
+            },
         },
         {
             title: "Phạm Nhân",

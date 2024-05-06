@@ -17,6 +17,7 @@ namespace TraigiamBE.Models
         public DbSet<VisitModel> VisitModels { get; set; }
         public DbSet<InfringementModel> InfringementModels { get; set; }
         public DbSet<YouthIRModel> YouthIRModels { get; set; }
+        public DbSet<StatementModel> StatementModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

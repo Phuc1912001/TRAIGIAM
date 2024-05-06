@@ -112,6 +112,84 @@ namespace TraigiamBE.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BaseResponseModel>> UpdateInfringement(long id, InfringementModel infringementModel)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+
+            try
+            {
+                if (infringementModel == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "InfringementModel is null.";
+                    return BadRequest(response);
+                }
+
+                // Tìm InfringementModel theo ID
+                var existingInfringement = await _context.InfringementModels.FindAsync(id);
+
+                if (existingInfringement == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Infringement not found.";
+                    return NotFound(response);
+                }
+
+                // Cập nhật thuộc tính của InfringementModel hiện tại
+                existingInfringement.Mvp = infringementModel.Mvp;  // Thay đổi theo yêu cầu của bạn
+                existingInfringement.NameIR = infringementModel.NameIR;
+                existingInfringement.Location = infringementModel.Location;
+                existingInfringement.Rivise = infringementModel.Rivise;
+                existingInfringement.PunishId = infringementModel.PunishId;
+                existingInfringement.TimeInfringement = infringementModel.TimeInfringement;
+                existingInfringement.Desc = infringementModel.Desc;
+                
+                // Cập nhật các thuộc tính khác...                                                                                         
+
+                // Lưu các thay đổi một lần
+                await _context.SaveChangesAsync();
+
+                var infingement = await _context.InfringementModels.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+
+
+                // Cập nhật các YouthIR liên quan
+                if (infringementModel.YouthIRIds != null)
+                {
+                    // Xóa tất cả các YouthIR hiện có để đảm bảo chỉ giữ các liên kết mới
+                    var existingYouthIRs = _context.YouthIRModels
+                        .Where(y => y.InfringementID == id);
+
+                    _context.YouthIRModels.RemoveRange(existingYouthIRs);
+
+                    // Thêm các liên kết mới
+                    foreach (var item in infringementModel.YouthIRIds)
+                    {
+                        YouthIRModel newYouthIR = new YouthIRModel
+                        {
+                            YouthID = item,
+                            InfringementID = infingement == null ? 1 : infingement.Id
+                        };
+                        _context.YouthIRModels.Add(newYouthIR);
+                    }
+
+                    // Lưu thay đổi
+                    await _context.SaveChangesAsync();
+                }
+
+                response.Status = true;
+                response.StatusMessage = "Infringement updated successfully.";
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<BaseResponseModel>> DeleteInfringement(long id)
         {

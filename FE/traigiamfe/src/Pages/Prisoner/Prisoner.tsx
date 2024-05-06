@@ -1,5 +1,5 @@
 import Header from "../../Components/Header/Header";
-import { Breadcrumb, Button, Layout, Table } from "antd";
+import { Breadcrumb, Button, Layout, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import styles from "./Prisoner.module.scss";
 import { ColumnsType } from "antd/es/table";
@@ -7,13 +7,14 @@ import {
     EditOutlined,
     DeleteOutlined,
     PlusCircleOutlined,
+    InfoCircleOutlined,
 } from "@ant-design/icons";
 import { render } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
 import avatar from "../../assets/avatar.jpg";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
-import { PrisonerModel } from "../../common/Model/prisoner";
+import { PrisonerResponse } from "../../common/Model/prisoner";
 import MobileHeader from "../../Components/MobileHeader/MobileHeader";
 import axios from "axios";
 import defaultImage from "../../assets/default.jpg";
@@ -41,10 +42,10 @@ const Prisoner = () => {
     const [openCreatePrisoner, setOpenCreatePrisoner] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const [namePrisoner, setNamePrisoner] = useState<PrisonerModel>();
-    const [currentRecord, setCurrentRecord] = useState<PrisonerModel>();
+    const [namePrisoner, setNamePrisoner] = useState<PrisonerResponse>();
+    const [currentRecord, setCurrentRecord] = useState<PrisonerResponse>();
 
-    const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([]);
+    const [dataPrisoner, setDataPrisoner] = useState<PrisonerResponse[]>([]);
     const notification = useNotification();
 
     const [values, setValues] = useState(initialFieldValues);
@@ -82,7 +83,7 @@ const Prisoner = () => {
         setReset(!reset);
     };
 
-    const handleOpenEdit = (record: PrisonerModel) => {
+    const handleOpenEdit = (record: PrisonerResponse) => {
         setOpenCreatePrisoner(true);
         setIsEdit(true);
         setCurrentRecord(record);
@@ -94,7 +95,7 @@ const Prisoner = () => {
         setReset(!reset);
     };
 
-    const handleOpenDelete = (record: PrisonerModel) => {
+    const handleOpenDelete = (record: PrisonerResponse) => {
         setIsOpenModal(true);
         setNamePrisoner(record);
     };
@@ -115,7 +116,7 @@ const Prisoner = () => {
         }
     };
 
-    const columns: ColumnsType<PrisonerModel> = [
+    const columns: ColumnsType<PrisonerResponse> = [
         {
             title: "Tên Phạm Nhân",
             dataIndex: "prisonerName",
@@ -144,6 +145,31 @@ const Prisoner = () => {
                             alt="banding"
                             src={IBandingMap.get((record?.bandingID ?? 10) as BandingEnum)}
                         />
+                        {
+                            !record.isActiveBanding && <Tooltip
+                                placement="top"
+                                title={
+                                    <div className={"customTooltip"}>
+                                        {`Cấp bậc này đã tạm nhưng.`}
+                                    </div>
+                                }
+                                color="#ffffff"
+                                arrow={true}
+                            >
+                                <InfoCircleOutlined
+                                    style={{
+                                        color: '#D01B1B',
+                                        borderRadius: '10px',
+                                        width: '16px',
+                                        height: '16px',
+                                        marginLeft: '8px',
+                                        fontSize: '16px',
+                                        cursor: "pointer"
+                                    }}
+                                />
+                            </Tooltip>
+                        }
+
                     </div>
                 );
             },
@@ -168,14 +194,17 @@ const Prisoner = () => {
             dataIndex: "action",
             key: "action",
             render: (_, record) => (
-                <div className={styles.wrapperAction}>
-                    <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-                        <EditOutlined style={{ fontSize: 18 }} />
-                    </div>
-                    <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-                        <DeleteOutlined style={{ fontSize: 18 }} />
-                    </div>
-                </div>
+                record.isActiveBanding && (
+                    <div className={styles.wrapperAction} >
+                        <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
+                            <EditOutlined style={{ fontSize: 18 }} />
+                        </div>
+                        <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
+                            <DeleteOutlined style={{ fontSize: 18 }} />
+                        </div>
+                    </div >
+                )
+
             ),
         },
     ];

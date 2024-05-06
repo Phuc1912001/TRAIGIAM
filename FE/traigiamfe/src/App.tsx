@@ -24,6 +24,7 @@ import Visit from "./Pages/Visit/Visit";
 import { UserModel } from "./common/Model/user";
 import Dom from "./Pages/Dom/Dom";
 import Banding from "./Pages/Banding/Banding";
+import InfringementDetail from "./Pages/InfringementReport/InfringementDetail/InfringementDetail";
 
 export const contextUser = createContext<any>({});
 
@@ -70,6 +71,10 @@ function App() {
         {
           path: "/infringement",
           element: <InfringementReport />,
+        },
+        {
+          path: "/infringement/:id",
+          element: <InfringementDetail />,
         },
         {
           path: "/statement",

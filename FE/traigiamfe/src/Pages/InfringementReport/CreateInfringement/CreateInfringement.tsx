@@ -49,6 +49,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
 
     const [optionPunish, setOptionPunish] = useState<IOptionValue[]>([]);
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const [isChange, setIsChange] = useState<boolean>(false);
     const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
 
 
@@ -104,6 +105,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
     const onClose = () => {
         setOpenCreateInfringement(false);
         setIsView(false);
+        setIsChange(false)
     };
 
     const filterOption = (input: string, option?: IOptionValue) =>
@@ -141,7 +143,33 @@ const CreateInfringement = (props: ICreateInfringement) => {
     };
 
     const handleOnEdit = async () => {
+        try {
+            showLoading("EditIR");
+            const value = await form.getFieldsValue();
+            await form.validateFields();
 
+            const currentDateTime = dayjs();
+
+            const model: InfringementModel = {
+                ...value,
+                id: currentRecord?.id,
+                timeInfringement: dayjs(value.timeInfringement)
+                    .hour(currentDateTime.hour())
+                    .minute(currentDateTime.minute())
+                    .second(currentDateTime.second())
+                    .format(),
+                createdBy: data.id,
+                YouthIRIds: isChange ? value.YouthIRIds : value.YouthIRIds.map((item: any) => item.value)
+            };
+            await axios.put(`https://localhost:7120/api/Infringement/${currentRecord?.id}`, model);
+            notification.success(<div>Sửa Vi Phạm thành công.</div>);
+            setIsChange(false)
+            setOpenCreateInfringement(false);
+            setRecall(!recall);
+            closeLoading("EditIR");
+        } catch (error) {
+            closeLoading("EditIR");
+        }
     };
 
     const filterDrawFooterView = (
@@ -196,12 +224,20 @@ const CreateInfringement = (props: ICreateInfringement) => {
                 YouthIRIds: newData
 
             };
-
             form.setFieldsValue(formatData);
         } else {
             form.resetFields();
         }
     }, [isEdit, reset]);
+
+    const handleOnChange = () => {
+        console.log('alo');
+
+        setIsChange(true)
+    }
+
+    console.log('isChange', isChange);
+
 
     return (
         <div>
@@ -257,6 +293,8 @@ const CreateInfringement = (props: ICreateInfringement) => {
                                     mode="multiple"
                                     options={optionPrisoner}
                                     filterOption={filterOption}
+                                    onChange={handleOnChange}
+
                                 />
                             </Form.Item>
                         </Col>
