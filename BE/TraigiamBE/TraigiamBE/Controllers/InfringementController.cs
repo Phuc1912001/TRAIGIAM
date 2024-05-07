@@ -229,6 +229,80 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+        [HttpGet("getIRByPrisoner/{prisonerId}")]
+        public async Task<ActionResult<BaseResponseModel>> GetIRByPrisoner(long prisonerId)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var listInfingementByPrisoner = (await _context.InfringementModels
+                    .Join(
+                        _context.YouthIRModels,
+                        i => i.Id,
+                        y => y.InfringementID,
+                        (i, y) => new { i, y }
+                    )
+                    .Join(
+                        _context.Prisoner,
+                        iy => iy.y.YouthID,
+                        p => p.Id,
+                        (iy, p) => new { iy, p, iy.i, iy.y }
+                    )
+                    .Where(x => x.y.YouthID == prisonerId)
+                    .Select(x => new InfringementModel
+                    {
+                        Id = x.i.Id,
+                        NameIR = x.i.NameIR
+                    })
+                    .ToListAsync())
+                    .OrderByDescending(x => x.CreateAt);
+
+                response.Status = true;
+                response.Data = listInfingementByPrisoner;
+                response.StatusMessage = "Successfully retrieved all Visit models";
+                return Ok(response);
+            }
+            catch (Exception ex) {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpGet("getPrisonerByIR")]
+        public async Task<ActionResult<BaseResponseModel>> GetPrisonerByIR()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var listPrisoner = (await _context.YouthIRModels
+                    .Join(
+                        _context.Prisoner,
+                        y => y.YouthID,
+                        p => p.Id,
+                        (y, p) => new { y, p }
+                    )
+                    .Select(x => new PrisonerModel
+                    {
+                        Id = x.p.Id,
+                        PrisonerName = x.p.PrisonerName
+                    })
+                    .Distinct()
+                    .ToListAsync())
+                    .OrderByDescending(x => x.CreateAt);
+
+                response.Status = true;
+                response.Data = listPrisoner;
+                response.StatusMessage = "Successfully retrieved all Visit models";
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
 
     }
 }

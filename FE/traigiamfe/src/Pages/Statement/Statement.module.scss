@@ -1,0 +1,50 @@
+.wrapperContent {
+    padding: 20px 50px;
+
+    .name {
+        cursor: pointer;
+        color: #006677;
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .wrapperBtn {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .wrapperAction {
+        display: flex;
+        align-items: center;
+        gap: 4;
+    }
+}
+
+.wrapperPrisoner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .wrapperCount {
+        width: 25px;
+        height: 25px;
+        background-color: rgb(229, 232, 232);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+}
+
+.irName {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+}
