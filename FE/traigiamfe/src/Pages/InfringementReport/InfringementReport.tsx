@@ -115,13 +115,13 @@ const InfringementReport = () => {
             dataIndex: "ListPrisoner",
             key: "ListPrisoner",
             render: (_, record) => {
-                const prisonerName = record?.listPrisoner?.[0].prisonerName ?? 'N/A'
+                const prisonerName = record?.listPrisoner?.[0]?.prisonerName ?? 'N/A'
 
                 const content = (
                     <div>
                         {
                             record.listPrisoner?.map(item => (
-                                <div key={item.id}>{item.prisonerName}</div>
+                                <div key={item.id}>{item?.prisonerName}</div>
                             ))
                         }
                     </div>

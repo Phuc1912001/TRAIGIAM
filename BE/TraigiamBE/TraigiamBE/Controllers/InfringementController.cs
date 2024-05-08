@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
+using TraigiamBE.Migrations;
 using TraigiamBE.Models;
 
 namespace TraigiamBE.Controllers
@@ -60,6 +62,76 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BaseResponseModel>> GetDetailById( long id )
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var users =  _context.RegisterModels;
+                var prisoner = _context.Prisoner;
+                var youthIRIds = _context.YouthIRModels;
+                var statement =  _context.StatementModels;
+
+                var infringementModel = await _context.InfringementModels
+                    .Select(x => new InfringementModelDto
+                    {
+                        Id = x.Id,
+                        Mvp = x.Mvp,
+                        Desc = x.Desc,
+                        TimeInfringement = x.TimeInfringement,
+                        Location = x.Location,
+                        PunishId = x.PunishId,
+                        NameIR = x.NameIR,
+                        Status = x.Status,
+                        Rivise = x.Rivise,
+                        CreatedBy = x.CreatedBy,
+                        CreatedByName = users.Where(u => u.Id == x.CreatedBy).Select(a => a.UserName).FirstOrDefault(),
+                        ModifiedBy = x.ModifiedBy,
+                        ModifiedByName = users.Where(u => u.Id == x.ModifiedBy).Select(a => a.UserName).FirstOrDefault(),
+                        ListPrisonerStatement = prisoner.Join(youthIRIds , p => p.Id , y => y.YouthID , (p,y) => new {p,y} ).Where(py => py.y.InfringementID == id ).Select(
+                             item => new PrisonerModelDto
+                            {
+                                Id= item.p.Id,
+                                PrisonerName = item.p.PrisonerName,
+                                PrisonerAge = item.p.PrisonerAge,
+                                BandingID = item.p.BandingID,
+                                ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.p.ImagePrisoner),
+                                ListStatement =  statement.Where( s => s.IrId == id ).Select(state => new StatementModelDto
+                                {
+                                    Id = state.Id,
+                                    PrisonerId = state.PrisonerId,
+                                    PrisonerName = item.p.PrisonerName,
+                                    Status = state.Status,
+                                    IrId = state.IrId,
+                                    IRName = x.NameIR,
+                                    TimeStatement = state.TimeStatement,
+                                    Statement = state.Statement,
+                                    CreatedBy = state.CreatedBy,
+                                    CreatedByName = users.Where(u => u.Id == state.CreatedBy).Select(a => a.UserName).FirstOrDefault(),
+                                    ModifiedBy = state.ModifiedBy,
+                                    ModifiedByName = users.Where(u => u.Id == state.ModifiedBy).Select(a => a.UserName).FirstOrDefault(),
+                                    ImageStatement = state.ImageStatement,
+                                    ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, state.ImageStatement) }).ToList()
+                            }).ToList(),
+                    }).FirstOrDefaultAsync();
+
+                response.Status = true;
+                response.Data = infringementModel;
+                response.StatusMessage = "Successfully retrieved all Visit models";
+                return Ok(response);
+
+            }
+            catch(Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+
+        }
+
         [HttpPost]
         public async Task<ActionResult<BaseResponseModel>> CreateInfringement(InfringementModel infringementModel)
         {
@@ -168,7 +240,7 @@ namespace TraigiamBE.Controllers
                         YouthIRModel newYouthIR = new YouthIRModel
                         {
                             YouthID = item,
-                            InfringementID = infingement == null ? 1 : infingement.Id
+                            InfringementID = id
                         };
                         _context.YouthIRModels.Add(newYouthIR);
                     }

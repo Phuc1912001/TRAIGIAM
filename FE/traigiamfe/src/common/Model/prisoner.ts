@@ -1,3 +1,5 @@
+import { StatmentModel } from "./statement"
+
 export interface PrisonerModel {
     id?: number,
     prisonerName?:string,
@@ -7,6 +9,7 @@ export interface PrisonerModel {
     mpn?:string,
     bandingID?:number,
     dom?:number,
+    zoom?:number,
     bed?:number,
     countryside?:string,
     crime?:string,
@@ -27,6 +30,7 @@ export interface PrisonerResponse {
     mpn?:string,
     bandingID?:number,
     dom?:number,
+    zoom?:number,
     bed?:number,
     countryside?:string,
     crime?:string,
@@ -36,6 +40,7 @@ export interface PrisonerResponse {
     imagePrisoner?:string,
     imageSrc?:string
     filePrisoner?:any,
-    isActiveBanding:boolean
+    isActiveBanding?:boolean,
+    listStatement?:StatmentModel
 }
 

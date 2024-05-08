@@ -1,32 +1,68 @@
 .breacrumb {
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-        color: black;
-        text-decoration: underline;
-    }
+  &:hover {
+    color: black;
+    text-decoration: underline;
+  }
 }
 
 .containerDetail {
-    padding: 20px 100px;
+  padding: 20px 100px;
 
-    .wrapperInfor {
+  .wrapperInfor {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .avatar {
+      height: 100px;
+      width: 100px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .age {
+      margin-top: 10px;
+      color: rgb(124, 122, 122);
+    }
+  }
+}
+
+.titleList {
+  margin-bottom: 20px;
+}
+
+.prisonerTable {
+  .wrapperInfor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .containerInfor {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 10px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        width: 180px;
 
         .avatar {
-            height: 100px;
-            width: 100px;
-            border-radius: 6px;
+            width: 40px;
+            height: 40px;
             object-fit: cover;
+            border-radius: 4px;
         }
 
-        .age {
-            margin-top: 10px;
-            color: rgb(124, 122, 122);
+        .name {
+            cursor: pointer;
+            color: #006677;
+            font-weight: 600;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
+  }
 }

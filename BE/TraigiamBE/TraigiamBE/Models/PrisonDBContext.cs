@@ -19,6 +19,8 @@ namespace TraigiamBE.Models
         public DbSet<YouthIRModel> YouthIRModels { get; set; }
         public DbSet<StatementModel> StatementModels { get; set; }
 
+        public DbSet<DomModel> DomModels { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

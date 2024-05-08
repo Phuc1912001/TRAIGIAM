@@ -55,6 +55,7 @@ namespace TraigiamBE.Controllers
             try
             {
                 var prisoner = _context.Prisoner;
+                var banding = _context.BandingModels;
 
                 var staffDetail = await _context.Staff
                     .Where(item => item.Id == id)
@@ -73,14 +74,16 @@ namespace TraigiamBE.Controllers
                         ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageStaff),
                         ListPrisoner = prisoner
                             .Where(p => p.Mananger == x.Id )
-                            .Select( x => new PrisonerModel
+                            .Select( x => new PrisonerModelDto
                             {
+                                Id = x.Id,
                                 PrisonerName = x.PrisonerName,
                                 PrisonerAge = x.PrisonerAge,
                                 PrisonerSex = x.PrisonerSex,
                                 Cccd = x.Cccd,
                                 Mpn = x.Mpn,
                                 BandingID = x.BandingID,
+                                IsActiveBanding = banding.FirstOrDefault(b => b.BandingID == x.BandingID).Status,
                                 Dom = x.Dom,
                                 Bed = x.Bed,
                                 Countryside = x.Countryside,

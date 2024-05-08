@@ -6,8 +6,14 @@ import Header from '../../../Components/Header/Header'
 import MobileHeader from '../../../Components/MobileHeader/MobileHeader'
 import axios from 'axios'
 import { StaffModelDetail } from '@/common/Model/staff'
-import { Row } from 'antd'
+import { Row, Tooltip } from 'antd'
 import TextItem from '../../../Components/TextItem/TextItem'
+import { PrisonerModel, PrisonerResponse } from '@/common/Model/prisoner'
+import Table, { ColumnsType } from 'antd/es/table'
+import defaultImage from "../../../assets/default.jpg";
+import { BandingEnum, IBandingMap } from '../../../common/Model/banding'
+import { InfoCircleOutlined } from '@ant-design/icons'
+
 
 const StaffDetail = () => {
     const navigate = useNavigate()
@@ -45,6 +51,87 @@ const StaffDetail = () => {
     useEffect(() => {
         handelGetDetail()
     }, [id])
+
+    const handleNavigate = (record: StaffModelDetail) => {
+        navigate(`/prisoner/${record.id}`);
+    };
+
+    const columns: ColumnsType<PrisonerResponse> = [
+        {
+            title: "Tên Phạm Nhân",
+            dataIndex: "prisonerName",
+            key: "prisonerName",
+            render: (_, record) => {
+                const arr = record?.imageSrc?.split("/");
+                const hasNull = arr?.includes("null");
+                const imgURL = hasNull ? defaultImage : record.imageSrc;
+                return (
+                    <div className={styles.wrapperInfor}>
+                        <div className={styles.containerInfor}>
+                            <div>
+                                <img className={styles.avatar} src={imgURL} alt="" />
+                            </div>
+                            <div>
+                                <div
+                                    className={styles.name}
+                                    onClick={() => handleNavigate(record)}
+                                >
+                                    {record?.prisonerName}
+                                </div>
+                                <div>{`${record?.prisonerAge} tuổi`}</div>
+                            </div>
+                        </div>
+                        <img
+                            alt="banding"
+                            src={IBandingMap.get((record?.bandingID ?? 10) as BandingEnum)}
+                        />
+                        {
+                            !record.isActiveBanding && <Tooltip
+                                placement="top"
+                                title={
+                                    <div className={"customTooltip"}>
+                                        {`Cấp bậc này đã tạm nhưng.`}
+                                    </div>
+                                }
+                                color="#ffffff"
+                                arrow={true}
+                            >
+                                <InfoCircleOutlined
+                                    style={{
+                                        color: '#D01B1B',
+                                        borderRadius: '10px',
+                                        width: '16px',
+                                        height: '16px',
+                                        marginLeft: '8px',
+                                        fontSize: '16px',
+                                        cursor: "pointer"
+                                    }}
+                                />
+                            </Tooltip>
+                        }
+
+                    </div>
+                );
+            },
+        },
+        {
+            title: "Ma Phạm Nhân",
+            dataIndex: "mpn",
+            key: "mpn",
+        },
+        {
+            title: "Trại",
+            dataIndex: "dom",
+            key: "dom",
+        },
+        {
+            title: "Giới tính",
+            dataIndex: "prisonerSex",
+            key: "prisonerSex",
+        },
+
+
+    ];
     return (
         <div>
             <div className="share-sticky">
@@ -64,7 +151,7 @@ const StaffDetail = () => {
                         <div className={styles.age} >{dataDetail?.staffAge} age</div>
                     </div>
                 </div>
-                <Row style={{ height: '100%' }}  >
+                <Row style={{ height: '100%', marginBottom: '20px' }}  >
                     <TextItem label='Mã Phạm Nhân' >{dataDetail?.mnv}</TextItem>
 
                     <TextItem label='Căn Cước Công Dân'>{dataDetail?.cccd}</TextItem>
@@ -72,7 +159,15 @@ const StaffDetail = () => {
                     <TextItem label='Số Phòng'>{dataDetail?.position}</TextItem>
 
                 </Row>
+                <h3 className={styles.titleList} >Đang quản lý những phạm nhân:</h3>
+                <Table
+                    columns={columns}
+                    dataSource={dataDetail?.listPrisoner}
+                    className={`${styles.prisonerTable} share-border-table`}
+                    tableLayout="auto"
+                />
             </div>
+
         </div>
     )
 }

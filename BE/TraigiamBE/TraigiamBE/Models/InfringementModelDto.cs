@@ -4,5 +4,6 @@
     {
         public string? PrisonerName { get; set; }
         public List<PrisonerModel> ListPrisoner { get; set; }
+        public List<PrisonerModelDto> ListPrisonerStatement { get; set; }
     }
 }

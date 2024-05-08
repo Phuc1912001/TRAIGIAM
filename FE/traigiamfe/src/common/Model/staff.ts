@@ -1,4 +1,4 @@
-import { PrisonerModel } from "./prisoner"
+import { PrisonerModel, PrisonerResponse } from "./prisoner"
 
 export interface StaffModel {
     id?:number,
@@ -28,5 +28,5 @@ export interface StaffModelDetail {
     imageStaff?:string,
     imageSrc?:string,
     fileStaff?:any,
-    ListPrisoner?:PrisonerModel[]
+    listPrisoner?:PrisonerResponse[]
 }

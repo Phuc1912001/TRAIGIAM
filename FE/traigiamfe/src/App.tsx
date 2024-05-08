@@ -25,6 +25,7 @@ import { UserModel } from "./common/Model/user";
 import Dom from "./Pages/Dom/Dom";
 import Banding from "./Pages/Banding/Banding";
 import InfringementDetail from "./Pages/InfringementReport/InfringementDetail/InfringementDetail";
+import DomDetail from "./Pages/Dom/DomDetail/DomDetail";
 
 export const contextUser = createContext<any>({});
 
@@ -107,6 +108,10 @@ function App() {
         {
           path: "/dom",
           element: <Dom />,
+        },
+        {
+          path: "/dom/:id",
+          element: <DomDetail />,
         },
         {
           path: "/banding",

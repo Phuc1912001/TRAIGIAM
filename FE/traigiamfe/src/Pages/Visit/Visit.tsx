@@ -173,7 +173,7 @@ const Visit = () => {
                 <div className={styles.wrapperBtn}>
                     <div className={"createBtn"} onClick={handleOpenCreate}>
                         <PlusCircleOutlined style={{ fontSize: 18 }} />
-                        Tạo Xuất Nhập
+                        Tạo Thăm Khám
                     </div>
                     <div>search</div>
                 </div>
@@ -205,7 +205,6 @@ const Visit = () => {
             >
                 <div>{`Bạn có muốn xóa phiếu thăm khám của phạm nhân ${currentRecord?.prisonerId}`}</div>
             </ModalComponent>
-
         </div>
     )
 }

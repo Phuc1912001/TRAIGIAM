@@ -2,6 +2,6 @@
 {
     public class StaffModelDto:StaffModel
     {
-        public List<PrisonerModel> ListPrisoner { get; set; }
+        public List<PrisonerModelDto> ListPrisoner { get; set; }
     }
 }
