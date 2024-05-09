@@ -52,7 +52,7 @@ const CreateRoom = (props: ICreateRoom) => {
                 domId: state.idDom,
                 roomName: value.roomName
             }
-            await axios.post("https://localhost:7120/api/Dom", model);
+            await axios.post("https://localhost:7120/api/Room", model);
             notification.success(<div>Tạo Phòng Thành Công.</div>);
             setOpenCreateRoom(false);
             setRecallRoom(!recallRoom);
@@ -70,9 +70,10 @@ const CreateRoom = (props: ICreateRoom) => {
             await form.validateFields();
             const model: RoomModel = {
                 id: currentRecordRoom?.id,
+                domId: state.idDom,
                 roomName: value.roomName
             }
-            await axios.put(`https://localhost:7120/api/Dom/${currentRecordRoom?.id}`, model);
+            await axios.put(`https://localhost:7120/api/Room/${currentRecordRoom?.id}`, model);
             notification.success(<div>Sửa Phòng Thành Công.</div>);
             setOpenCreateRoom(false);
             setRecallRoom(!recallRoom);

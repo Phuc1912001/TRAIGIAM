@@ -20,6 +20,7 @@ namespace TraigiamBE.Models
         public DbSet<StatementModel> StatementModels { get; set; }
 
         public DbSet<DomModel> DomModels { get; set; }
+        public DbSet<RoomModel> RoomModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
