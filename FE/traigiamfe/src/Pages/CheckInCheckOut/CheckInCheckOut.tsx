@@ -21,10 +21,10 @@ import StatusExternal from "./StatusExternal/StatusExternal";
 const CheckInCheckOut = () => {
     const items = [
         {
-            title: <div>Xuất Nhập</div>,
+            title: <div>Ra Vào</div>,
         },
         {
-            title: <div>Danh Sách Xuất Nhập</div>,
+            title: <div>Danh Sách Ra Vào</div>,
         },
     ];
     const [dataExternal, setDataExternal] = useState<CheckInCheckOutModel[]>([]);

@@ -1,6 +1,6 @@
 import { InfringementResponse } from '@/common/Model/infringement'
 import { PrisonerResponse } from '@/common/Model/prisoner'
-import { Row, Tooltip } from 'antd'
+import { Button, Row, Tooltip } from 'antd'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
@@ -16,6 +16,7 @@ import { DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/ic
 import Table, { ColumnsType } from 'antd/es/table'
 import { StatmentModel } from '@/common/Model/statement'
 import StatusStatement from '../../Statement/StatusStatement/StatusStatement'
+import ModalComponent from '../../../Components/ModalDelete/ModalComponent'
 
 
 
@@ -25,6 +26,7 @@ const InfringementDetail = () => {
         navigate("/infringement")
     }
     const { showLoading, closeLoading } = useLoading()
+    const [openModel, setOpenModel] = useState<boolean>(false)
 
     const items = [
         {
@@ -64,6 +66,20 @@ const InfringementDetail = () => {
         // setIsView(true)
         // setCurrentRecord(record)
         // setOpenCreateStatement(true);
+    }
+
+    const handleCancel = () => {
+        navigate(`/infringement`);
+
+    }
+
+    const handleOnFinish = () => {
+        setOpenModel(true)
+    }
+
+    const handleConfirm = async () => {
+        console.log('alo');
+
     }
 
 
@@ -153,9 +169,9 @@ const InfringementDetail = () => {
                         <h3>Danh sách phạm nhân :</h3>
                     </div>
 
-                    {dataDetail?.listPrisonerStatement?.map((item: PrisonerResponse, index) => (
+                    {dataDetail?.listPrisonerStatement?.map((item: PrisonerResponse) => (
                         <div>
-                            <div key={index} className={styles.containerCard}>
+                            <div key={item.id} className={styles.containerCard}>
 
                                 <div className={styles.wrapperInfor}>
                                     <div className={styles.containerInfor}>
@@ -167,7 +183,7 @@ const InfringementDetail = () => {
                                             <div>{`${item.prisonerAge} tuổi`}</div> {/* Assuming item has an age field */}
                                         </div>
                                     </div>
-                                    <Tooltip
+                                    {/* <Tooltip
                                         placement="top"
                                         title={<div className="customTooltip">Cấp bậc này đã tạm nhưng.</div>}
                                         color="#ffffff"
@@ -184,7 +200,7 @@ const InfringementDetail = () => {
                                                 cursor: 'pointer',
                                             }}
                                         />
-                                    </Tooltip>
+                                    </Tooltip> */}
                                 </div>
                             </div>
                             <div className={styles.expandCard}>
@@ -201,6 +217,36 @@ const InfringementDetail = () => {
                 </div>
 
             </div>
+            {
+                dataDetail?.status !== 2 && <div className="share-stickyBot">
+                    <div className={styles.footer}>
+                        <div className={styles.wrapperBtn}>
+                            <Button
+                                onClick={() => {
+                                    handleCancel();
+                                }}
+                                style={{ minWidth: 80 }}
+                            >
+                                Đóng
+                            </Button>
+                            <div onClick={handleOnFinish} className="btn-orange">
+                                Xác Nhận
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <ModalComponent
+                isOpenModal={openModel}
+                setIsOpenModal={setOpenModel}
+                handleDelete={handleConfirm}
+                title="Xác nhận vi phạm"
+                textConfirm="Xác Nhận Vi Phạm"
+            >
+                <div>{`Bạn có muốn xác nhận vi phạm ${<span>{dataDetail?.mvp}</span>}.`}</div>
+            </ModalComponent>
+
         </div>
     )
 }

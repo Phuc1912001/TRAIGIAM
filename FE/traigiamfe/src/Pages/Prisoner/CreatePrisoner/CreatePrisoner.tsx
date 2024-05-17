@@ -20,6 +20,9 @@ import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
 import { StaffModel } from "@/common/Model/staff";
 import { BandingEnum, BandingModel, IBandingTextMap } from "../../../common/Model/banding";
+import { DomModel } from "@/common/Model/dom";
+import { RoomModel } from "@/common/Model/Room";
+import { BedModel } from "@/common/Model/bed";
 
 interface IInitValue {
     imageName: string;
@@ -75,8 +78,14 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         setShơwMessage(false)
     };
     const [dataStaff, setDataStaff] = useState<StaffModel[]>([])
+    const [dataDom, setDataDom] = useState<DomModel[]>([])
+    const [dataRoom, setDataRoom] = useState<RoomModel[]>([])
+    const [dataBed, setDataBed] = useState<BedModel[]>([])
     const [optionStaff, setOptionStaff] = useState<IOptionValue[]>([])
     const [optionBanding, setOptionBanding] = useState<IOptionValue[]>([])
+    const [optionDom, setOptionDom] = useState<IOptionValue[]>([])
+    const [optionRoom, setOptionRoom] = useState<IOptionValue[]>([])
+    const [optionBed, setOptionBed] = useState<IOptionValue[]>([])
 
     const getAllStaff = async () => {
         try {
@@ -108,9 +117,83 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
             closeLoading("GetAllBanding")
         }
     }
+
+    const domId = Form.useWatch('domId', form);
+    const roomId = Form.useWatch('roomId', form)
+
+
+
+    const getAllDom = async () => {
+        try {
+            showLoading("getAllDom")
+            const { data } = await axios.get('https://localhost:7120/api/Dom')
+            setDataDom(data.data)
+            let newData = data.data.map((item: DomModel) => ({
+                label: item.domName,
+                value: item.id
+            }));
+            setOptionDom(newData)
+            closeLoading("getAllDom")
+        } catch (error) {
+            closeLoading("getAllDom")
+        }
+    }
+
+    const getAllRoom = async () => {
+        try {
+            showLoading("getAllRoom")
+            const model = {
+                domId: domId
+            }
+            const { data } = await axios.post('https://localhost:7120/api/Room/AllRoom', model)
+            let newData = data.data.map((item: RoomModel) => ({
+                label: item.roomName,
+                value: item.id
+            }));
+            setDataRoom(data.data)
+            setOptionRoom(newData)
+
+            closeLoading("getAllRoom")
+        } catch (error) {
+            closeLoading("getAllRoom")
+        }
+    }
+    useEffect(() => {
+        getAllRoom()
+    }, [domId])
+
+
+    const getAllBed = async () => {
+        try {
+            showLoading("getAllBed")
+            const model = {
+                domId: domId,
+                roomId: roomId
+            }
+            const { data } = await axios.post('https://localhost:7120/api/Bed/LimitBed', model)
+            setDataBed(data.data)
+            let newData = data.data.map((item: BedModel) => ({
+                label: item.bedName,
+                value: item.id
+            }));
+            setOptionBed(newData)
+            closeLoading("getAllBed")
+        } catch (error) {
+            closeLoading("getAllBed")
+
+        }
+    }
+    console.log('roomId', roomId);
+
+
+    useEffect(() => {
+        getAllBed()
+    }, [roomId])
+
     useEffect(() => {
         getAllStaff()
         getAllBanding()
+        getAllDom()
     }, [openCreatePrisoner])
 
     const handleOnFinish = async () => {
@@ -130,8 +213,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 formData.append("cccd", value.cccd);
                 formData.append("mpn", value.mpn);
                 formData.append("bandingID", value.bandingID);
-                formData.append("dom", value.dom);
-                formData.append("bed", value.bed);
+                formData.append("domId", value.domId);
+                formData.append("roomId", value.roomId);
+                formData.append("bedId", value.bedId);
                 formData.append("countryside", value.countryside);
                 formData.append("crime", value.crime);
                 formData.append("years", value.years);
@@ -169,8 +253,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                 formData.append("cccd", value.cccd);
                 formData.append("mpn", value.mpn);
                 formData.append("bandingID", value.bandingID);
-                formData.append("dom", value.dom);
-                formData.append("bed", value.bed);
+                formData.append("domId", value.domId);
+                formData.append("roomId", value.roomId);
+                formData.append("bedId", value.bedId);
                 formData.append("countryside", value.countryside);
                 formData.append("crime", value.crime);
                 formData.append("years", value.years);
@@ -278,6 +363,18 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     const filterOption = (input: string, option?: IOptionValue) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase()) ||
         ((option as any)?.email || '').toLowerCase().includes(input.toLowerCase());
+
+
+    const handleOnChangeDom = () => {
+        console.log('alo');
+
+        form.setFieldValue('roomId', '')
+        form.setFieldValue('bedId', '')
+    }
+
+    const handleOnChangeRoom = () => {
+        form.setFieldValue('bedId', '')
+    }
 
     return (
         <div>
@@ -424,29 +521,54 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng điền cấp bậc của phạm nhân.",
-                                    },
+                                    { required: true, message: "Vui lòng điền khu vực ." },
                                 ]}
-                                name="dom"
-                                label="Số Phòng:"
+                                name="domId"
+                                label="Khu Vực:"
                             >
-                                <Input maxLength={150} type='number' />
+                                <Select
+                                    rootClassName={styles.emFilterSelectMultiple}
+                                    placeholder="Chọn khu vực"
+                                    // loading={!ygm}
+                                    options={optionDom}
+                                    filterOption={filterOption}
+                                    onChange={handleOnChangeDom}
+                                />
                             </Form.Item>
                         </Col>
                         <Col sm={24}>
                             <Form.Item
                                 rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng điền cấp bậc của phạm nhân.",
-                                    },
+                                    { required: true, message: "Vui lòng điền phòng." },
                                 ]}
-                                name="bed"
-                                label="Số Giường:"
+                                name="roomId"
+                                label="Phòng:"
                             >
-                                <Input maxLength={150} type='number' />
+                                <Select
+                                    rootClassName={styles.emFilterSelectMultiple}
+                                    placeholder="Chọn phòng"
+                                    // loading={!ygm}
+                                    options={optionRoom}
+                                    filterOption={filterOption}
+                                    onChange={handleOnChangeRoom}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col sm={24}>
+                            <Form.Item
+                                rules={[
+                                    { required: true, message: "Vui lòng điền giường." },
+                                ]}
+                                name="bedId"
+                                label="Giường:"
+                            >
+                                <Select
+                                    rootClassName={styles.emFilterSelectMultiple}
+                                    placeholder="Chọn Giường "
+                                    // loading={!ygm}
+                                    options={optionBed}
+                                    filterOption={filterOption}
+                                />
                             </Form.Item>
                         </Col>
                         <Col sm={24}>

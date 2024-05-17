@@ -46,12 +46,12 @@ const Dom = () => {
 
     const getAllDom = async () => {
         try {
-            showLoading("getAllPunishment")
+            showLoading("getAllDom")
             const { data } = await axios.get('https://localhost:7120/api/Dom')
             setDataDom(data.data)
-            closeLoading("getAllPunishment")
+            closeLoading("getAllDom")
         } catch (error) {
-            closeLoading("getAllPunishment")
+            closeLoading("getAllDom")
 
         }
     }

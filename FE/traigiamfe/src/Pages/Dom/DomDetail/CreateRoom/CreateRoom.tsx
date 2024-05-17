@@ -165,9 +165,6 @@ const CreateRoom = (props: ICreateRoom) => {
                         </Col>
                     </Row>
                 </Form>
-
-
-
             </Drawer>
         </div>
     )

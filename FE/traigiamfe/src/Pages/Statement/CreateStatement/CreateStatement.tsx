@@ -387,9 +387,7 @@ const CreateStatement = (props: ICreateStatement) => {
             closeLoading("cancelStatement")
         } catch (error) {
             closeLoading("cancelStatement")
-
         }
-
     };
 
     const handleOnConfirmStatement = async () => {

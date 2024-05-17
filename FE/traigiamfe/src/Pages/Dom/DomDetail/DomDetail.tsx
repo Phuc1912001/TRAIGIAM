@@ -1,16 +1,18 @@
-import { useLoading } from '../../../common/Hook/useLoading'
-import React, { useEffect, useState } from 'react'
+import { BedModel } from '@/common/Model/bed'
+import { RoomModel, RoomModelResponse } from '@/common/Model/Room'
+import { DeleteOutlined, EditOutlined, ExpandOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { Col, Popover, Row } from 'antd'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import styles from './DomDetail.module.scss'
+import { useLoading } from '../../../common/Hook/useLoading'
+import { useNotification } from '../../../common/Hook/useNotification'
 import Header from '../../../Components/Header/Header'
 import MobileHeader from '../../../Components/MobileHeader/MobileHeader'
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { RoomModel } from '@/common/Model/Room'
-import { useNotification } from '../../../common/Hook/useNotification'
-import CreateRoom from './CreateRoom/CreateRoom'
-import axios from 'axios'
-import { Col, Popover, Row } from 'antd'
 import ModalComponent from '../../../Components/ModalDelete/ModalComponent'
+import CreateBed from './CreateBed/CreateBed'
+import CreateRoom from './CreateRoom/CreateRoom'
+import styles from './DomDetail.module.scss'
 
 const DomDetail = () => {
 
@@ -41,20 +43,39 @@ const DomDetail = () => {
     const [recallRoom, setRecallRoom] = useState<boolean>(false)
     const [currentRecordRoom, setCurentRecordRoom] = useState<RoomModel>()
     const [isOpenModalRoom, setIsOpenModalRoom] = useState<boolean>(false);
+
+    const [dataBed, setDataBed] = useState<BedModel[]>([])
+
+    const [openCreateBed, setOpenCreateBed] = useState<boolean>(false);
+    const [isEditBed, setIsEditBed] = useState<boolean>(false);
+
+    const [resetBed, setResetBed] = useState<boolean>(false)
+
+    const [recallBed, setRecallBed] = useState<boolean>(false)
+    const [currentRecordBed, setCurentRecordBed] = useState<BedModel>()
+    const [isOpenModalBed, setIsOpenModalBed] = useState<boolean>(false);
+    const [currentRoom, setCurentRoom] = useState<RoomModel>()
+
+
     const { showLoading, closeLoading } = useLoading()
     const notification = useNotification();
 
     const getAllRoom = async () => {
         try {
-            showLoading("getAllPunishment")
-            const { data } = await axios.get('https://localhost:7120/api/Room')
+            showLoading("getAllRoom")
+            const model = {
+                domId: state.idDom
+            }
+            const { data } = await axios.post('https://localhost:7120/api/Room/AllRoom', model)
             setDataRoom(data.data)
-            closeLoading("getAllPunishment")
+            closeLoading("getAllRoom")
         } catch (error) {
-            closeLoading("getAllPunishment")
+            closeLoading("getAllRoom")
 
         }
     }
+
+
 
     useEffect(() => {
         getAllRoom()
@@ -97,6 +118,13 @@ const DomDetail = () => {
             closeLoading("deleteRoom");
         }
     };
+
+    const handleOpenCreateBed = (item: RoomModel) => {
+        setOpenCreateBed(true);
+        setIsEditBed(false);
+        setResetBed(!resetBed)
+        setCurentRoom(item)
+    };
     return (
         <div>
             <div className="share-sticky">
@@ -115,7 +143,7 @@ const DomDetail = () => {
                 <div>
                     <Row gutter={[24, 24]} >
                         {
-                            dataRoom.map((item: RoomModel) => {
+                            dataRoom.map((item: RoomModelResponse) => {
 
                                 const content = (
                                     <div className={styles.contentPopup} >
@@ -148,13 +176,42 @@ const DomDetail = () => {
                                                     <div className={styles.icon} >div</div>
                                                 </Popover>
                                             </div>
-                                            <Row gutter={[12, 12]} >
-                                                <Col sm={8} md={4} >
-                                                    <div className={styles.bedRoom} >
+                                            {/* <CardBed
+                                                setOpenCreateBed={setOpenCreateBed}
+                                                setIsEditBed={setIsEditBed}
+                                                setResetBed={setResetBed}
+                                                setRecallBed={setRecallBed}
+                                                item={item}
+                                                setCurentRoom={setCurentRoom}
+                                                resetBed={resetBed}
+                                                setDataBed={setDataBed}
+                                                dataBed={dataBed}
+                                                recallBed={recallBed}
 
-                                                    </div>
-                                                </Col>
-                                                <Col sm={8} md={4} >
+                                            /> */}
+                                            <Row gutter={[12, 12]} >
+                                                {
+                                                    item?.listBed?.map((bed) => {
+                                                        return (
+                                                            <Col sm={8} md={4} >
+                                                                <div className={styles.bedRoom} >
+                                                                    <div className={styles.bedInfo} >
+                                                                        {
+                                                                            bed?.prisonerBed?.imageSrc ?
+                                                                                <img style={{ width: '100%' }} src={bed?.prisonerBed?.imageSrc} alt="" />
+                                                                                : <div>
+                                                                                    <ExpandOutlined style={{ fontSize: 18 }} />
+                                                                                </div>
+                                                                        }
+
+                                                                    </div>
+                                                                </div>
+                                                                <div className={styles.bedName} >{bed.bedName}</div>
+                                                            </Col>
+                                                        )
+                                                    })
+                                                }
+                                                <Col sm={8} md={4} onClick={() => handleOpenCreateBed(item ?? {})} >
                                                     <div className={styles.btnBedRoom} >
                                                         <PlusOutlined />
                                                     </div>
@@ -176,6 +233,20 @@ const DomDetail = () => {
                 setRecallRoom={setRecallRoom}
                 resetRoom={resetRoom}
                 currentRecordRoom={currentRecordRoom}
+            />
+
+            <CreateBed
+                openCreateBed={openCreateBed}
+                setOpenCreateBed={setOpenCreateBed}
+                isEditBed={isEditBed}
+                recallBed={recallBed}
+                setRecallBed={setRecallBed}
+                recallRoom={recallRoom}
+                setRecallRoom={setRecallRoom}
+                resetBed={resetBed}
+                currentRecordBed={currentRecordBed}
+                currentRoom={currentRoom}
+
             />
 
             <ModalComponent

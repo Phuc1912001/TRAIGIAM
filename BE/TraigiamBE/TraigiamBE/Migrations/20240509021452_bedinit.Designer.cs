@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraigiamBE.Models;
 
@@ -11,9 +12,10 @@ using TraigiamBE.Models;
 namespace TraigiamBE.Migrations
 {
     [DbContext(typeof(PrisonDBContext))]
-    partial class PrisonDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240509021452_bedinit")]
+    partial class bedinit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,8 +217,8 @@ namespace TraigiamBE.Migrations
                     b.Property<long?>("BandingID")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("BedId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("Bed")
+                        .HasColumnType("int");
 
                     b.Property<string>("Cccd")
                         .HasColumnType("nvarchar(max)");
@@ -230,8 +232,8 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("Crime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("DomId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("Dom")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImagePrisoner")
                         .HasColumnType("nvarchar(100)");
@@ -250,9 +252,6 @@ namespace TraigiamBE.Migrations
 
                     b.Property<string>("PrisonerSex")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("RoomId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");

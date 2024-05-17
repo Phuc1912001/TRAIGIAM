@@ -246,11 +246,11 @@ const CreateVisit = (props: ICreateVisit) => {
             >
                 Đóng
             </Button>
-            {currentRecord?.status !== 3 && (
+            {currentRecord?.status !== 2 ? (
                 <div onClick={handleOpenModel} className="btn-orange">
                     {renderBtn(currentRecord?.status ?? 0)}
                 </div>
-            )}
+            ) : ''}
         </div>
     );
 

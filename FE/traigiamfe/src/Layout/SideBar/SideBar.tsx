@@ -1,6 +1,6 @@
 import {
     BookOutlined,
-    CommentOutlined, FileDoneOutlined,
+    CommentOutlined, DatabaseOutlined, FileDoneOutlined,
     HomeOutlined,
     IdcardOutlined,
     ReconciliationOutlined,
@@ -47,7 +47,7 @@ const SideBar = () => {
         {
             id: 6,
             path: "/externalmoment",
-            name: "Xuất Nhập",
+            name: "Ra Vào",
             icon: < SelectOutlined />,
         },
         {
@@ -59,8 +59,8 @@ const SideBar = () => {
         {
             id: 8,
             path: "/dom",
-            name: "Phòng Ban",
-            icon: < HomeOutlined />,
+            name: "Nhà Giam",
+            icon: <DatabaseOutlined />,
         },
         {
             id: 9,

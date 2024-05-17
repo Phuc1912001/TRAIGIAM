@@ -1,70 +1,81 @@
 .breacrumb {
-    cursor: pointer;
+  cursor: pointer;
 
-    &:hover {
-        color: black;
-        text-decoration: underline;
-    }
+  &:hover {
+    color: black;
+    text-decoration: underline;
+  }
 }
 
 .containerDetail {
-    padding: 20px 100px;
+  padding: 20px 100px;
 }
 
 .containerPrisoner {
-    margin-top: 20px;
-    .title {
-        margin-bottom: 20px;
-    }
-    .containerCard {
+  margin-top: 20px;
+  .title {
+    margin-bottom: 20px;
+  }
+  .containerCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px;
+    background-color: rgba(245, 57, 0, 0.133);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border: 1px solid;
+
+    .wrapperInfor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .containerInfor {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 10px  10px;
-        background-color: rgb(234, 241, 242);
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        border: 1px solid  ;
-       
-        .wrapperInfor {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-        
-                .containerInfor {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    width: 180px;
-        
-                    .avatar {
-                        width: 40px;
-                        height: 40px;
-                        object-fit: cover;
-                        border-radius: 4px;
-                    }
-        
-                    .name {
-                        cursor: pointer;
-                        color: #006677;
-                        font-weight: 600;
-        
-                        &:hover {
-                            text-decoration: underline;
-                        }
-                    }
-                }
-            }
-    }
+        gap: 10px;
+        // width: 180px;
 
-    .expandCard {
-       padding: 20px;
-        border-left: 1px solid rgb(202, 201, 201);
-        border-right: 1px solid rgb(202, 201, 201);
-        border-bottom: 1px solid rgb(202, 201, 201);
-        margin-bottom: 30px;
-        .title {
-            margin-bottom: 15px;
+        .avatar {
+          width: 40px;
+          height: 40px;
+          object-fit: cover;
+          border-radius: 4px;
         }
+
+        .name {
+          cursor: pointer;
+          color: #006677;
+          font-weight: 600;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  .expandCard {
+    padding: 20px;
+    border-left: 1px solid rgb(202, 201, 201);
+    border-right: 1px solid rgb(202, 201, 201);
+    border-bottom: 1px solid rgb(202, 201, 201);
+    margin-bottom: 30px;
+    .title {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.footer {
+  padding: 15px 100px;
+  background-color: white;
+  border-top: 1px solid #e6e7e8;
+  .wrapperBtn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 }

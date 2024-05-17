@@ -48,10 +48,30 @@
       }
     }
 
-    .bedRoom  {
+    .bedRoom {
       height: 65px;
-        width: 60px;
+      width: 60px;
       border: 1px solid gray;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 5px;
+      .bedInfo {
+        height: 65px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          border-radius: 5px;
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
 
     .btnBedRoom {
@@ -63,10 +83,15 @@
       align-items: center;
       justify-content: center;
       border-radius: 5px;
-        background-color: rgb(255, 235, 235);
+      background-color: rgb(255, 235, 235);
       &:hover {
         background-color: rgb(247, 202, 202);
       }
+    }
+    .bedName {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }

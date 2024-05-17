@@ -114,7 +114,7 @@ const Statement = () => {
     }
 
     const handleNavigate = (record: StatmentModel) => {
-        navigate(`/infringement/${record.id}`)
+        navigate(`/infringement/${record.irId}`)
     }
 
 

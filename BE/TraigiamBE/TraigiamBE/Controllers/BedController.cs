@@ -16,18 +16,58 @@ namespace TraigiamBE.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PunishmentModel>>> GetAllBed()
+        [HttpPost("AllBed")]
+        public async Task<ActionResult<IEnumerable<DomInfoModel>>> GetAllBed(DomInfoModel domInfo )
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var listPunishment = (await _context.BedM.Select(x => new RoomModel
-                {
-                    Id = x.Id,
-                    DomId = x.DomId,
-                    RoomName = x.RoomName,
-                }).ToListAsync()).OrderByDescending(item => item.CreateAt);
+                var prisoner = _context.Prisoner;
+                var listPunishment = (await _context.BedModels.Where(x => x.DomId == domInfo.DomId && x.RoomId == domInfo.RoomId)
+                    .Select(x => new BedModelDto
+                    {
+                        Id = x.Id,
+                        DomId = x.DomId,
+                        BedName = x.BedName,
+                        RoomId = x.RoomId,
+                        //PrisonerBed =  prisoner.Where(p => p.BedId == x.Id).Select(p => new PrisonerModelDto
+                        //{
+                        //    Id = p.Id,
+                        //    PrisonerName = p.PrisonerName,
+                        //    PrisonerAge = p.PrisonerAge,
+                        //    PrisonerSex = p.PrisonerSex,
+                        //    BandingID = p.BandingID, 
+                        //    ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, p.ImagePrisoner),
+                        //}).FirstOrDefault()
+                    }).ToListAsync()).OrderByDescending(item => item.CreateAt);
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = listPunishment;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong";
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPost("LimitBed")]
+        public async Task<ActionResult<IEnumerable<DomInfoModel>>> GetLimitBed(DomInfoModel domInfo)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var prisoner = _context.Prisoner;
+                var listPunishment = (await _context.BedModels.Where(x => x.DomId == domInfo.DomId && x.RoomId == domInfo.RoomId)
+                    .Select(x => new BedModelDto
+                    {
+                        Id = x.Id,
+                        DomId = x.DomId,
+                        BedName = x.BedName,
+                        RoomId = x.RoomId,
+                    }).ToListAsync()).OrderByDescending(item => item.CreateAt);
                 response.Status = true;
                 response.StatusMessage = "Success";
                 response.Data = listPunishment;
@@ -70,24 +110,24 @@ namespace TraigiamBE.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponseModel>> CreateRoom(RoomModel roomModel)
+        public async Task<ActionResult<BaseResponseModel>> CreateBed(BedModel bedModel)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                if (roomModel == null)
+                if (bedModel == null)
                 {
                     response.Status = false;
-                    response.StatusMessage = "roomModel model is null.";
+                    response.StatusMessage = "bedModel model is null.";
                     return BadRequest(response);
                 }
 
-                _context.RoomModels.Add(roomModel);
+                _context.BedModels.Add(bedModel);
                 await _context.SaveChangesAsync();
 
                 response.Status = true;
-                response.StatusMessage = "roomModel created successfully";
-                response.Data = roomModel;
+                response.StatusMessage = "bedModel created successfully";
+                response.Data = bedModel;
                 return Ok(response);
             }
             catch (Exception ex)
@@ -99,20 +139,20 @@ namespace TraigiamBE.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BaseResponseModel>> EditRoom(long id, RoomModel roomModel)
+        public async Task<ActionResult<BaseResponseModel>> EditBed(long id, BedModel bedModel)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                if (id != roomModel.Id)
+                if (id != bedModel.Id)
                     return BadRequest(new BaseResponseModel { Status = false, StatusMessage = "Invalid ID" });
 
-                var data = _context.Entry(roomModel).State = EntityState.Modified;
+                var data = _context.Entry(bedModel).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
                 response.Status = true;
-                response.Data = roomModel;
-                response.StatusMessage = "roomModel updated successfully";
+                response.Data = bedModel;
+                response.StatusMessage = "bedModel updated successfully";
                 return Ok(response);
             }
             catch (Exception ex)
@@ -124,25 +164,25 @@ namespace TraigiamBE.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BaseResponseModel>> DeleteRoom(long id)
+        public async Task<ActionResult<BaseResponseModel>> DeleteBed(long id)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var roomModel = await _context.RoomModels.FindAsync(id);
-                if (roomModel == null)
+                var bedModel = await _context.BedModels.FindAsync(id);
+                if (bedModel == null)
                 {
                     response.Status = false;
-                    response.StatusMessage = "roomModel not found";
+                    response.StatusMessage = "bedModel not found";
                     return NotFound(response);
                 }
 
-                _context.RoomModels.Remove(roomModel);
+                _context.BedModels.Remove(bedModel);
                 await _context.SaveChangesAsync();
 
                 response.Status = true;
-                response.StatusMessage = "roomModel deleted successfully";
-                response.Data = roomModel;
+                response.StatusMessage = "bedModel deleted successfully";
+                response.Data = bedModel;
                 return Ok(response);
 
             }

@@ -22,6 +22,8 @@ namespace TraigiamBE.Models
         public DbSet<DomModel> DomModels { get; set; }
         public DbSet<RoomModel> RoomModels { get; set; }
 
+        public DbSet<BedModel> BedModels { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
