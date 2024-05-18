@@ -27,6 +27,7 @@ export interface InfringementResponse {
   YouthIRIds?: number[];
   rivise?: number;
   punishId?: number;
+  punishName?:string;
   status?: number;
   createdBy?: number;
   createdByName?: string;

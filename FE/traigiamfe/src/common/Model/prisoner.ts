@@ -1,4 +1,7 @@
+import { CheckInCheckOutModel } from "./checkincheckout"
+import { InfringementModel } from "./infringement"
 import { StatmentModel } from "./statement"
+import { VisitModel } from "./visit"
 
 export interface PrisonerModel {
     id?: number,
@@ -44,6 +47,9 @@ export interface PrisonerResponse {
     imageSrc?:string
     filePrisoner?:any,
     isActiveBanding?:boolean,
-    listStatement?:StatmentModel
+    listStatement?:StatmentModel[],
+    listExternal?: CheckInCheckOutModel[],
+    listVisit?:VisitModel[],
+    listInfingement?: InfringementModel[]
 }
 

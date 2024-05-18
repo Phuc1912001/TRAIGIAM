@@ -32,7 +32,7 @@ const StatusInfringement = (props: IStatusInfringement) => {
                         Chờ Giám Đốc
                     </Tag>
                 )
-            case 1:
+            case 2:
                 return (
                     <Tag
                         style={{

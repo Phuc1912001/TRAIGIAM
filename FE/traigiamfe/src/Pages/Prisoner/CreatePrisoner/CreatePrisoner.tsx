@@ -90,7 +90,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     const getAllStaff = async () => {
         try {
             showLoading("getAllStaff")
-            const { data } = await axios.get('https://localhost:7120/api/staff')
+            const { data } = await axios.get('https://localhost:7120/api/staff/staffActive')
             setDataStaff(data.data)
             let newData = data.data.map((item: StaffModel) => ({
                 label: item.staffName,

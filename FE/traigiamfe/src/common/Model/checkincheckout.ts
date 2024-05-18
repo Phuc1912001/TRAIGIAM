@@ -12,3 +12,4 @@ export interface CheckInCheckOutModel {
     modifiedBy?:number,
     modifiedByName?:string,
 }
+

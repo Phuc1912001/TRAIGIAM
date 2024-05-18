@@ -197,7 +197,7 @@ const CheckInCheckOut = () => {
                 <div className={styles.wrapperBtn}>
                     <div className={"createBtn"} onClick={handleOpenCreate}>
                         <PlusCircleOutlined style={{ fontSize: 18 }} />
-                        Tạo Xuất Nhập
+                        Tạo Phiếu Ra Vào
                     </div>
                     <div>search</div>
                 </div>
@@ -223,10 +223,10 @@ const CheckInCheckOut = () => {
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
                 handleDelete={handleDeletePrisoner}
-                title="Xác xóa xuất nhập"
-                textConfirm="Xóa xuất nhập"
+                title="Xác xóa ra vào"
+                textConfirm="Xóa ra vào"
             >
-                <div>{`Bạn có muốn xóa Xuất Nhập của ${currentRecord?.prisonerId}`}</div>
+                <div>{`Bạn có muốn xóa ra vào của ${currentRecord?.prisonerId}`}</div>
             </ModalComponent>
         </div>
     );

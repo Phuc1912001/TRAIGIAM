@@ -130,6 +130,7 @@ namespace TraigiamBE.Controllers
                         {
                             Id = e.Id,
                             Emtype = e.Emtype,
+                            PrisonerName = x.PrisonerName,
                             EndDate = e.EndDate,
                             StartDate = e.StartDate,
                             Status = e.Status,
@@ -141,6 +142,7 @@ namespace TraigiamBE.Controllers
                         ListVisit = visitList.Where(v => v.PrisonerId == id).Select(v => new VisitModelDto
                         {
                             Id = v.Id,
+                            PrisonerName = x.PrisonerName,
                             Desc = v.Desc,
                             StartDate = v.StartDate,
                             EndDate = v.EndDate,

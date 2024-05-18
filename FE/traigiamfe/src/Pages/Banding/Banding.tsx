@@ -17,10 +17,10 @@ import { Tooltip } from 'antd';
 const Banding = () => {
     const items = [
         {
-            title: <div>Cấp Bậc</div>,
+            title: <div>Xếp Loại</div>,
         },
         {
-            title: <div>Danh Sách Cấp Bậc</div>,
+            title: <div>Danh Sách Xếp Loại</div>,
         },
     ];
 
@@ -176,7 +176,7 @@ const Banding = () => {
                 <div className={styles.wrapperBtn}>
                     <div className={"createBtn"} onClick={handleOpenCreate}>
                         <PlusCircleOutlined style={{ fontSize: 18 }} />
-                        Tạo Cấp Bậc
+                        Tạo Xếp Loại
                     </div>
                     <div>search</div>
                 </div>
@@ -204,10 +204,10 @@ const Banding = () => {
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
                 handleDelete={handleDeleteBanding}
-                title="Xác Nhận Xóa Cấp Bậc"
-                textConfirm="Xóa Cấp Bậc"
+                title="Xác Nhận Xóa Xếp Loại"
+                textConfirm="Xóa Xếp Loại"
             >
-                <div>{`Bạn có muốn xóa Cấp Bậc ${currentRecord?.bandingID}.`}</div>
+                <div>{`Bạn có muốn xóa Xếp Loại ${currentRecord?.bandingID}.`}</div>
             </ModalComponent>
         </div>
     )

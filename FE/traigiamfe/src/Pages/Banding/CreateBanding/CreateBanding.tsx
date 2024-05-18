@@ -61,7 +61,7 @@ const CreateBanding = (props: ICreateBanding) => {
                 status: value.status ?? true
             }
             await axios.post("https://localhost:7120/api/Banding", model);
-            notification.success(<div>Tạo Cấp Bậc Thành Công.</div>);
+            notification.success(<div>Tạo Xếp Lioại Thành Công.</div>);
             setOpenCreatePunish(false);
             setRecall(!recall);
             closeLoading("createBanding");
@@ -83,7 +83,7 @@ const CreateBanding = (props: ICreateBanding) => {
                 status: value.status ?? true
             }
             await axios.put(`https://localhost:7120/api/Banding/${currentRecord?.id}`, model);
-            notification.success(<div>Sửa Cấp Bậc Thành Công.</div>);
+            notification.success(<div>Sửa Xếp Loại Thành Công.</div>);
             setOpenCreatePunish(false);
             setRecall(!recall);
             closeLoading("editBanding");
@@ -111,7 +111,7 @@ const CreateBanding = (props: ICreateBanding) => {
                 Đóng
             </Button>
             <div onClick={handleOnFinish} className="btn-orange">
-                Tạo Cấp Bậc
+                Tạo Xếp Loại
             </div>
         </div>
     );
@@ -127,7 +127,7 @@ const CreateBanding = (props: ICreateBanding) => {
                 Đóng
             </Button>
             <div onClick={handleOnEdit} className="btn-orange">
-                Sửa Cấp Bậc
+                Sửa Xếp Loại
             </div>
         </div>
     );
@@ -164,7 +164,7 @@ const CreateBanding = (props: ICreateBanding) => {
     return (
         <div>
             <Drawer
-                title={isView ? "Chi tiết Cấp Bậc" : isEdit ? "Sửa Cấp Bậc" : "Tạo Cấp Bậc"}
+                title={isView ? "Chi tiết Xếp Loại " : isEdit ? "Sửa Xếp Loại" : "Tạo Xếp Loại"}
                 open={openCreatePunish}
                 placement="right"
                 closable={false}
@@ -177,7 +177,7 @@ const CreateBanding = (props: ICreateBanding) => {
             >
                 {
                     isView ? <div>
-                        <TextItem label='Tên Cấp Bậc' textItemProps={{ isCol: true, spanNumber: 24 }}  >
+                        <TextItem label='Tên Xếp Loại' textItemProps={{ isCol: true, spanNumber: 24 }}  >
                             <div className={styles.bandingName}  >
                                 <img alt="banding" src={IBandingMap.get((currentRecord?.bandingID ?? 10) as BandingEnum)} />
                                 {IBandingTextMap.get(currentRecord?.bandingID ?? BandingEnum.Entry)}
@@ -198,11 +198,11 @@ const CreateBanding = (props: ICreateBanding) => {
                                         },
                                     ]}
                                     name="bandingID"
-                                    label="Loại Cấp bậc:"
+                                    label="Xếp Loại:"
                                 >
                                     <Select
                                         rootClassName={styles.emFilterSelectMultiple}
-                                        placeholder="Chọn loại cấp bậc"
+                                        placeholder="Chọn xếp loại "
                                         // loading={!ygm}
                                         options={optionBaningType}
                                         filterOption={filterOption}

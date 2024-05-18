@@ -121,7 +121,7 @@ const CreateExternal = (props: ICreateExternal) => {
             };
 
             await axios.post("https://localhost:7120/api/External", model);
-            notification.success(<div>Tạo Xuất Nhập thành công.</div>);
+            notification.success(<div>Tạo phiếu ra vào thành công.</div>);
             setOpenCreateExternal(false);
             setRecall(!recall);
             closeLoading("createExternal");
@@ -155,7 +155,7 @@ const CreateExternal = (props: ICreateExternal) => {
                 `https://localhost:7120/api/External/${currentRecord?.id}`,
                 model
             );
-            notification.success(<div>Sửa Xuất Nhập thành công.</div>);
+            notification.success(<div>Sửa phiếu ra vào thành công.</div>);
             setOpenCreateExternal(false);
             setRecall(!recall);
             closeLoading("editExternal");
@@ -249,7 +249,7 @@ const CreateExternal = (props: ICreateExternal) => {
                 Đóng
             </Button>
             <div onClick={handleOnFinish} className="btn-orange">
-                Tạo Xuất Nhập
+                Tạo Ra Vào
             </div>
         </div>
     );
@@ -265,7 +265,7 @@ const CreateExternal = (props: ICreateExternal) => {
                 Đóng
             </Button>
             <div onClick={handleOnEdit} className="btn-orange">
-                Sửa Xuất Nhập
+                Sửa Ra Vào
             </div>
         </div>
     );
@@ -298,6 +298,19 @@ const CreateExternal = (props: ICreateExternal) => {
         { label: "Đi Điều Tra", value: 3 },
     ];
 
+    const genderEMType = (emtype: number) => {
+        switch (emtype) {
+            case 1:
+                return <div>Nhập Viện</div>;
+            case 2:
+                return <div>Ra Tòa</div>;
+            case 3:
+                return <div>Đi Điều Tra</div>;
+            default:
+                break;
+        }
+    };
+
     useEffect(() => {
         if (isEdit) {
             const formatData = {
@@ -316,10 +329,10 @@ const CreateExternal = (props: ICreateExternal) => {
             <Drawer
                 title={
                     isView
-                        ? "Chi tiết Xuất Nhập"
+                        ? "Chi tiết Ra vào"
                         : isEdit
-                            ? "Sửa Xuất Nhập"
-                            : "Tạo Xuất Nhập"
+                            ? "Sửa Ra vào"
+                            : "Tạo Ra vào"
                 }
                 open={openCreateExternal}
                 placement="right"
@@ -343,8 +356,11 @@ const CreateExternal = (props: ICreateExternal) => {
                             <TextItem label="Tên Phạm Nhân">
                                 {currentRecord?.prisonerName}
                             </TextItem>
-                            <TextItem label="Loại Xuất Nhập">
-                                {currentRecord?.emtype}
+                            <TextItem label="Loại Phiếu Ra vào">
+                                {
+                                    genderEMType(currentRecord?.emtype ?? 1)
+                                }
+
                             </TextItem>
                             <TextItem label="Ngày Bắt Đầu">
                                 {dayjs(currentRecord?.startDate).format("DD-MM-YYYY")}
@@ -397,15 +413,15 @@ const CreateExternal = (props: ICreateExternal) => {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Vui lòng điền loại xuất nhập.",
+                                            message: "Vui lòng điền loại ra vào.",
                                         },
                                     ]}
                                     name="emtype"
-                                    label="Loại xuất nhập:"
+                                    label="Loại ra vào:"
                                 >
                                     <Select
                                         rootClassName={styles.emFilterSelectMultiple}
-                                        placeholder="Chọn loại xuất nhập"
+                                        placeholder="Chọn loại ra vào"
                                         // loading={!ygm}
                                         options={optionEMType}
                                         filterOption={filterOption}
@@ -465,7 +481,7 @@ const CreateExternal = (props: ICreateExternal) => {
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
                 handleDelete={handleConfirm}
-                title="Xác Nhận Đơn Xuất Nhập"
+                title="Xác Nhận Phiếu ra vào"
                 textConfirm={renderBtn(currentRecord?.status ?? 0)}
             >
                 <div>{renderContent(currentRecord?.status ?? 0)}</div>

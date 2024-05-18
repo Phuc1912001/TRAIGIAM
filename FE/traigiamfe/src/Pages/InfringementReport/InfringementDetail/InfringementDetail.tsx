@@ -1,62 +1,70 @@
-import { InfringementResponse } from '@/common/Model/infringement'
-import { PrisonerResponse } from '@/common/Model/prisoner'
-import { Button, Row, Tooltip } from 'antd'
-import axios from 'axios'
-import dayjs from 'dayjs'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useLoading } from '../../../common/Hook/useLoading'
-import Header from '../../../Components/Header/Header'
-import MobileHeader from '../../../Components/MobileHeader/MobileHeader'
-import TextItem from '../../../Components/TextItem/TextItem'
-import StatusInfringement from '../StatusInfringement/StatusInfringement'
-import styles from './InfringementDetail.module.scss'
-import imgage from '../../../assets/default.jpg'
-import { DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons'
-import Table, { ColumnsType } from 'antd/es/table'
-import { StatmentModel } from '@/common/Model/statement'
-import StatusStatement from '../../Statement/StatusStatement/StatusStatement'
-import ModalComponent from '../../../Components/ModalDelete/ModalComponent'
-
-
+import { InfringementResponse } from "@/common/Model/infringement";
+import { PrisonerResponse } from "@/common/Model/prisoner";
+import { Button, Row, Tooltip } from "antd";
+import axios from "axios";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useLoading } from "../../../common/Hook/useLoading";
+import Header from "../../../Components/Header/Header";
+import MobileHeader from "../../../Components/MobileHeader/MobileHeader";
+import TextItem from "../../../Components/TextItem/TextItem";
+import StatusInfringement from "../StatusInfringement/StatusInfringement";
+import styles from "./InfringementDetail.module.scss";
+import imgage from "../../../assets/default.jpg";
+import {
+    DeleteOutlined,
+    EditOutlined,
+    InfoCircleOutlined,
+} from "@ant-design/icons";
+import Table, { ColumnsType } from "antd/es/table";
+import { StatmentModel } from "@/common/Model/statement";
+import StatusStatement from "../../Statement/StatusStatement/StatusStatement";
+import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
+import { BandingEnum, IBandingMap } from "../../../common/Model/banding";
 
 const InfringementDetail = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const handleNavigateToList = () => {
-        navigate("/infringement")
-    }
-    const { showLoading, closeLoading } = useLoading()
-    const [openModel, setOpenModel] = useState<boolean>(false)
+        navigate("/infringement");
+    };
+    const { showLoading, closeLoading } = useLoading();
+    const [openModel, setOpenModel] = useState<boolean>(false);
 
     const items = [
         {
-            title: <div>Vi Phạm</div>
+            title: <div>Vi Phạm</div>,
         },
         {
-            title: <div className={styles.breacrumb} onClick={handleNavigateToList} >Danh Sách Vi Phạm</div>
+            title: (
+                <div className={styles.breacrumb} onClick={handleNavigateToList}>
+                    Danh Sách Vi Phạm
+                </div>
+            ),
         },
         {
-            title: <div>Chi Tiết Vi Phạm</div>
+            title: <div>Chi Tiết Vi Phạm</div>,
         },
     ];
 
-    const { id } = useParams()
-    const [dataDetail, setDataDetail] = useState<InfringementResponse>()
+    const { id } = useParams();
+    const [dataDetail, setDataDetail] = useState<InfringementResponse>();
 
     const handelGetDetail = async () => {
         try {
-            showLoading("detailIR")
-            const { data } = await axios.get(`https://localhost:7120/api/infringement/${id}`)
-            setDataDetail(data.data)
-            closeLoading("detailIR")
+            showLoading("detailIR");
+            const { data } = await axios.get(
+                `https://localhost:7120/api/infringement/${id}`
+            );
+            setDataDetail(data.data);
+            closeLoading("detailIR");
         } catch (error) {
-            closeLoading("detailIR")
+            closeLoading("detailIR");
         }
-
-    }
+    };
     useEffect(() => {
-        handelGetDetail()
-    }, [id])
+        handelGetDetail();
+    }, [id]);
 
     const handleNavigate = (record: PrisonerResponse) => {
         navigate(`/prisoner/${record.id}`);
@@ -66,22 +74,19 @@ const InfringementDetail = () => {
         // setIsView(true)
         // setCurrentRecord(record)
         // setOpenCreateStatement(true);
-    }
+    };
 
     const handleCancel = () => {
         navigate(`/infringement`);
-
-    }
+    };
 
     const handleOnFinish = () => {
-        setOpenModel(true)
-    }
+        setOpenModel(true);
+    };
 
     const handleConfirm = async () => {
-        console.log('alo');
-
-    }
-
+        console.log("alo");
+    };
 
     const columns: ColumnsType<StatmentModel> = [
         {
@@ -95,15 +100,18 @@ const InfringementDetail = () => {
                     </div>
                 );
             },
-
         },
         {
             title: "Tên Vi Phạm",
             dataIndex: "irName",
             key: "irName",
             render: (_, record) => {
-                return <div onClick={() => handleNavigate(record)} className={styles.irName} >{record.irName}</div>
-            }
+                return (
+                    <div onClick={() => handleNavigate(record)} className={styles.irName}>
+                        {record.irName}
+                    </div>
+                );
+            },
         },
         {
             title: "Trạng Thái",
@@ -135,79 +143,85 @@ const InfringementDetail = () => {
         // },
     ];
 
-
-
+    const renderRivese = (revise: number) => {
+        switch (revise) {
+            case 1:
+                return "Nghiêm trọng";
+            case 2:
+                return "Lớn";
+            case 3:
+                return "Nhỏ";
+            default:
+                break;
+        }
+    };
 
     return (
         <div>
             <div className="share-sticky">
                 <Header items={items} />
             </div>
-            <div className="share-sticky-mobile" >
+            <div className="share-sticky-mobile">
                 <MobileHeader />
             </div>
 
-            <div className={styles.containerDetail} >
+            <div className={styles.containerDetail}>
                 <h2>Chi Tiết Vi Phạm</h2>
 
-                <Row style={{ height: '100%', marginTop: '40px' }}  >
-                    <TextItem label='Mã Vi Phạm' >{dataDetail?.mvp}</TextItem>
-                    <TextItem label='Trạng Thái' >
+                <Row style={{ height: "100%", marginTop: "40px" }}>
+                    <TextItem label="Mã Vi Phạm">{dataDetail?.mvp}</TextItem>
+                    <TextItem label="Trạng Thái">
                         <StatusInfringement status={dataDetail?.status} />
                     </TextItem>
-                    <TextItem label='Tên Vi Phạm' >{dataDetail?.nameIR}</TextItem>
-                    <TextItem label='Địa Điểm' >{dataDetail?.location}</TextItem>
-                    <TextItem label='Mức Độ' >{dataDetail?.rivise}</TextItem>
-                    <TextItem label='Hình Phạt' >{dataDetail?.punishId}</TextItem>
-                    <TextItem label='Thời gian' >{dayjs(dataDetail?.timeInfringement).format("DD MM YYYY")}</TextItem>
-                    <TextItem label='Tạo Bởi' >{dataDetail?.createdByName}</TextItem>
-                    <TextItem label='Cập Nhập Bởi' >{dataDetail?.modifiedByName ?? 'N/A'}</TextItem>
+                    <TextItem label="Tên Vi Phạm">{dataDetail?.nameIR}</TextItem>
+                    <TextItem label="Địa Điểm">{dataDetail?.location}</TextItem>
+                    <TextItem label="Mức Độ">
+                        {renderRivese(dataDetail?.rivise ?? 1)}
+                    </TextItem>
+                    <TextItem label="Hình Phạt">{dataDetail?.punishName}</TextItem>
+                    <TextItem label="Thời gian">
+                        {dayjs(dataDetail?.timeInfringement).format("DD MM YYYY")}
+                    </TextItem>
+                    <TextItem label="Tạo Bởi">{dataDetail?.createdByName}</TextItem>
+                    <TextItem label="Cập Nhập Bởi">
+                        {dataDetail?.modifiedByName ?? "N/A"}
+                    </TextItem>
                 </Row>
 
-                <div className={styles.containerPrisoner} >
-                    <div className={styles.title} >
+                <div className={styles.containerPrisoner}>
+                    <div className={styles.title}>
                         <h3>Danh sách phạm nhân :</h3>
                     </div>
 
                     {dataDetail?.listPrisonerStatement?.map((item: PrisonerResponse) => (
                         <div>
                             <div key={item.id} className={styles.containerCard}>
-
                                 <div className={styles.wrapperInfor}>
                                     <div className={styles.containerInfor}>
                                         <div>
-                                            <img className={styles.avatar} src={item.imageSrc} alt="Avatar" />
+                                            <img
+                                                className={styles.avatar}
+                                                src={item.imageSrc}
+                                                alt="Avatar"
+                                            />
                                         </div>
                                         <div>
                                             <div className={styles.name}>{item.prisonerName}</div>
-                                            <div>{`${item.prisonerAge} tuổi`}</div> {/* Assuming item has an age field */}
+                                            <div>{`${item.prisonerAge} tuổi`}</div>{" "}
+                                            {/* Assuming item has an age field */}
                                         </div>
                                     </div>
-                                    {/* <Tooltip
-                                        placement="top"
-                                        title={<div className="customTooltip">Cấp bậc này đã tạm nhưng.</div>}
-                                        color="#ffffff"
-                                        arrow={true}
-                                    >
-                                        <InfoCircleOutlined
-                                            style={{
-                                                color: '#D01B1B',
-                                                borderRadius: '10px',
-                                                width: '16px',
-                                                height: '16px',
-                                                marginLeft: '8px',
-                                                fontSize: '16px',
-                                                cursor: 'pointer',
-                                            }}
-                                        />
-                                    </Tooltip> */}
+                                    <img alt="banding" src={IBandingMap.get((item?.bandingID ?? 10) as BandingEnum)} />
+
                                 </div>
                             </div>
                             <div className={styles.expandCard}>
-                                <div className={styles.title} >Lời Khai: </div>
+                                <div className={styles.title}>Lời Khai: </div>
                                 <Table
                                     columns={columns}
-                                    dataSource={Array.isArray(item?.listStatement) ? item.listStatement : []}
+                                    dataSource={
+                                        Array.isArray(item?.listStatement) ? item.listStatement : []
+                                    }
                                     className={`${styles.prisonerTable} share-border-table`}
                                     tableLayout="auto"
                                 />
@@ -215,10 +229,9 @@ const InfringementDetail = () => {
                         </div>
                     ))}
                 </div>
-
             </div>
-            {
-                dataDetail?.status !== 2 && <div className="share-stickyBot">
+            {dataDetail?.status !== 2 && (
+                <div className="share-stickyBot">
                     <div className={styles.footer}>
                         <div className={styles.wrapperBtn}>
                             <Button
@@ -235,7 +248,7 @@ const InfringementDetail = () => {
                         </div>
                     </div>
                 </div>
-            }
+            )}
 
             <ModalComponent
                 isOpenModal={openModel}
@@ -244,11 +257,12 @@ const InfringementDetail = () => {
                 title="Xác nhận vi phạm"
                 textConfirm="Xác Nhận Vi Phạm"
             >
-                <div>{`Bạn có muốn xác nhận vi phạm ${<span>{dataDetail?.mvp}</span>}.`}</div>
+                <div>Bạn có muốn xác nhận vi phạm
+                    <span> {dataDetail?.mvp}</span>
+                    .</div>
             </ModalComponent>
-
         </div>
-    )
-}
+    );
+};
 
-export default InfringementDetail
+export default InfringementDetail;

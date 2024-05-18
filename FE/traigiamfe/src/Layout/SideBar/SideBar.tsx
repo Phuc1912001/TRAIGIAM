@@ -65,7 +65,7 @@ const SideBar = () => {
         {
             id: 9,
             path: "/banding",
-            name: "Cấp Bậc",
+            name: "Xếp Loại",
             icon: < HomeOutlined />,
         },
     ];

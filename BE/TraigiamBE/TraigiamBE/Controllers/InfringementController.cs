@@ -73,6 +73,7 @@ namespace TraigiamBE.Controllers
                 var prisoner = _context.Prisoner;
                 var youthIRIds = _context.YouthIRModels;
                 var statement =  _context.StatementModels;
+                var punishment = _context.Punishment;
 
                 var infringementModel = await _context.InfringementModels
                     .Select(x => new InfringementModelDto
@@ -83,6 +84,7 @@ namespace TraigiamBE.Controllers
                         TimeInfringement = x.TimeInfringement,
                         Location = x.Location,
                         PunishId = x.PunishId,
+                        PunishName = punishment.Where(p=> p.Id == x.PunishId).Select(a => a.PunishName).FirstOrDefault(),
                         NameIR = x.NameIR,
                         Status = x.Status,
                         Rivise = x.Rivise,
@@ -98,7 +100,7 @@ namespace TraigiamBE.Controllers
                                 PrisonerAge = item.p.PrisonerAge,
                                 BandingID = item.p.BandingID,
                                 ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, item.p.ImagePrisoner),
-                                ListStatement =  statement.Where( s => s.IrId == id ).Select(state => new StatementModelDto
+                                ListStatement =  statement.Where( s => s.IrId == id && s.PrisonerId == item.p.Id).Select(state => new StatementModelDto
                                 {
                                     Id = state.Id,
                                     PrisonerId = state.PrisonerId,

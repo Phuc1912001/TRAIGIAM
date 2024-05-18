@@ -48,6 +48,32 @@ namespace TraigiamBE.Controllers
             }
         }
 
+        [HttpGet("staffActive")]
+        public async Task<ActionResult<IEnumerable<StaffModel>>> GetStaffActive()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var listStaff = (await _context.Staff.Where(s => s.IsActive == true).Select(x => new StaffModel
+                {
+                    Id = x.Id,
+                    StaffName = x.StaffName,
+                    StaffAge = x.StaffAge,
+                    StaffSex = x.StaffSex,
+                }).ToArrayAsync()).OrderByDescending(item => item.CreateAt);
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = listStaff;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong";
+                return BadRequest(response);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BaseResponseModel>> GetStaffById(int id)
         {
@@ -73,8 +99,8 @@ namespace TraigiamBE.Controllers
                         ImageStaff = x.ImageStaff,
                         ImageSrc = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, x.ImageStaff),
                         ListPrisoner = prisoner
-                            .Where(p => p.Mananger == x.Id )
-                            .Select( x => new PrisonerModelDto
+                            .Where(p => p.Mananger == x.Id)
+                            .Select(x => new PrisonerModelDto
                             {
                                 Id = x.Id,
                                 PrisonerName = x.PrisonerName,
@@ -128,7 +154,7 @@ namespace TraigiamBE.Controllers
                     return BadRequest(response);
                 }
 
-               
+
 
                 if (staffModel.FileStaff != null)
                 {
