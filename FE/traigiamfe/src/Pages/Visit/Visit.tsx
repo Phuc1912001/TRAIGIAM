@@ -1,19 +1,19 @@
 
-import React, { useEffect, useState } from 'react'
-import styles from './Visit.module.scss'
 import { VisitModel } from '@/common/Model/visit';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import { useLoading } from '../../common/Hook/useLoading';
 import { useNotification } from '../../common/Hook/useNotification';
 import Header from '../../Components/Header/Header';
 import MobileHeader from '../../Components/MobileHeader/MobileHeader';
-import axios from 'axios';
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import CreateVisit from './CreateVisit/CreateVisit';
 import ModalComponent from '../../Components/ModalDelete/ModalComponent';
-import { Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import dayjs from 'dayjs';
+import CreateVisit from './CreateVisit/CreateVisit';
 import StatusVisit from './StatusVisit/StatusVisit';
+import styles from './Visit.module.scss';
 
 const Visit = () => {
     const items = [

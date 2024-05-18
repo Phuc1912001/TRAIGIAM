@@ -1,15 +1,15 @@
-import { useNotification } from "../../../common/Hook/useNotification";
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { PunishmentModel } from "@/common/Model/punishment";
+import { CloseOutlined } from "@ant-design/icons";
 import { Button, Col, Drawer, Form, Input, Row, Switch } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import styles from "./CreatePunishment.module.scss";
 import { useLoading } from "../../../common/Hook/useLoading";
-import { PunishmentModel } from "@/common/Model/punishment";
+import { useNotification } from "../../../common/Hook/useNotification";
 import TextItem from "../../../Components/TextItem/TextItem";
 import StatusPunish from "../StatusPunish/StatusPunish";
+import styles from "./CreatePunishment.module.scss";
 
 interface ICreatePunish {
     openCreatePunish: boolean;

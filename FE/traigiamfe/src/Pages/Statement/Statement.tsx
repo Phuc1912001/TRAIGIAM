@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import styles from './Statement.module.scss'
-import Header from '../../Components/Header/Header'
-import MobileHeader from '../../Components/MobileHeader/MobileHeader';
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { StatmentModel } from '@/common/Model/statement';
-import { useLoading } from '../../common/Hook/useLoading';
-import { useNavigate } from 'react-router-dom';
-import { useNotification } from '../../common/Hook/useNotification';
-import CreateStatement from './CreateStatement/CreateStatement';
-import defaultImage from '../../assets/default.jpg';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import Table, { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import defaultImage from '../../assets/default.jpg';
+import { useLoading } from '../../common/Hook/useLoading';
+import { useNotification } from '../../common/Hook/useNotification';
+import Header from '../../Components/Header/Header';
+import MobileHeader from '../../Components/MobileHeader/MobileHeader';
 import ModalComponent from '../../Components/ModalDelete/ModalComponent';
+import CreateStatement from './CreateStatement/CreateStatement';
+import styles from './Statement.module.scss';
 import StatusStatement from './StatusStatement/StatusStatement';
 
 

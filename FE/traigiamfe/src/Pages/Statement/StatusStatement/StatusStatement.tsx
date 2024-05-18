@@ -1,6 +1,4 @@
 import { Tag } from 'antd';
-import React from 'react'
-import styles from './StatusStatement.module.scss'
 
 interface IStatusStatement {
     status?: number;

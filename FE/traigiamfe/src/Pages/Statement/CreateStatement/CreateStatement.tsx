@@ -1,33 +1,31 @@
-import { useLoading } from "../../../common/Hook/useLoading";
-import { useNotification } from "../../../common/Hook/useNotification";
+import {
+    InfringementModel,
+    InfringementResponse
+} from "@/common/Model/infringement";
+import { PrisonerModel } from "@/common/Model/prisoner";
 import { StatmentModel } from "@/common/Model/statement";
-import { useForm } from "antd/es/form/Form";
-import React, { useEffect, useState } from "react";
-import styles from "./CreateStatement.module.scss";
+import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import {
     Button,
     Col,
     DatePicker,
     Drawer,
     Form,
-    Image,
-    Input,
-    Row,
-    Select,
+    Image, Row,
+    Select
 } from "antd";
-import defaultImage from "../../../assets/default.jpg";
-import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import axios from "axios";
-import { PrisonerModel } from "@/common/Model/prisoner";
-import {
-    InfringementModel,
-    InfringementResponse,
-} from "@/common/Model/infringement";
+import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
 import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
+import defaultImage from "../../../assets/default.jpg";
+import { useLoading } from "../../../common/Hook/useLoading";
+import { useNotification } from "../../../common/Hook/useNotification";
+import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
 import TextItem from "../../../Components/TextItem/TextItem";
 import StatusStatement from "../StatusStatement/StatusStatement";
-import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
+import styles from "./CreateStatement.module.scss";
 
 interface IInitValue {
     imageName: string;

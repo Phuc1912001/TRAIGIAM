@@ -1,31 +1,30 @@
 import { createContext, useEffect, useState } from "react";
-import "./App.scss";
 import {
   createBrowserRouter,
   Navigate,
-  RouterProvider,
-  useNavigate,
+  RouterProvider
 } from "react-router-dom";
-import Login from "./Pages/Login/Login";
-import SignUp from "./Pages/SignUp/SignUp";
-import Layout from "./Layout/Layout";
-import Prisoner from "./Pages/Prisoner/Prisoner";
-import Staff from "./Pages/Staff/Staff";
-import InfringementReport from "./Pages/InfringementReport/InfringementReport";
-import Statement from "./Pages/Statement/Statement";
-import PrisonerDetail from "./Pages/Prisoner/PrisonerDetail/PrisonerDetail";
-import MyProfile from "./Pages/MyProfile/MyProfile";
+import "./App.scss";
 import { useLoading } from "./common/Hook/useLoading";
-import LazyLoading from "./LazyLoading/LazyLoading";
-import StaffDetail from "./Pages/Staff/StaffDetail/StaffDetail";
-import Punishment from "./Pages/Punishment/Punishment";
-import CheckInCheckOut from "./Pages/CheckInCheckOut/CheckInCheckOut";
-import Visit from "./Pages/Visit/Visit";
 import { UserModel } from "./common/Model/user";
-import Dom from "./Pages/Dom/Dom";
+import Layout from "./Layout/Layout";
+import LazyLoading from "./LazyLoading/LazyLoading";
 import Banding from "./Pages/Banding/Banding";
-import InfringementDetail from "./Pages/InfringementReport/InfringementDetail/InfringementDetail";
+import CheckInCheckOut from "./Pages/CheckInCheckOut/CheckInCheckOut";
+import Dom from "./Pages/Dom/Dom";
 import DomDetail from "./Pages/Dom/DomDetail/DomDetail";
+import InfringementDetail from "./Pages/InfringementReport/InfringementDetail/InfringementDetail";
+import InfringementReport from "./Pages/InfringementReport/InfringementReport";
+import Login from "./Pages/Login/Login";
+import MyProfile from "./Pages/MyProfile/MyProfile";
+import Prisoner from "./Pages/Prisoner/Prisoner";
+import PrisonerDetail from "./Pages/Prisoner/PrisonerDetail/PrisonerDetail";
+import Punishment from "./Pages/Punishment/Punishment";
+import SignUp from "./Pages/SignUp/SignUp";
+import Staff from "./Pages/Staff/Staff";
+import StaffDetail from "./Pages/Staff/StaffDetail/StaffDetail";
+import Statement from "./Pages/Statement/Statement";
+import Visit from "./Pages/Visit/Visit";
 
 export const contextUser = createContext<any>({});
 

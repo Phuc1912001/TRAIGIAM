@@ -1,19 +1,19 @@
 
-import { useLoading } from '../../../common/Hook/useLoading';
-import { useNotification } from '../../../common/Hook/useNotification';
 import { PrisonerModel } from '@/common/Model/prisoner';
 import { VisitModel } from '@/common/Model/visit';
-import ModalComponent from '../../../Components/ModalDelete/ModalComponent';
-import TextItem from '../../../Components/TextItem/TextItem';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Col, DatePicker, Drawer, Form, Row, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react'
-import styles from './CreateVisit.module.scss'
+import React, { useEffect, useState } from 'react';
+import { useLoading } from '../../../common/Hook/useLoading';
+import { useNotification } from '../../../common/Hook/useNotification';
+import ModalComponent from '../../../Components/ModalDelete/ModalComponent';
+import TextItem from '../../../Components/TextItem/TextItem';
 import StatusVisit from '../StatusVisit/StatusVisit';
+import styles from './CreateVisit.module.scss';
 
 interface ICreateVisit {
     openCreateVisit: boolean;
