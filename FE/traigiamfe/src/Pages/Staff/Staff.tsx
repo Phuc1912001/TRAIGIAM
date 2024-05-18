@@ -1,17 +1,17 @@
-import Header from '../../Components/Header/Header'
-import React, { useEffect, useState } from 'react'
-import styles from './Staff.module.scss'
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import CreateStaff from './CreateStaff/CreateStaff';
-import defaultImage from '../../assets/default.jpg';
-import Table, { ColumnsType } from "antd/es/table";
 import { StaffModel } from '@/common/Model/staff';
-import { useNavigate } from 'react-router-dom';
-import { useLoading } from '../../common/Hook/useLoading';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import Table, { ColumnsType } from "antd/es/table";
 import axios from 'axios';
-import StatusStaff from './Components/StatusStaff/StatusStaff';
-import ModalComponent from '../../Components/ModalDelete/ModalComponent';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import defaultImage from '../../assets/default.jpg';
+import { useLoading } from '../../common/Hook/useLoading';
 import { useNotification } from '../../common/Hook/useNotification';
+import Header from '../../Components/Header/Header';
+import ModalComponent from '../../Components/ModalDelete/ModalComponent';
+import StatusStaff from './Components/StatusStaff/StatusStaff';
+import CreateStaff from './CreateStaff/CreateStaff';
+import styles from './Staff.module.scss';
 
 
 const Staff = () => {

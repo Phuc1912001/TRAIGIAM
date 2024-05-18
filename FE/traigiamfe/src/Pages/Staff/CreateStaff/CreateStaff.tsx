@@ -1,5 +1,4 @@
-import { useLoading } from "../../../common/Hook/useLoading";
-import { useNotification } from "../../../common/Hook/useNotification";
+import { StaffModel } from "@/common/Model/staff";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import {
     Button,
@@ -7,17 +6,16 @@ import {
     Drawer,
     Form,
     Image,
-    Input,
-    InputNumber,
-    Row,
-    Switch,
+    Input, Row,
+    Switch
 } from "antd";
-import React, { useEffect, useState } from "react";
-import styles from "./CreateStaff.module.scss";
-import defaultImage from "../../../assets/default.jpg";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
-import { StaffModel } from "@/common/Model/staff";
+import React, { useEffect, useState } from "react";
+import defaultImage from "../../../assets/default.jpg";
+import { useLoading } from "../../../common/Hook/useLoading";
+import { useNotification } from "../../../common/Hook/useNotification";
+import styles from "./CreateStaff.module.scss";
 
 interface IInitValue {
     imageName: string;

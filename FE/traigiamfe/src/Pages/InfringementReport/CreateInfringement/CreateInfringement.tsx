@@ -1,17 +1,16 @@
+import { InfringementModel, InfringementResponse } from "@/common/Model/infringement";
+import { PrisonerModel } from "@/common/Model/prisoner";
+import { PunishmentModel } from "@/common/Model/punishment";
+import { CloseOutlined } from "@ant-design/icons";
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select } from "antd";
+import { useForm } from "antd/es/form/Form";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
-import { InfringementModel, InfringementResponse } from "@/common/Model/infringement";
-import { useForm } from "antd/es/form/Form";
-import React, { useEffect, useState } from "react";
 import styles from "./CreateInfringement.module.scss";
-import { PunishmentModel } from "@/common/Model/punishment";
-import axios from "axios";
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import TextItem from "@/Components/TextItem/TextItem";
-import dayjs from "dayjs";
-import TextArea from "antd/es/input/TextArea";
-import { PrisonerModel } from "@/common/Model/prisoner";
 
 interface ICreateInfringement {
     openCreateInfringement: boolean;

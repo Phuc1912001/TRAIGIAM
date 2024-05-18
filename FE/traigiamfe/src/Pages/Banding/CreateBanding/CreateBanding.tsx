@@ -1,16 +1,15 @@
-import { useLoading } from '../../../common/Hook/useLoading';
-import { useNotification } from '../../../common/Hook/useNotification';
-import { BandingModel, IBandingMap, IBandingTextMap } from '../../../common/Model/banding';
-import { BandingEnum } from '../../../common/Model/banding'
-import { useForm } from 'antd/es/form/Form';
-import React, { useEffect } from 'react'
-import styles from './CreateBanding.module.scss'
-import { Button, Col, Drawer, Form, Input, Row, Select, Switch } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import TextItem from '../../../Components/TextItem/TextItem';
+import { Button, Col, Drawer, Form, Row, Select, Switch } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
 import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useLoading } from '../../../common/Hook/useLoading';
+import { useNotification } from '../../../common/Hook/useNotification';
+import { BandingEnum, BandingModel, IBandingMap, IBandingTextMap } from '../../../common/Model/banding';
+import TextItem from '../../../Components/TextItem/TextItem';
 import StatusPunish from '../../../Pages/Punishment/StatusPunish/StatusPunish';
+import styles from './CreateBanding.module.scss';
 
 interface ICreateBanding {
     openCreatePunish: boolean;

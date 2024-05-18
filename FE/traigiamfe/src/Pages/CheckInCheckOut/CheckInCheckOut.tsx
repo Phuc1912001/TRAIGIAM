@@ -2,7 +2,7 @@ import { CheckInCheckOutModel } from "@/common/Model/checkincheckout";
 import {
     DeleteOutlined,
     EditOutlined,
-    PlusCircleOutlined,
+    PlusCircleOutlined
 } from "@ant-design/icons";
 import { Table } from "antd";
 import { ColumnsType } from "antd/es/table";
@@ -196,7 +196,8 @@ const CheckInCheckOut = () => {
             <div className={styles.wrapperContent}>
                 <div className={styles.wrapperBtn}>
                     <div className={"createBtn"} onClick={handleOpenCreate}>
-                        <PlusCircleOutlined style={{ fontSize: 18 }} />
+                        <PlusCircleOutlined style={{ fontSize: 18 }} />1d35
+
                         Tạo Phiếu Ra Vào
                     </div>
                     <div>search</div>

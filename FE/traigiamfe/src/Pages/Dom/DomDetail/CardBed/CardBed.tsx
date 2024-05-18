@@ -1,12 +1,12 @@
-import { useLoading } from '../../../../common/Hook/useLoading'
-import { useNotification } from '../../../../common/Hook/useNotification'
+import { BedModel } from '@/common/Model/bed'
 import { RoomModel } from '@/common/Model/Room'
 import { PlusOutlined } from '@ant-design/icons'
 import { Col, Row } from 'antd'
-import React, { useEffect } from 'react'
-import styles from './CardBed.module.scss'
 import axios from 'axios'
-import { BedModel } from '@/common/Model/bed'
+import React, { useEffect } from 'react'
+import { useLoading } from '../../../../common/Hook/useLoading'
+import { useNotification } from '../../../../common/Hook/useNotification'
+import styles from './CardBed.module.scss'
 
 interface ICardBed {
     setOpenCreateBed: React.Dispatch<React.SetStateAction<boolean>>;

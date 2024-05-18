@@ -1,15 +1,15 @@
-import Header from '../../Components/Header/Header';
-import MobileHeader from '../../Components/MobileHeader/MobileHeader';
-import React, { useEffect, useState } from 'react'
-import styles from './Dom.module.scss'
-import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { DomModel } from '@/common/Model/dom';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLoading } from '../../common/Hook/useLoading';
 import { useNotification } from '../../common/Hook/useNotification';
-import CreateDom from './CreateDom/CreateDom';
+import Header from '../../Components/Header/Header';
+import MobileHeader from '../../Components/MobileHeader/MobileHeader';
 import ModalComponent from '../../Components/ModalDelete/ModalComponent';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import CreateDom from './CreateDom/CreateDom';
+import styles from './Dom.module.scss';
 
 const Dom = () => {
 

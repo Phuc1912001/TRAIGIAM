@@ -1,3 +1,7 @@
+import { BedModel } from "@/common/Model/bed";
+import { DomModel } from "@/common/Model/dom";
+import { RoomModel } from "@/common/Model/Room";
+import { StaffModel } from "@/common/Model/staff";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import {
     Button,
@@ -8,21 +12,17 @@ import {
     Input,
     InputNumber,
     Row,
-    Select,
+    Select
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { PrisonerModel } from "../../../common/Model/prisoner";
-import styles from "./CreatePrisoner.module.scss";
 import defaultImage from "../../../assets/default.jpg";
 import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
-import { StaffModel } from "@/common/Model/staff";
 import { BandingEnum, BandingModel, IBandingTextMap } from "../../../common/Model/banding";
-import { DomModel } from "@/common/Model/dom";
-import { RoomModel } from "@/common/Model/Room";
-import { BedModel } from "@/common/Model/bed";
+import { PrisonerModel } from "../../../common/Model/prisoner";
+import styles from "./CreatePrisoner.module.scss";
 
 interface IInitValue {
     imageName: string;

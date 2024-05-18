@@ -1,18 +1,18 @@
-import { useLoading } from '../../../common/Hook/useLoading'
-import React, { useEffect, useState } from 'react'
+import { PrisonerResponse } from '@/common/Model/prisoner'
+import { StaffModelDetail } from '@/common/Model/staff'
+import { InfoCircleOutlined } from '@ant-design/icons'
+import { Row, Tooltip } from 'antd'
+import Table, { ColumnsType } from 'antd/es/table'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import styles from './StaffDetail.module.scss'
+import defaultImage from "../../../assets/default.jpg"
+import { useLoading } from '../../../common/Hook/useLoading'
+import { BandingEnum, IBandingMap } from '../../../common/Model/banding'
 import Header from '../../../Components/Header/Header'
 import MobileHeader from '../../../Components/MobileHeader/MobileHeader'
-import axios from 'axios'
-import { StaffModelDetail } from '@/common/Model/staff'
-import { Row, Tooltip } from 'antd'
 import TextItem from '../../../Components/TextItem/TextItem'
-import { PrisonerModel, PrisonerResponse } from '@/common/Model/prisoner'
-import Table, { ColumnsType } from 'antd/es/table'
-import defaultImage from "../../../assets/default.jpg";
-import { BandingEnum, IBandingMap } from '../../../common/Model/banding'
-import { InfoCircleOutlined } from '@ant-design/icons'
+import styles from './StaffDetail.module.scss'
 
 
 const StaffDetail = () => {

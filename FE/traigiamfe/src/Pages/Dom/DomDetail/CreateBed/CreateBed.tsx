@@ -1,14 +1,14 @@
+import { BedModel } from '@/common/Model/bed';
+import { RoomModel } from '@/common/Model/Room';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Col, Drawer, Form, Input, Row } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLoading } from '../../../../common/Hook/useLoading';
 import { useNotification } from '../../../../common/Hook/useNotification';
-import { BedModel } from '@/common/Model/bed';
-import { useForm } from 'antd/es/form/Form';
-import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom';
-import styles from './CreateBed.module.scss'
-import axios from 'axios';
-import { Button, Col, Drawer, Form, Input, Row } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
-import { RoomModel } from '@/common/Model/Room';
+import styles from './CreateBed.module.scss';
 
 interface ICreateBed {
     openCreateBed: boolean;

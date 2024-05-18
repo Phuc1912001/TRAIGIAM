@@ -1,5 +1,4 @@
 import { Tag } from 'antd';
-import React from 'react'
 
 interface IStatusExternal {
     status?: number | undefined;

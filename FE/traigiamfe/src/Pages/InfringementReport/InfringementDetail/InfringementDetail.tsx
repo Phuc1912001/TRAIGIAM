@@ -1,27 +1,21 @@
 import { InfringementResponse } from "@/common/Model/infringement";
 import { PrisonerResponse } from "@/common/Model/prisoner";
-import { Button, Row, Tooltip } from "antd";
+import { StatmentModel } from "@/common/Model/statement";
+import { Button, Row } from "antd";
+import Table, { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLoading } from "../../../common/Hook/useLoading";
+import { BandingEnum, IBandingMap } from "../../../common/Model/banding";
 import Header from "../../../Components/Header/Header";
 import MobileHeader from "../../../Components/MobileHeader/MobileHeader";
+import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
 import TextItem from "../../../Components/TextItem/TextItem";
+import StatusStatement from "../../Statement/StatusStatement/StatusStatement";
 import StatusInfringement from "../StatusInfringement/StatusInfringement";
 import styles from "./InfringementDetail.module.scss";
-import imgage from "../../../assets/default.jpg";
-import {
-    DeleteOutlined,
-    EditOutlined,
-    InfoCircleOutlined,
-} from "@ant-design/icons";
-import Table, { ColumnsType } from "antd/es/table";
-import { StatmentModel } from "@/common/Model/statement";
-import StatusStatement from "../../Statement/StatusStatement/StatusStatement";
-import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
-import { BandingEnum, IBandingMap } from "../../../common/Model/banding";
 
 const InfringementDetail = () => {
     const navigate = useNavigate();

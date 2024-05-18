@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import styles from './InfringementReport.module.scss'
-import Header from "../../Components/Header/Header";
-import MobileHeader from '../../Components/MobileHeader/MobileHeader';
-import { useLoading } from '../../common/Hook/useLoading';
 import { InfringementResponse } from '@/common/Model/infringement';
-import { useNotification } from '../../common/Hook/useNotification';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import CreateInfringement from './CreateInfringement/CreateInfringement';
+import { Popover } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { Popover } from 'antd';
-import ModalComponent from '../../Components/ModalDelete/ModalComponent';
-import StatusInfringement from './StatusInfringement/StatusInfringement';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLoading } from '../../common/Hook/useLoading';
+import { useNotification } from '../../common/Hook/useNotification';
+import Header from "../../Components/Header/Header";
+import MobileHeader from '../../Components/MobileHeader/MobileHeader';
+import ModalComponent from '../../Components/ModalDelete/ModalComponent';
+import CreateInfringement from './CreateInfringement/CreateInfringement';
+import styles from './InfringementReport.module.scss';
+import StatusInfringement from './StatusInfringement/StatusInfringement';
 
 
 const InfringementReport = () => {

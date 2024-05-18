@@ -1,18 +1,17 @@
-import Header from '../../Components/Header/Header';
-import MobileHeader from '../../Components/MobileHeader/MobileHeader';
-import React, { useEffect, useState } from 'react'
-import styles from './Banding.module.scss'
-import entry from '../../assets/svg/entry.svg'
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { BandingEnum, BandingModel, IBandingMap, IBandingTextMap } from '../../common/Model/banding';
+import { Tooltip } from 'antd';
+import Table, { ColumnsType } from 'antd/es/table';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useLoading } from '../../common/Hook/useLoading';
 import { useNotification } from '../../common/Hook/useNotification';
-import CreateBanding from './CreateBanding/CreateBanding';
-import axios from 'axios';
-import Table, { ColumnsType } from 'antd/es/table';
-import StatusPunish from '../Punishment/StatusPunish/StatusPunish';
+import { BandingEnum, BandingModel, IBandingMap, IBandingTextMap } from '../../common/Model/banding';
+import Header from '../../Components/Header/Header';
+import MobileHeader from '../../Components/MobileHeader/MobileHeader';
 import ModalComponent from '../../Components/ModalDelete/ModalComponent';
-import { Tooltip } from 'antd';
+import StatusPunish from '../Punishment/StatusPunish/StatusPunish';
+import styles from './Banding.module.scss';
+import CreateBanding from './CreateBanding/CreateBanding';
 
 const Banding = () => {
     const items = [

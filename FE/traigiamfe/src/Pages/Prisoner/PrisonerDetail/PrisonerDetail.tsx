@@ -1,19 +1,16 @@
-import Header from '../../../Components/Header/Header'
-import React, { useEffect, useState } from 'react'
-import styles from './PrisonerDetail.module.scss'
-import { useNavigate } from 'react-router-dom'
-import avatar from '../../../assets/avatar.jpg'
-import { Row, Table } from 'antd'
-import TextItem from '../../../Components/TextItem/TextItem'
-import MobileHeader from '../../../Components/MobileHeader/MobileHeader'
-import { useParams } from 'react-router-dom'
-import { PrisonerModel, PrisonerResponse } from '@/common/Model/prisoner'
+import { PrisonerResponse } from '@/common/Model/prisoner'
+import { Row } from 'antd'
 import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useLoading } from '../../../common/Hook/useLoading'
-import { ColumnsType } from 'antd/es/table'
-import { CheckInCheckOutModel } from '@/common/Model/checkincheckout'
-import StatusExternal from '../../CheckInCheckOut/StatusExternal/StatusExternal'
-import dayjs from 'dayjs'
+import Header from '../../../Components/Header/Header'
+import MobileHeader from '../../../Components/MobileHeader/MobileHeader'
+import TextItem from '../../../Components/TextItem/TextItem'
+import styles from './PrisonerDetail.module.scss'
+import PrisonerExternal from './PrisonerExternal/PrisonerExternal'
+import PrisonerInfringement from './PrisonerInfringement/PrisonerInfringement'
+import PrisonerVisit from './PrisonerVisit/PrisonerVisit'
 
 const PrisonerDetail = () => {
     const navigate = useNavigate()
@@ -54,80 +51,6 @@ const PrisonerDetail = () => {
     }, [id])
 
 
-    const handleToViewExternal = (record: CheckInCheckOutModel) => {
-        // setIsView(true);
-        // setCurentRecord(record);
-        // setOpenCreateExternal(true);
-    };
-
-    const genderEMType = (emtype: number) => {
-        switch (emtype) {
-            case 1:
-                return <div>Nhập Viện</div>;
-            case 2:
-                return <div>Ra Tòa</div>;
-            case 3:
-                return <div>Đi Điều Tra</div>;
-            default:
-                break;
-        }
-    };
-
-
-    const columns: ColumnsType<CheckInCheckOutModel> = [
-        {
-            title: "Tên Phạm Nhân",
-            dataIndex: "prisonerName",
-            key: "prisonerName",
-            render: (_, record) => {
-                return (
-                    <div onClick={() => handleToViewExternal(record)} className={styles.name}>
-                        {record.prisonerName}
-                    </div>
-                );
-            },
-        },
-        {
-            title: "Loại Xuât nhập",
-            dataIndex: "emtype",
-            key: "emtype",
-            render: (_, record) => {
-                return <div>{genderEMType(record.emtype ?? 0)}</div>;
-            },
-        },
-        {
-            title: "Trạng Thái",
-            dataIndex: "status",
-            key: "status",
-            render: (_, record) => {
-                return (
-                    <div>
-                        <StatusExternal status={record?.status} />
-                    </div>
-                );
-            },
-        },
-        {
-            title: "Ngày Bắt Đầu",
-            dataIndex: "startDate",
-            key: "startDate",
-            render: (_, record) => {
-                return <div>{dayjs(record?.startDate).format("DD-MM-YYYY")}</div>;
-            },
-        },
-        {
-            title: "Ngày Kết Thúc",
-            dataIndex: "endDate",
-            key: "endDate",
-            render: (_, record) => {
-                return <div>{dayjs(record?.endDate).format("DD-MM-YYYY")}</div>;
-            },
-        },
-
-    ];
-
-
-
     return (
         <div>
             <div className="share-sticky">
@@ -160,24 +83,13 @@ const PrisonerDetail = () => {
                 </Row>
 
                 <h3 className={styles.titleHistory} >Lịch Sử Ra Vào :</h3>
-                {
-                    dataDetail?.listExternal && dataDetail?.listExternal?.length > 0 ?
-                        <Table
-                            columns={columns}
-                            dataSource={dataDetail?.listExternal}
-                            className={`${styles.prisonerTable} share-border-table`}
-                            tableLayout="auto"
-                        /> : <div>Không tồn tại lịch sử </div>
-                }
-
+                <PrisonerExternal dataExternal={dataDetail?.listExternal} />
 
                 <h3 className={styles.titleHistory} >Lịch Sử Thăm Khám :</h3>
-                <Table
-                    columns={columns}
-                    dataSource={dataDetail?.listExternal}
-                    className={`${styles.prisonerTable} share-border-table`}
-                    tableLayout="auto"
-                />
+                <PrisonerVisit dataVisit={dataDetail?.listVisit} />
+
+                <h3 className={styles.titleHistory} >Lịch Sử Vi Phạm :</h3>
+                <PrisonerInfringement dataInfringement={dataDetail?.listInfingement} />
             </div>
         </div>
     )

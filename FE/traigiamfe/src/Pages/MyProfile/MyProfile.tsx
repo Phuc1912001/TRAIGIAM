@@ -1,10 +1,9 @@
-import Header from '../../Components/Header/Header'
-import React from 'react'
-import styles from './MyProfile.module.scss'
-import { Col, Row } from 'antd';
-import TextItem from '../../Components/TextItem/TextItem';
-import avatar from '../../assets/avatar.jpg'
 import { EditOutlined } from '@ant-design/icons';
+import { Row } from 'antd';
+import avatar from '../../assets/avatar.jpg';
+import Header from '../../Components/Header/Header';
+import TextItem from '../../Components/TextItem/TextItem';
+import styles from './MyProfile.module.scss';
 
 const MyProfile = () => {
     const items = [

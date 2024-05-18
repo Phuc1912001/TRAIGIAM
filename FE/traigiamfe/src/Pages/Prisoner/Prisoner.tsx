@@ -1,26 +1,21 @@
-import Header from "../../Components/Header/Header";
-import { Breadcrumb, Button, Layout, Table, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
-import styles from "./Prisoner.module.scss";
-import { ColumnsType } from "antd/es/table";
 import {
-    EditOutlined,
-    DeleteOutlined,
-    PlusCircleOutlined,
-    InfoCircleOutlined,
+    DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusCircleOutlined
 } from "@ant-design/icons";
-import { render } from "react-dom";
-import { useNavigate } from "react-router-dom";
-import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
-import avatar from "../../assets/avatar.jpg";
-import ModalComponent from "../../Components/ModalDelete/ModalComponent";
-import { PrisonerResponse } from "../../common/Model/prisoner";
-import MobileHeader from "../../Components/MobileHeader/MobileHeader";
+import { Table, Tooltip } from "antd";
+import { ColumnsType } from "antd/es/table";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import defaultImage from "../../assets/default.jpg";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
 import { BandingEnum, IBandingMap } from "../../common/Model/banding";
+import { PrisonerResponse } from "../../common/Model/prisoner";
+import Header from "../../Components/Header/Header";
+import MobileHeader from "../../Components/MobileHeader/MobileHeader";
+import ModalComponent from "../../Components/ModalDelete/ModalComponent";
+import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
+import styles from "./Prisoner.module.scss";
 
 const Prisoner = () => {
     const items = [

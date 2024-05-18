@@ -1,28 +1,25 @@
-import { useLoading } from "../../../common/Hook/useLoading";
-import { useNotification } from "../../../common/Hook/useNotification";
 import { CheckInCheckOutModel } from "@/common/Model/checkincheckout";
-import { useForm } from "antd/es/form/Form";
-import React, { useContext, useEffect, useState } from "react";
-import styles from "./CreateExternal.module.scss";
+import { PrisonerModel } from "@/common/Model/prisoner";
+import { CloseOutlined } from "@ant-design/icons";
 import {
     Button,
     Col,
     DatePicker,
     Drawer,
-    Form,
-    Input,
-    Row,
-    Select,
+    Form, Row,
+    Select
 } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import TextItem from "../../../Components/TextItem/TextItem";
+import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
-import { PrisonerModel } from "@/common/Model/prisoner";
 import axios from "axios";
 import dayjs from "dayjs";
-import StatusExternal from "../StatusExternal/StatusExternal";
-import { contextUser } from "../../../App";
+import React, { useEffect, useState } from "react";
+import { useLoading } from "../../../common/Hook/useLoading";
+import { useNotification } from "../../../common/Hook/useNotification";
 import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
+import TextItem from "../../../Components/TextItem/TextItem";
+import StatusExternal from "../StatusExternal/StatusExternal";
+import styles from "./CreateExternal.module.scss";
 
 interface ICreateExternal {
     openCreateExternal: boolean;

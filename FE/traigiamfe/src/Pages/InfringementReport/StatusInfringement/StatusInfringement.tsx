@@ -1,5 +1,4 @@
-import { Tag } from 'antd'
-import React from 'react'
+import { Tag } from 'antd';
 interface IStatusInfringement {
     status?: number;
 }
