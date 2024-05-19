@@ -12,8 +12,8 @@ using TraigiamBE.Models;
 namespace TraigiamBE.Migrations
 {
     [DbContext(typeof(PrisonDBContext))]
-    [Migration("20240503104114_ir1")]
-    partial class ir1
+    [Migration("20240518080444_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,56 @@ namespace TraigiamBE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BandingModels");
+                });
+
+            modelBuilder.Entity("TraigiamBE.Models.BedModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("BedName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("DomId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("RoomId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BedModels");
+                });
+
+            modelBuilder.Entity("TraigiamBE.Models.DomModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DomName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DomModels");
                 });
 
             modelBuilder.Entity("TraigiamBE.Models.ExternalModel", b =>
@@ -167,8 +217,8 @@ namespace TraigiamBE.Migrations
                     b.Property<long?>("BandingID")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("Bed")
-                        .HasColumnType("int");
+                    b.Property<long?>("BedId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Cccd")
                         .HasColumnType("nvarchar(max)");
@@ -182,8 +232,8 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("Crime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Dom")
-                        .HasColumnType("int");
+                    b.Property<long?>("DomId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ImagePrisoner")
                         .HasColumnType("nvarchar(100)");
@@ -202,6 +252,9 @@ namespace TraigiamBE.Migrations
 
                     b.Property<string>("PrisonerSex")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("RoomId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -273,6 +326,31 @@ namespace TraigiamBE.Migrations
                     b.ToTable("RegisterModels");
                 });
 
+            modelBuilder.Entity("TraigiamBE.Models.RoomModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("DomId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RoomName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoomModels");
+                });
+
             modelBuilder.Entity("TraigiamBE.Models.StaffModel", b =>
                 {
                     b.Property<long>("Id")
@@ -318,6 +396,55 @@ namespace TraigiamBE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Staff");
+                });
+
+            modelBuilder.Entity("TraigiamBE.Models.StatementModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedByName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageStatement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("IrId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ModifiedByName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("PrisonerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Statement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("TimeStatement")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatementModels");
                 });
 
             modelBuilder.Entity("TraigiamBE.Models.VisitModel", b =>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
-using TraigiamBE.Migrations;
 using TraigiamBE.Models;
 
 namespace TraigiamBE.Controllers

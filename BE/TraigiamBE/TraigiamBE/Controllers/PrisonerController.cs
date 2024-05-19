@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Hosting;
 using System.Net.WebSockets;
-using TraigiamBE.Migrations;
 using TraigiamBE.Models;
 
 namespace TraigiamBE.Controllers
