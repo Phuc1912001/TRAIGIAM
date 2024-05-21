@@ -123,7 +123,7 @@ const Banding = () => {
             key: "desc",
             width: '22%',
             render: (_, record) => {
-                return <div className='hcis-two-rows'>
+                return <div className='tg-two-rows'>
                     <Tooltip
 
                         placement="top"

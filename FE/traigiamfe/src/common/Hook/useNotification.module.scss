@@ -5,26 +5,26 @@ $error: #d01b1b;
 $successful: #02a56f;
 $border-disable: #d9d9d9;
 
-.hcisNotification.hcisCustomNotification {
+.tgNotification.tgCustomNotification {
   padding: 16px;
 
   :global {
-    .hcis-notification-success {
+    .tg-notification-success {
       color: $successful;
       font-size: 16px;
     }
 
-    .hcis-notification-error {
+    .tg-notification-error {
       color: $error;
       font-size: 16px;
     }
 
-    .hcis-notification-info {
+    .tg-notification-info {
       color: $information;
       font-size: 16px;
     }
 
-    .hcis-notification-warning {
+    .tg-notification-warning {
       color: $warning;
       font-size: 16px;
     }

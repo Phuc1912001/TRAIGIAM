@@ -58,7 +58,7 @@ const SideBar = () => {
         },
         {
             id: 8,
-            path: "/dom",
+            path: "/gender",
             name: "Nhà Giam",
             icon: <DatabaseOutlined />,
         },

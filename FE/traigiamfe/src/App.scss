@@ -151,10 +151,10 @@
 }
 
 
-.hcis-one-rows,
-.hcis-two-rows,
-.hcis-three-rows,
-.hcis-four-rows {
+.tg-one-rows,
+.tg-two-rows,
+.tg-three-rows,
+.tg-four-rows {
   display: -webkit-box;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -164,19 +164,19 @@
   cursor: pointer;
 }
 
-.hcis-one-rows {
+.tg-one-rows {
   -webkit-line-clamp: 1;
 }
 
-.hcis-two-rows {
+.tg-two-rows {
   -webkit-line-clamp: 2;
 }
 
-.hcis-three-rows {
+.tg-three-rows {
   -webkit-line-clamp: 3;
 }
 
-.hcis-four-rows {
+.tg-four-rows {
   -webkit-line-clamp: 4;
 }
 

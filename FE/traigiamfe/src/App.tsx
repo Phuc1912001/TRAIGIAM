@@ -13,6 +13,7 @@ import Banding from "./Pages/Banding/Banding";
 import CheckInCheckOut from "./Pages/CheckInCheckOut/CheckInCheckOut";
 import Dom from "./Pages/Dom/Dom";
 import DomDetail from "./Pages/Dom/DomDetail/DomDetail";
+import DomGender from "./Pages/DomGender/DomGender";
 import InfringementDetail from "./Pages/InfringementReport/InfringementDetail/InfringementDetail";
 import InfringementReport from "./Pages/InfringementReport/InfringementReport";
 import Login from "./Pages/Login/Login";
@@ -103,6 +104,10 @@ function App() {
         {
           path: "/visit",
           element: <Visit />,
+        },
+        {
+          path: "/gender",
+          element: <DomGender />,
         },
         {
           path: "/dom",

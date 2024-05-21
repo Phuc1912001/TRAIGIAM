@@ -5,7 +5,7 @@ import { ArgsProps } from 'antd/es/notification/interface';
 
 const useNotification = () => {
     const baseConfig: ArgsProps = {
-        className: `${styles.hcisNotification} ${styles.hcisCustomNotification}`,
+        className: `${styles.tgNotification} ${styles.tgCustomNotification}`,
         icon: <CheckCircleFilled />,
         duration: 3,
         message: ''
@@ -14,7 +14,7 @@ const useNotification = () => {
     const success = (message?: React.ReactNode, config?: Partial<ArgsProps>) => {
         const successConfig: ArgsProps = {
             ...baseConfig,
-            icon: <CheckCircleFilled className="hcis-notification-success" />
+            icon: <CheckCircleFilled className="tg-notification-success" />
         };
         notification.success({ ...successConfig, message, ...config });
 
@@ -22,7 +22,7 @@ const useNotification = () => {
     const info = (message?: React.ReactNode, config?: Partial<ArgsProps>) => {
         const infoConfig: ArgsProps = {
             ...baseConfig,
-            icon: <InfoCircleFilled className="hcis-notification-info" />,
+            icon: <InfoCircleFilled className="tg-notification-info" />,
             message: ''
         };
 
@@ -31,7 +31,7 @@ const useNotification = () => {
     const error = (message?: React.ReactNode, config?: Partial<ArgsProps>) => {
         const errorConfig: ArgsProps = {
             ...baseConfig,
-            icon: <ExclamationCircleFilled className="hcis-notification-error" />
+            icon: <ExclamationCircleFilled className="tg-notification-error" />
         };
 
         notification.error({ ...errorConfig, message, ...config });
@@ -39,7 +39,7 @@ const useNotification = () => {
     const warning = (message?: React.ReactNode, config?: Partial<ArgsProps>) => {
         const warningConfig: ArgsProps = {
             ...baseConfig,
-            icon: <WarningFilled className="hcis-notification-warning" />
+            icon: <WarningFilled className="tg-notification-warning" />
         };
 
         notification.warning({ ...warningConfig, message, ...config });

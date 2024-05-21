@@ -21,21 +21,21 @@ export default function TextItem(props: IProps) {
 
     return isCol ? (
         <Col
-            className={`${styles.hcisComptReporttextitem} ipadMiniResponsive ${className ?? ''} `}
+            className={`${styles.tgComptReporttextitem} ipadMiniResponsive ${className ?? ''} `}
             xs={spanMobNumber}
             md={spanNumber}
         >
-            <div className={`hcis-compt-reporttextitem-label ${greyedOut && styles.greyedOutLabel}`} style={props.style}>
+            <div className={`tg-compt-reporttextitem-label ${greyedOut && styles.greyedOutLabel}`} style={props.style}>
                 {label}
             </div>
-            <div className={`hcis-compt-reporttextitem-text ${greyedOut ? styles.greyedOutText : ''}`}>{children}</div>
+            <div className={`tg-compt-reporttextitem-text ${greyedOut ? styles.greyedOutText : ''}`}>{children}</div>
         </Col>
     ) : (
-        <div className={`${styles.hcisComptReporttextitem} ${className ?? ''}`}>
-            <div className={`hcis-compt-reporttextitem-label ${greyedOut ? styles.greyedOutLabel : ''}`} style={props.style}>
+        <div className={`${styles.tgComptReporttextitem} ${className ?? ''}`}>
+            <div className={`tg-compt-reporttextitem-label ${greyedOut ? styles.greyedOutLabel : ''}`} style={props.style}>
                 {label}
             </div>
-            <div className={`hcis-compt-reporttextitem-text ${greyedOut ? styles.greyedOutText : ''}`}>{children}</div>
+            <div className={`tg-compt-reporttextitem-text ${greyedOut ? styles.greyedOutText : ''}`}>{children}</div>
         </div>
     );
 }
