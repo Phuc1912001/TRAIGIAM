@@ -24,16 +24,19 @@ namespace TraigiamBE.Controllers
             {
                 var listBed = _context.BedModels;
                 var prisoner = _context.Prisoner;
-                var listPunishment = (await _context.RoomModels.Where(x => x.DomId == domInfo.DomId).Select(x => new RoomModelDto
+                var listDomGender = _context.DomGenderModels;
+                var listPunishment = (await _context.RoomModels.Where(x => x.DomId == domInfo.DomId && x.DomGenderId == domInfo.DomGenderId ).Select(x => new RoomModelDto
                 {
                     Id = x.Id,
                     DomId = x.DomId,
                     RoomName = x.RoomName,  
+                    DomGenderId = x.DomGenderId,
+                    DomGenderName = listDomGender.Where(l => l.Id == domInfo.DomGenderId).Select(x => x.DomGenderName).FirstOrDefault(),
                     ListBed = listBed.Where(b => b.RoomId == x.Id).Select( b => new BedModelDto
                     {
                         Id = b.Id,
                         BedName = b.BedName,
-                        PrisonerBed = prisoner.Where( p => p.DomId == x.DomId && p.RoomId == x.Id && p.BedId == b.Id ).Select(
+                        PrisonerBed = prisoner.Where( p => p.DomId == x.DomId && p.RoomId == x.Id && p.BedId == b.Id && p.DomGenderId == x.DomGenderId).Select(
                             p => new PrisonerModelDto
                             {
                                 Id = p.Id,
@@ -43,6 +46,7 @@ namespace TraigiamBE.Controllers
                                 Cccd = p.Cccd,
                                 Mpn = p.Mpn,
                                 BandingID = p.BandingID,
+                                DomGenderId = p.DomGenderId,
                                 DomId = p.DomId,
                                 RoomId = p.RoomId,
                                 BedId = p.BedId, 

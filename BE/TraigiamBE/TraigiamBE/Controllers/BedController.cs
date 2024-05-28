@@ -23,7 +23,7 @@ namespace TraigiamBE.Controllers
             try
             {
                 var prisoner = _context.Prisoner;
-                var listPunishment = (await _context.BedModels.Where(x => x.DomId == domInfo.DomId && x.RoomId == domInfo.RoomId)
+                var listPunishment = (await _context.BedModels.Where(x => x.DomId == domInfo.DomId && x.RoomId == domInfo.RoomId && x.DomGenderId == domInfo.DomGenderId)
                     .Select(x => new BedModelDto
                     {
                         Id = x.Id,

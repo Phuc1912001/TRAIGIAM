@@ -5,6 +5,7 @@ export interface BedModel {
     bedName?:string;
     roomId?:number;
     domId?:number;
+    domGenderId?:number;
 }
 
 export interface BedModelResponse {

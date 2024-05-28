@@ -16,16 +16,25 @@ namespace TraigiamBE.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PunishmentModel>>> GetAllDom()
+        [HttpPost("AllDom")]
+        public async Task<ActionResult<IEnumerable<PunishmentModel>>> GetAllDom(DomInfoModel domInfo)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var listPunishment = (await _context.DomModels.Select(x => new DomModel
+                var listDomGender =  _context.DomGenderModels;
+
+                if (listDomGender == null)
+                {
+                    throw new Exception();
+                }
+                
+                var listPunishment = (await _context.DomModels.Where(x => x.DomGenderId == domInfo.DomGenderId).Select(x => new DomModelDto
                 {
                     Id = x.Id,
                     DomName = x.DomName,
+                    DomGenderId = x.DomGenderId,  
+                    DomGenderName = listDomGender.Where(l => l.Id == domInfo.DomGenderId).Select(x => x.DomGenderName).FirstOrDefault()
                 }).ToListAsync()).OrderByDescending(item => item.CreateAt);
                 response.Status = true;
                 response.StatusMessage = "Success";

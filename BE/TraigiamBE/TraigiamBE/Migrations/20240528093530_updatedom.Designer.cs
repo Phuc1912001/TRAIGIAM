@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraigiamBE.Models;
 
@@ -11,9 +12,10 @@ using TraigiamBE.Models;
 namespace TraigiamBE.Migrations
 {
     [DbContext(typeof(PrisonDBContext))]
-    partial class PrisonDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240528093530_updatedom")]
+    partial class updatedom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,9 +259,6 @@ namespace TraigiamBE.Migrations
 
                     b.Property<string>("Crime")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("DomGenderId")
-                        .HasColumnType("bigint");
 
                     b.Property<long?>("DomId")
                         .HasColumnType("bigint");

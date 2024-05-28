@@ -50,6 +50,7 @@ const CreateRoom = (props: ICreateRoom) => {
             await form.validateFields();
             const model: RoomModel = {
                 domId: state.idDom,
+                domGenderId: state.domGenderId,
                 roomName: value.roomName
             }
             await axios.post("https://localhost:7120/api/Room", model);
@@ -71,6 +72,7 @@ const CreateRoom = (props: ICreateRoom) => {
             const model: RoomModel = {
                 id: currentRecordRoom?.id,
                 domId: state.idDom,
+                domGenderId: state.domGenderId,
                 roomName: value.roomName
             }
             await axios.put(`https://localhost:7120/api/Room/${currentRecordRoom?.id}`, model);
@@ -139,6 +141,18 @@ const CreateRoom = (props: ICreateRoom) => {
             >
                 <Form layout="vertical" form={form}>
                     <Row>
+                        <Col sm={24}>
+                            <Form.Item
+                                rules={[
+                                    { required: true, message: "Vui lòng điền tên khu vực." },
+                                ]}
+                                name="domGenderName"
+                                label="Tên Nhà:"
+                                initialValue={`${state.domGenderName}`}
+                            >
+                                <Input maxLength={150} disabled={true} />
+                            </Form.Item>
+                        </Col>
                         <Col sm={24}>
                             <Form.Item
                                 rules={[

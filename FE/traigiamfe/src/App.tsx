@@ -110,13 +110,14 @@ function App() {
           element: <DomGender />,
         },
         {
-          path: "/dom",
+          path: "gender/dom",
           element: <Dom />,
         },
         {
-          path: "/dom/:id",
+          path: "gender/dom/:id",
           element: <DomDetail />,
         },
+
         {
           path: "/banding",
           element: <Banding />,

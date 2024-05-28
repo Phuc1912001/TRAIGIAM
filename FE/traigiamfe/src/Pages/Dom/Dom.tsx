@@ -2,7 +2,7 @@ import { DomModel } from '@/common/Model/dom';
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLoading } from '../../common/Hook/useLoading';
 import { useNotification } from '../../common/Hook/useNotification';
 import Header from '../../Components/Header/Header';
@@ -12,13 +12,21 @@ import CreateDom from './CreateDom/CreateDom';
 import styles from './Dom.module.scss';
 
 const Dom = () => {
+    const navigate = useNavigate()
+
+    const handleNavigateToList = () => {
+        navigate('/gender')
+    }
 
     const items = [
         {
-            title: <div>Phòng Ban</div>,
+            title: <div>Nhà Giam</div>,
         },
         {
-            title: <div>Danh Sách Phòng Ban</div>,
+            title: <div className={styles.breacrumb} onClick={handleNavigateToList} >Danh Sách Nhà Giam</div>
+        },
+        {
+            title: <div>Danh Sách Khu</div>,
         },
     ];
 
@@ -35,7 +43,9 @@ const Dom = () => {
     const { showLoading, closeLoading } = useLoading()
     const notification = useNotification();
 
-    const nabigate = useNavigate()
+    const { state } = useLocation()
+
+
 
     const handleOpenCreate = () => {
         setOpenCreateDom(true);
@@ -47,7 +57,10 @@ const Dom = () => {
     const getAllDom = async () => {
         try {
             showLoading("getAllDom")
-            const { data } = await axios.get('https://localhost:7120/api/Dom')
+            const model: any = {
+                domGenderId: state?.domGender?.id ?? 0
+            }
+            const { data } = await axios.post(`https://localhost:7120/api/Dom/AllDom`, model)
             setDataDom(data.data)
             closeLoading("getAllDom")
         } catch (error) {
@@ -63,7 +76,8 @@ const Dom = () => {
         getAllDom()
     }, [recall])
 
-    const handleOpenEdit = (record: DomModel) => {
+    const handleOpenEdit = (record: DomModel, e: any) => {
+        e.stopPropagation();
         setOpenCreateDom(true);
         setIsEdit(true);
         setCurentRecord(record)
@@ -71,7 +85,8 @@ const Dom = () => {
         setReset(!reset)
     }
 
-    const handleOpenDelete = (record: DomModel) => {
+    const handleOpenDelete = (record: DomModel, e: any) => {
+        e.stopPropagation();
         setIsOpenModal(true);
         setCurentRecord(record)
     }
@@ -92,7 +107,7 @@ const Dom = () => {
     };
 
     const handleNavigate = (record: DomModel) => {
-        nabigate(`/dom/${record?.id}`, { state: { domName: record.domName, idDom: record.id } })
+        navigate(`/gender/dom/${record?.id}`, { state: { domName: record.domName, idDom: record.id, domGenderId: record.domGenderId, domGenderName: record.domGenderName } })
     }
 
     return (
@@ -120,10 +135,10 @@ const Dom = () => {
                                         {item.domName}
                                     </div>
                                     <div className={styles.wrapperAction}>
-                                        <div className={"editBtn"} onClick={() => handleOpenEdit(item)}>
+                                        <div className={"editBtn"} onClick={(e) => handleOpenEdit(item, e)}>
                                             <EditOutlined style={{ fontSize: 18 }} />
                                         </div>
-                                        <div className={"editBtn"} onClick={() => handleOpenDelete(item)}>
+                                        <div className={"editBtn"} onClick={(e) => handleOpenDelete(item, e)}>
                                             <DeleteOutlined style={{ fontSize: 18 }} />
                                         </div>
                                     </div>

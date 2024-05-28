@@ -10,6 +10,8 @@ namespace TraigiamBE.Models
         public string? Cccd { get; set; }
         public string? Mpn { get; set; }
         public long? BandingID { get; set; }
+
+        public long? DomGenderId { get; set; }  
         public long? DomId {  get; set; }
         public long? RoomId { get; set; }   
         public long? BedId { get; set; }

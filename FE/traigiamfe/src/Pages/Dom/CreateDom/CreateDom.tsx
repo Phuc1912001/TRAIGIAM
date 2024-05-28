@@ -4,6 +4,7 @@ import { Button, Col, Drawer, Form, Input, Row } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import axios from 'axios';
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLoading } from '../../../common/Hook/useLoading';
 import { useNotification } from '../../../common/Hook/useNotification';
 import styles from './CreateDom.module.scss';
@@ -38,6 +39,7 @@ const CreateDom = (props: ICreateDom) => {
     const [form] = useForm();
     const notification = useNotification();
     const { showLoading, closeLoading } = useLoading();
+    const { state } = useLocation()
 
     const onClose = () => {
         setOpenCreateDom(false);
@@ -49,8 +51,13 @@ const CreateDom = (props: ICreateDom) => {
             showLoading("createDom");
             const value = await form.getFieldsValue();
             await form.validateFields();
+            const model: DomModel = {
+                domGenderId: state.domGender.id,
+                ...value
+            }
+            console.log('model', model);
 
-            await axios.post("https://localhost:7120/api/Dom", value);
+            await axios.post("https://localhost:7120/api/Dom", model);
             notification.success(<div>Tạo Khu Thành Công.</div>);
             setOpenCreateDom(false);
             setRecall(!recall);
@@ -68,6 +75,7 @@ const CreateDom = (props: ICreateDom) => {
             await form.validateFields();
             const model: DomModel = {
                 id: currentRecord?.id,
+                domGenderId: state?.domGender?.id,
                 domName: value.domName
             }
             await axios.put(`https://localhost:7120/api/Dom/${currentRecord?.id}`, model);
@@ -138,6 +146,18 @@ const CreateDom = (props: ICreateDom) => {
             >
                 <Form layout="vertical" form={form}>
                     <Row>
+                        <Col sm={24}>
+                            <Form.Item
+                                rules={[
+                                    { required: true, message: "Vui lòng điền tên khu vực." },
+                                ]}
+                                name="domGenderName"
+                                label="Nhà:"
+                                initialValue={`${state?.domGender?.domGenderName}`}
+                            >
+                                <Input maxLength={150} disabled={true} />
+                            </Form.Item>
+                        </Col>
                         <Col sm={24}>
                             <Form.Item
                                 rules={[

@@ -58,6 +58,7 @@ const CreateBed = (props: ICreateBed) => {
             const model: BedModel = {
                 domId: currentRoom?.domId,
                 roomId: currentRoom?.id,
+                domGenderId: currentRoom?.domGenderId,
                 bedName: value.bedName
             }
             await axios.post("https://localhost:7120/api/Bed", model);
@@ -80,6 +81,7 @@ const CreateBed = (props: ICreateBed) => {
             const model: BedModel = {
                 domId: state.idDom,
                 roomId: value.roomId,
+                domGenderId: currentRoom?.domGenderId,
                 bedName: value.bedName
             }
             await axios.put(`https://localhost:7120/api/Bed/${currentRecordBed?.id}`, model);
@@ -149,6 +151,19 @@ const CreateBed = (props: ICreateBed) => {
             >
                 <Form layout="vertical" form={form}>
                     <Row>
+                        <Col sm={24}>
+                            <Form.Item
+                                rules={[
+                                    { required: true, message: "Vui lòng điền tên khu vực." },
+                                ]}
+                                name="domGenderId"
+                                label="Tên Nhà:"
+                                initialValue={`${currentRoom?.domGenderName}`}
+
+                            >
+                                <Input maxLength={150} disabled={true} />
+                            </Form.Item>
+                        </Col>
                         <Col sm={24}>
                             <Form.Item
                                 rules={[

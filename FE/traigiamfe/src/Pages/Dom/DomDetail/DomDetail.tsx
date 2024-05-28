@@ -21,12 +21,22 @@ const DomDetail = () => {
         navigate("/dom")
     }
     const { state } = useLocation()
+
+
+    const handleNavigateToDom = () => {
+        navigate('/gender/dom', { state: { domGender: { id: state.domGenderId } } })
+    }
+
+
     const items = [
         {
-            title: <div>Phòng Ban</div>
+            title: <div>Nhà Giam</div>
         },
         {
-            title: <div className={styles.breacrumb} onClick={handleNavigateToList} >Danh Sách Phòng Ban</div>
+            title: <div className={styles.breacrumb} onClick={handleNavigateToList} >Danh Sách Nhà Giam</div>
+        },
+        {
+            title: <div className={styles.breacrumb} onClick={handleNavigateToDom} >Danh Sách Khu</div>
         },
         {
             title: <div>{state.domName}</div>
@@ -64,7 +74,8 @@ const DomDetail = () => {
         try {
             showLoading("getAllRoom")
             const model = {
-                domId: state.idDom
+                domId: state.idDom,
+                domGenderId: state.domGenderId
             }
             const { data } = await axios.post('https://localhost:7120/api/Room/AllRoom', model)
             setDataRoom(data.data)
