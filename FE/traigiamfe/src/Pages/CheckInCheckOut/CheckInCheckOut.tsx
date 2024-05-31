@@ -2,9 +2,10 @@ import { CheckInCheckOutModel } from "@/common/Model/checkincheckout";
 import {
   DeleteOutlined,
   EditOutlined,
+  FilePdfOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -36,6 +37,8 @@ const CheckInCheckOut = () => {
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<CheckInCheckOutModel>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenModalExport, setIsOpenModalExport] = useState<boolean>(false);
+
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
 
@@ -113,6 +116,49 @@ const CheckInCheckOut = () => {
     }
   };
 
+  const handleOpenModelExport = (record: CheckInCheckOutModel) => {
+    setIsOpenModalExport(true);
+    setCurentRecord(record);
+  };
+
+  const handleExport = async () => {
+    showLoading();
+
+    let model = {
+      prisonerId: currentRecord?.prisonerId,
+      recordId: currentRecord?.id,
+      fileName: `${currentRecord?.prisonerName}.pdf`,
+      ...currentRecord,
+    };
+
+    try {
+      const response = await axios.post(
+        `https://localhost:7120/api/External/generatepdfExternal`,
+        model,
+        {
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", model.fileName); // File name specified in the model
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link?.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      setIsOpenModalExport(false);
+    } catch (error) {
+      console.error("Error during PDF generation:", error);
+      // Handle error appropriately
+    } finally {
+      closeLoading();
+    }
+  };
+
   const columns: ColumnsType<CheckInCheckOutModel> = [
     {
       title: "Tên Phạm Nhân",
@@ -151,7 +197,7 @@ const CheckInCheckOut = () => {
       dataIndex: "startDate",
       key: "startDate",
       render: (_, record) => {
-        return <div>{dayjs(record?.startDate).format("DD-MM-YYYY")}</div>;
+        return <div>{dayjs(record?.startDate).format("DD-MM-YYYY HH:mm")}</div>;
       },
     },
     {
@@ -159,7 +205,7 @@ const CheckInCheckOut = () => {
       dataIndex: "endDate",
       key: "endDate",
       render: (_, record) => {
-        return <div>{dayjs(record?.endDate).format("DD-MM-YYYY")}</div>;
+        return <div>{dayjs(record?.endDate).format("DD-MM-YYYY HH:mm")}</div>;
       },
     },
     {
@@ -169,16 +215,44 @@ const CheckInCheckOut = () => {
       render: (_, record) => (
         <div className={styles.wrapperAction}>
           {record.status === 0 && (
-            <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-              <EditOutlined style={{ fontSize: 18 }} />
-            </div>
+            <Tooltip
+              placement="top"
+              title={<div className={"customTooltip"}>{`Sửa phiếu`}</div>}
+              color="#ffffff"
+              arrow={true}
+            >
+              <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
+                <EditOutlined style={{ fontSize: 18 }} />
+              </div>
+            </Tooltip>
           )}
 
-          {(record.status === 0 || record.status === 3) && (
+          {record.status == 1 && (
+            <Tooltip
+              placement="top"
+              title={<div className={"customTooltip"}>{`Xuất phiếu`}</div>}
+              color="#ffffff"
+              arrow={true}
+            >
+              <div
+                className={"editBtn"}
+                onClick={() => handleOpenModelExport(record)}
+              >
+                <FilePdfOutlined style={{ fontSize: 18 }} />
+              </div>
+            </Tooltip>
+          )}
+
+          <Tooltip
+            placement="top"
+            title={<div className={"customTooltip"}>{`Xóa phiếu`}</div>}
+            color="#ffffff"
+            arrow={true}
+          >
             <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
               <DeleteOutlined style={{ fontSize: 18 }} />
             </div>
-          )}
+          </Tooltip>
         </div>
       ),
     },
@@ -227,6 +301,16 @@ const CheckInCheckOut = () => {
         textConfirm="Xóa ra vào"
       >
         <div>{`Bạn có muốn xóa ra vào của ${currentRecord?.prisonerId}`}</div>
+      </ModalComponent>
+
+      <ModalComponent
+        isOpenModal={isOpenModalExport}
+        setIsOpenModal={setIsOpenModalExport}
+        handleDelete={handleExport}
+        title="Xuất PDF phiếu ra vào"
+        textConfirm="Xuất PDF"
+      >
+        <div>{`Bạn có muốn xuất PDF phiếu ra vào của phạm nhân ${currentRecord?.prisonerName}`}</div>
       </ModalComponent>
     </div>
   );

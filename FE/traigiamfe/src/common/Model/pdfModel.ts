@@ -1,6 +1,8 @@
-export interface VisitModel {
+export interface PdfModelVisit {
   id?: number;
   prisonerId?: number;
+  recordId?: number;
+  fileName?: string;
   prisonerName?: string;
   typeVisit?: number;
   startDate?: string;

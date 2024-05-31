@@ -226,10 +226,10 @@ namespace TraigiamBE.Controllers
             }
         }
 
-        [HttpGet("generatepdf")]
-        public async Task<IActionResult> GeneratePDF(string invoiceNo)
+        [HttpPost("generatepdfExternal")]
+        public async Task<IActionResult> GeneratePDF(ExternalPDFModel externalPDFModel)
         {
-            var prisoner = _context.Prisoner.Where(x => x.Id == 1).FirstOrDefault();
+            var prisoner = _context.Prisoner.Where(x => x.Id == externalPDFModel.PrisonerId).FirstOrDefault();
             //if(prisoner == null)
             //{
             //    throw new Exception();
@@ -260,11 +260,11 @@ namespace TraigiamBE.Controllers
             var document = new PdfDocument();
             string HtmlContent = @$"
                 <h3 style='color: #333; font-weight: bold; text-align: center; padding: 20px; background-color: #FF9999;'>
-                    Phiếu Thăm Khám
+                    Phiếu Ra Vào Trại Giam
                 </h3>
-                <p style='font-weight: bold;'>Thông tin của phạm nhân:</p>
+                <p style='font-weight: bold;  margin: 10px;'>Thông tin của phạm nhân:</p>
               
-                <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
+                <table style='width: 100%; border-collapse: collapse; margin: 10px;'>
                     <tr>
                         <td style='width: 5%; padding: 5px;'>
                             <img style='width:50px; height:50px; object-fit:cover' src='{imageSrc}'></img> 
@@ -275,7 +275,7 @@ namespace TraigiamBE.Controllers
                         </td>
                     </tr>
                 </table>
-                <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
+                <table style='width: 97%; border-collapse: collapse; margin: 10px;'>
                     <tr>
                         <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Mã Phạm Nhân</th>
                         <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>CCCD</th>
@@ -289,8 +289,8 @@ namespace TraigiamBE.Controllers
                         <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{manager?.StaffName ?? "N/A"}</td>
                     </tr>
                 </table>
-                <p style='font-weight: bold;'>Nơi ở của phạm nhân:</p>
-                <table style='width: 100%; border-collapse: collapse; margin-top: 20px;'>
+                <p style='font-weight: bold;  margin: 10px;'>Nơi ở của phạm nhân:</p>
+                <table style='width: 97%; border-collapse: collapse; margin: 10px;'>
                     <tr>
                         <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Nhà Giam</th>
                         <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Khu</th>
@@ -304,7 +304,33 @@ namespace TraigiamBE.Controllers
                         <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{bed?.BedName ?? "N/A"}</td>
                     </tr>
                 </table>
-                <p style='font-weight: bold;'>Thông tin thăm khám:</p>
+                <p style='font-weight: bold;  margin: 10px;'>Thông tin ra vào trại giam:</p>
+                <table style='width: 97%; border-collapse: collapse; margin: 10px;'>
+                    <tr>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Bắt đầu</th>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Kết thúc</th>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Loại</th>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Trạng Thái</th>
+                    </tr>
+                    <tr>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{externalPDFModel.StartDate?.ToString("dd-MM-yyyy HH:mm")}</td>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{externalPDFModel.EndDate?.ToString("dd-MM-yyyy HH:mm")}</td>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{GetTypeEMDisplayName(externalPDFModel.Emtype)}</td>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>
+                            <div style='border: 1px solid #00a84e; color: #00a84e ; background-color: #f5fff9;'>Được chấp thuận</div>
+                        </td>
+                    </tr>
+                </table>
+                <div style=' margin-left: 10px;'>Lý do:<div/>
+                <div style=''>{externalPDFModel.Desc}</div>
+                <table style='width: 97%; border-collapse: collapse; margin: 10px;'>
+                    <tr>
+                        <th style='padding: 8px; background-color: #FF9999;'>Tạo bởi:</th>
+                        <th style='padding: 8px;'>{externalPDFModel.CreatedByName}</th>
+                        <th style='padding: 8px; background-color: #FF9999;'>Chấp thuận bởi</th>
+                        <th style='padding: 8px;'>{externalPDFModel.ModifiedByName}</th>
+                    </tr>
+                </table>
                 ";
 
             PdfGenerator.AddPdfPages(document, HtmlContent, PageSize.A4);
@@ -314,8 +340,19 @@ namespace TraigiamBE.Controllers
                 document.Save(ms);
                 response = ms.ToArray();
             }
-            string FileName = "Invoice_" + invoiceNo + ".pdf";
+            string FileName = "Invoice_" + externalPDFModel.FileName + ".pdf";
             return File(response, "application/pdf", FileName);
+        }
+
+        private string GetTypeEMDisplayName(int? typeVisit)
+        {
+            return typeVisit switch
+            {
+                1 => "Nhập Viện",
+                2 => "Ra Tòa",
+                3 => "Đi Điều Tra",
+                _ => "Không biết"
+            };
         }
 
 
