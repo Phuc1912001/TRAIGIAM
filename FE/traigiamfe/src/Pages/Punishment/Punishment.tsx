@@ -1,5 +1,6 @@
 import { PunishmentModel } from '@/common/Model/punishment'
 import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons'
+import { Tooltip } from 'antd'
 import Table, { ColumnsType } from 'antd/es/table'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -110,6 +111,20 @@ const Punishment = () => {
             title: "Mô Tả",
             dataIndex: "desc",
             key: "desc",
+            width: '22%',
+            render: (_, record) => {
+                return <div className='tg-two-rows'>
+                    <Tooltip
+
+                        placement="top"
+                        title={<div className="customTooltip">{record?.desc}</div>}
+                        color="#ffffff"
+                        arrow={true}
+                    >
+                        <div>{record?.desc}</div>
+                    </Tooltip>
+                </div>
+            }
         },
         {
             title: "Trạng Thái",

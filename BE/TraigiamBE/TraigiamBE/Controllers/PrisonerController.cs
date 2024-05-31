@@ -58,6 +58,7 @@ namespace TraigiamBE.Controllers
                         Mpn = x.p.Mpn,
                         BandingID = x.p.BandingID,
                         IsActiveBanding = x.b.Status,
+                        DomGenderId= x.p.DomGenderId,
                         DomId = x.p.DomId,
                         RoomId = x.p.RoomId,
                         BedId = x.p.BedId,
