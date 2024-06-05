@@ -167,6 +167,7 @@ namespace TraigiamBE.Controllers
                                NameIR = iy.i.NameIR,
                                Location = iy.i.Location,
                                TimeInfringement = iy.i.TimeInfringement,
+                               ListPrisoner = youthIRIds.Where(y => y.InfringementID == iy.i.Id).Select(y => _context.Prisoner.Where(p => p.Id == y.YouthID).FirstOrDefault()).ToList(),
                                Desc = iy.i.Desc,
                                Rivise = iy.i.Rivise,
                                PunishId = iy.i.PunishId,
