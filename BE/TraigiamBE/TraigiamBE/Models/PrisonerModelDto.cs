@@ -4,6 +4,7 @@
     {
         public bool? IsActiveBanding {  get; set; } 
         public List<StatementModelDto>? ListStatement { get; set; }
+        public string? DomGenderName { get; set; }
         public string? DomName { get; set; }
         public string? RoomName { get; set; }
         public string? BedName { get; set; }

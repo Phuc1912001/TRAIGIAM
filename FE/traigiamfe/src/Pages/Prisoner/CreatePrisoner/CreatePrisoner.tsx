@@ -282,8 +282,6 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
   };
 
   const handleOnEdit = async () => {
-    console.log("isConfirm", isConfirm);
-
     if (isConfirm) {
       try {
         showLoading("editPrisoner");

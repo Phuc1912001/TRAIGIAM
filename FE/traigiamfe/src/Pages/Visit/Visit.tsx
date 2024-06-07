@@ -20,6 +20,7 @@ import CreateVisit from "./CreateVisit/CreateVisit";
 import StatusVisit from "./StatusVisit/StatusVisit";
 import { VisitType } from "./visit.model";
 import styles from "./Visit.module.scss";
+import { useLocation, useParams } from "react-router-dom";
 
 const Visit = () => {
   const items = [
@@ -43,6 +44,8 @@ const Visit = () => {
   const [isOpenModalExport, setIsOpenModalExport] = useState<boolean>(false);
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
+
+  const { state } = useLocation();
 
   const handleDownload = useExportPDF();
 
@@ -101,11 +104,29 @@ const Visit = () => {
     }
   };
 
-  const handleToView = (record: VisitModel) => {
+  const handleToView = (record?: VisitModel) => {
     setIsView(true);
     setCurentRecord(record);
     setOpenCreateVisit(true);
   };
+
+  useEffect(() => {
+    if (state?.curentRecord) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get("https://localhost:7120/api/Visit");
+          const { data } = response;
+          const newRecord = data.data.find(
+            (item: VisitModel) => item.id === state?.curentRecord?.id
+          );
+          handleToView(newRecord);
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };
+      fetchData();
+    }
+  }, [state?.curentRecord]);
 
   const genderVisitType = (emtype: number) => {
     switch (emtype) {

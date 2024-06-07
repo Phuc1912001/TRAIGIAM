@@ -377,5 +377,51 @@ namespace TraigiamBE.Controllers
             }
         }
 
+
+        [HttpPut("{id}/confirm")]
+        public async Task<ActionResult<BaseResponseModel>> ConfirmInfringement(long id, ConfirmModel confirmModel)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                // Tìm đối tượng ExternalModel theo ID
+                var infringementModel = await _context.InfringementModels.FindAsync(id);
+                if (infringementModel == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "InfringementModels  not found";
+                    return NotFound(response);
+                }
+
+                // Kiểm tra nếu Status đã đạt đến mức tối đa là 3
+                if (infringementModel.Status > 2)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Status cannot be increased beyond 3";
+                    return BadRequest(response);  // Trả về phản hồi lỗi 400
+                }
+
+                // Nếu chưa đạt đến mức tối đa, tăng giá trị của Status
+                infringementModel.Status++;  // Tăng 1 cho giá trị Status
+                infringementModel.ModifiedBy = confirmModel.UserId;
+
+                // Bạn có thể cập nhật các trường khác nếu cần thiết
+                _context.Entry(infringementModel).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
+
+                response.Status = true;
+                response.StatusMessage = "infringementModel  confirmed successfully";
+                response.Data = infringementModel;  // Trả về đối tượng đã xác nhận
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
     }
 }

@@ -68,9 +68,12 @@ const PrisonerDetail = () => {
           <div>
             <img className={styles.avatar} src={dataDetail?.imageSrc} alt="" />
           </div>
-          <div>
-            <h3>{dataDetail?.prisonerName}</h3>
-            <div className={styles.age}>{dataDetail?.prisonerAge} age</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div>
+              <h3>{dataDetail?.prisonerName}</h3>
+              <div className={styles.age}>{dataDetail?.prisonerAge} age</div>
+            </div>
+            <div>{dataDetail?.bandingID}</div>
           </div>
         </div>
         <Row style={{ height: "100%" }}>
@@ -78,11 +81,13 @@ const PrisonerDetail = () => {
           <TextItem label="Giới Tính">{dataDetail?.prisonerSex}</TextItem>
           <TextItem label="Căn Cước Công Dân">{dataDetail?.cccd}</TextItem>
           <TextItem label="Quê Quán">{dataDetail?.countryside}</TextItem>
-          <TextItem label="Số Phòng">{dataDetail?.domId}</TextItem>
-          <TextItem label="Số Giường">{dataDetail?.bedId}</TextItem>
+          <TextItem label="Nhà">{dataDetail?.domGenderName}</TextItem>
+          <TextItem label="Khu">{dataDetail?.domName}</TextItem>
+          <TextItem label="Số Phòng">{dataDetail?.roomName}</TextItem>
+          <TextItem label="Số Giường">{dataDetail?.bedName}</TextItem>
           <TextItem label="Tội Danh">{dataDetail?.crime}</TextItem>
-          <TextItem label="Số Năm">{dataDetail?.years}</TextItem>
-          <TextItem label="Người Quản Lý">{dataDetail?.mananger}</TextItem>
+          <TextItem label="Số Năm">{dataDetail?.years} năm</TextItem>
+          <TextItem label="Người Quản Lý">{dataDetail?.manangerName}</TextItem>
         </Row>
 
         <h3 className={styles.titleHistory}>Lịch Sử Ra Vào :</h3>

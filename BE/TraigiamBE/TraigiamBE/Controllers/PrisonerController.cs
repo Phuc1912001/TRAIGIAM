@@ -105,6 +105,11 @@ namespace TraigiamBE.Controllers
                 var infringementList = _context.InfringementModels;
                 var youthIRIds = _context.YouthIRModels;
                 var statementList = _context.StatementModels;
+                var staff = _context.Staff;
+                var domGender = _context.DomGenderModels;
+                var dom = _context.DomModels;
+                var room = _context.RoomModels;
+                var bed = _context.BedModels;
 
                 var prisonerModel = await _context.Prisoner
                     .Where(x => x.Id == id)
@@ -117,13 +122,18 @@ namespace TraigiamBE.Controllers
                         Cccd = x.Cccd,
                         Mpn = x.Mpn,
                         BandingID = x.BandingID,
+                        DomGenderName = domGender.Where(dg => dg.Id == x.DomGenderId).Select(dg=> dg.DomGenderName).FirstOrDefault(),
                         DomId = x.DomId,
+                        DomName = dom.Where(d => d.Id == x.DomId).Select(d => d.DomName).FirstOrDefault(),
                         RoomId = x.RoomId,
+                        RoomName = room.Where(r => r.Id == x.RoomId).Select(r=> r.RoomName).FirstOrDefault(),
                         BedId = x.BedId,
+                        BedName = bed.Where(b => b.Id == x.BedId).Select(b => b.BedName).FirstOrDefault(),
                         Countryside = x.Countryside,
                         Crime = x.Crime,
                         Years = x.Years,
                         Mananger = x.Mananger,
+                        ManangerName = staff.Where(s => s.Id == x.Mananger).Select(s=> s.StaffName).FirstOrDefault(),
                         ImagePrisoner = x.ImagePrisoner,
                         ImageSrc = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Images/{x.ImagePrisoner}",
                         ListExternal = externalList.Where(e => e.PrisonerId == id).Select(e => new ExternalModelDto
@@ -334,9 +344,6 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
-
-
-
 
         [NonAction]
         public async Task<string> SaveImage(IFormFile FilePrisoner)

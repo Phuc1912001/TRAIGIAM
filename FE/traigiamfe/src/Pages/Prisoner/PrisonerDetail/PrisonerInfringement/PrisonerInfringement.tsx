@@ -3,6 +3,7 @@ import { CloudUploadOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 import StatusInfringement from "../../../InfringementReport/StatusInfringement/StatusInfringement";
 import styles from "./PrisonerInfringement.module.scss";
 
@@ -13,7 +14,11 @@ interface IPrisonerInfringement {
 const PrisonerInfringement = (props: IPrisonerInfringement) => {
   const { dataInfringement } = props;
 
-  const handleToView = (record: InfringementResponse) => {};
+  const navigate = useNavigate();
+
+  const handleToView = (record: InfringementResponse) => {
+    navigate(`/infringement/${record.id}`);
+  };
 
   const columns: ColumnsType<InfringementResponse> = [
     {

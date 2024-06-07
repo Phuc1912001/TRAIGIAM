@@ -1,7 +1,33 @@
 .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(211, 206, 206);
+  gap: 8px;
+}
+
+.name {
+  cursor: pointer;
+  color: #006677;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.wrapperPrisoner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .wrapperCount {
+    width: 25px;
+    height: 25px;
+    background-color: rgb(229, 232, 232);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgb(211, 206, 206);
-    gap: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 }

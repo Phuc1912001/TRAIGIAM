@@ -10,6 +10,7 @@ import { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
 import Header from "../../Components/Header/Header";
@@ -41,6 +42,8 @@ const CheckInCheckOut = () => {
 
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
+
+  const { state } = useLocation();
 
   const getAllExternal = async () => {
     try {
@@ -158,6 +161,26 @@ const CheckInCheckOut = () => {
       closeLoading();
     }
   };
+
+  useEffect(() => {
+    if (state?.curentRecord) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "https://localhost:7120/api/External"
+          );
+          const { data } = response;
+          const newRecord = data.data.find(
+            (item: CheckInCheckOutModel) => item.id === state?.curentRecord?.id
+          );
+          handleToView(newRecord);
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };
+      fetchData();
+    }
+  }, [state?.curentRecord]);
 
   const columns: ColumnsType<CheckInCheckOutModel> = [
     {

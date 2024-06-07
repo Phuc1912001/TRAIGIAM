@@ -32,6 +32,8 @@ export interface PrisonerResponse {
   cccd?: string;
   mpn?: string;
   bandingID?: number;
+  domGenderId?: number;
+  domGenderName?: string;
   domId?: number;
   roomId?: number;
   bedId?: number;
