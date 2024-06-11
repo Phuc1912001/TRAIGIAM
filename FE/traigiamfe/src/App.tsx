@@ -1,8 +1,9 @@
+import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import {
   createBrowserRouter,
   Navigate,
-  RouterProvider
+  RouterProvider,
 } from "react-router-dom";
 import "./App.scss";
 import { useLoading } from "./common/Hook/useLoading";
@@ -25,24 +26,50 @@ import SignUp from "./Pages/SignUp/SignUp";
 import Staff from "./Pages/Staff/Staff";
 import StaffDetail from "./Pages/Staff/StaffDetail/StaffDetail";
 import Statement from "./Pages/Statement/Statement";
+import Users from "./Pages/Users/Users";
 import Visit from "./Pages/Visit/Visit";
 
-export const contextUser = createContext<any>({});
+interface IContext {
+  dataDetail?: UserModel;
+  setDataDetail?: React.Dispatch<React.SetStateAction<UserModel>>;
+}
+
+export const contextUser = createContext<IContext | undefined>(undefined);
 
 function App() {
   const { isLoading } = useLoading();
 
   const [data, setData] = useState<any>();
-
   const storedUserDataString = localStorage.getItem("userData");
+  const [dataDetail, setDataDetail] = useState<UserModel>({});
+  const { showLoading, closeLoading } = useLoading();
+
   useEffect(() => {
     if (storedUserDataString) {
       const storedUserData = JSON.parse(storedUserDataString ?? "");
+
       setData(storedUserData);
     }
   }, [storedUserDataString]);
 
+  const getUserById = async () => {
+    if (data?.id) {
+      try {
+        showLoading("getUser");
+        const { data: result } = await axios.get(
+          `https://localhost:7120/api/Register/${data?.id}`
+        );
+        setDataDetail(result.data);
+        closeLoading("getUser");
+      } catch (error) {
+        closeLoading("getUser");
+      }
+    }
+  };
 
+  useEffect(() => {
+    getUserById();
+  }, [data?.id]);
 
   const router = createBrowserRouter([
     {
@@ -117,22 +144,23 @@ function App() {
           path: "gender/dom/:id",
           element: <DomDetail />,
         },
-
         {
           path: "/banding",
           element: <Banding />,
+        },
+        {
+          path: "/user",
+          element: <Users />,
         },
       ],
     },
   ]);
 
-  const [user, setUser] = useState<UserModel>({});
-
   return (
     <contextUser.Provider
       value={{
-        user,
-        setUser,
+        dataDetail,
+        setDataDetail,
       }}
     >
       {isLoading && <LazyLoading />}

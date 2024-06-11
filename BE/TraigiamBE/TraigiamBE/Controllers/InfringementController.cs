@@ -75,6 +75,7 @@ namespace TraigiamBE.Controllers
                 var punishment = _context.Punishment;
 
                 var infringementModel = await _context.InfringementModels
+                    .Where(x => x.Id == id)
                     .Select(x => new InfringementModelDto
                     {
                         Id = x.Id,

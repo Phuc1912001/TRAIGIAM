@@ -1,5 +1,6 @@
 import { CheckInCheckOutModel } from "@/common/Model/checkincheckout";
 import { PrisonerModel } from "@/common/Model/prisoner";
+import { RoleEnum } from "../../MyProfile/Role.model";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Drawer, Form, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -13,6 +14,7 @@ import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
 import TextItem from "../../../Components/TextItem/TextItem";
 import StatusExternal from "../StatusExternal/StatusExternal";
 import styles from "./CreateExternal.module.scss";
+import { UserModel } from "@/common/Model/user";
 
 interface ICreateExternal {
   openCreateExternal: boolean;
@@ -50,6 +52,7 @@ const CreateExternal = (props: ICreateExternal) => {
   const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([]);
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [dataUser, setDataUser] = useState<UserModel>();
 
   const [data, setData] = useState<any>();
 
@@ -61,6 +64,25 @@ const CreateExternal = (props: ICreateExternal) => {
       setData(storedUserData);
     }
   }, [storedUserDataString]);
+
+  const getUserById = async () => {
+    if (data?.id) {
+      try {
+        showLoading("getUser");
+        const { data: result } = await axios.get(
+          `https://localhost:7120/api/Register/${data?.id}`
+        );
+        setDataUser(result.data);
+        closeLoading("getUser");
+      } catch (error) {
+        closeLoading("getUser");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserById();
+  }, [data?.id]);
 
   const handleGetAllPrisoner = async () => {
     try {
@@ -162,11 +184,26 @@ const CreateExternal = (props: ICreateExternal) => {
   const renderBtn = (status: number) => {
     switch (status) {
       case 0:
-        return <div>Chấp Nhận</div>;
+        return (
+          (dataUser?.role === RoleEnum.truongTrai ||
+            dataUser?.role === RoleEnum.giamThi) && (
+            <div onClick={handleOpenModel} className="btn-orange">
+              Chấp Nhận
+            </div>
+          )
+        );
       case 1:
-        return <div>Ra Ngoài</div>;
+        return (
+          <div onClick={handleOpenModel} className="btn-orange">
+            Ra Ngoài
+          </div>
+        );
       case 2:
-        return <div>Vào Trong</div>;
+        return (
+          <div onClick={handleOpenModel} className="btn-orange">
+            Vào Trong
+          </div>
+        );
       default:
         break;
     }
@@ -256,9 +293,7 @@ const CreateExternal = (props: ICreateExternal) => {
         Đóng
       </Button>
       {currentRecord?.status !== 3 && (
-        <div onClick={handleOpenModel} className="btn-orange">
-          {renderBtn(currentRecord?.status ?? 0)}
-        </div>
+        <div>{renderBtn(currentRecord?.status ?? 0)}</div>
       )}
     </div>
   );
@@ -380,11 +415,11 @@ const CreateExternal = (props: ICreateExternal) => {
                 },
               ]}
               name="emtype"
-              label="Loại Thăm Khám:"
+              label="Loại ra vào:"
             >
               <Select
                 rootClassName={styles.emFilterSelectMultiple}
-                placeholder="Chọn loại thăm khám"
+                placeholder="Chọn loại ra vào"
                 // loading={!ygm}
                 options={optionEMType}
                 filterOption={filterOption}

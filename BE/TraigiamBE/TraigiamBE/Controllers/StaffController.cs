@@ -82,6 +82,7 @@ namespace TraigiamBE.Controllers
             {
                 var prisoner = _context.Prisoner;
                 var banding = _context.BandingModels;
+                var domGender = _context.DomGenderModels;
 
                 var staffDetail = await _context.Staff
                     .Where(item => item.Id == id)
@@ -113,6 +114,7 @@ namespace TraigiamBE.Controllers
                                 DomId = x.DomId,
                                 RoomId = x.RoomId,
                                 BedId = x.BedId,
+                                DomGenderName = domGender.Where(dg => dg.Id  == x.DomGenderId).Select(dg=> dg.DomGenderName).FirstOrDefault(),
                                 Countryside = x.Countryside,
                                 Crime = x.Crime,
                                 Years = x.Years,

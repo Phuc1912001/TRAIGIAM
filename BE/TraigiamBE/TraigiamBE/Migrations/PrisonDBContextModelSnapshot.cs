@@ -70,6 +70,9 @@ namespace TraigiamBE.Migrations
                     b.Property<long?>("DomId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("PrisonerId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("RoomId")
                         .HasColumnType("bigint");
 
@@ -95,6 +98,9 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("DomGenderName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("PrisonerId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
 
@@ -119,6 +125,9 @@ namespace TraigiamBE.Migrations
 
                     b.Property<string>("DomName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("PrisonerId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -338,7 +347,13 @@ namespace TraigiamBE.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageUser")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Role")
@@ -370,6 +385,9 @@ namespace TraigiamBE.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<long?>("DomId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PrisonerId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("RoomName")

@@ -59,22 +59,34 @@ namespace TraigiamBE.Controllers
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                var prisoner = _context.Prisoner;
-                var listPunishment = (await _context.BedModels.Where(x => x.DomId == domInfo.DomId && x.RoomId == domInfo.RoomId)
-                    .Select(x => new BedModelDto
+                var checkBed = await _context.BedModels.Where(b => b.DomGenderId == domInfo.DomGenderId && b.DomId == domInfo.DomId && b.RoomId == domInfo.RoomId && b.PrisonerId == null).ToListAsync();
+                if (checkBed == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Phòng đã đầy";
+                    return Ok(response);
+                }
+
+                List<BedModel> listBed = new List<BedModel>();
+
+                foreach (var bed in checkBed)
+                {
+                    var recordBed = await _context.BedModels.FirstOrDefaultAsync(d => d.Id == bed.Id);
+
+                    if (recordBed != null)
                     {
-                        Id = x.Id,
-                        DomId = x.DomId,
-                        BedName = x.BedName,
-                        RoomId = x.RoomId,
-                    }).ToListAsync()).OrderByDescending(item => item.CreateAt);
+                        listBed.Add(recordBed);
+                    };
+                }
+
+                var listBedDistinct = listBed.Distinct().ToList();  
                 response.Status = true;
                 response.StatusMessage = "Success";
-                response.Data = listPunishment;
+                response.Data = listBedDistinct;
                 return Ok(response);
             }
             catch (Exception ex)
-            {
+            { 
                 response.Status = false;
                 response.StatusMessage = "something went wrong";
                 return BadRequest(response);

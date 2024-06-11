@@ -25,18 +25,18 @@ namespace TraigiamBE.Controllers
                 var listBed = _context.BedModels;
                 var prisoner = _context.Prisoner;
                 var listDomGender = _context.DomGenderModels;
-                var listPunishment = (await _context.RoomModels.Where(x => x.DomId == domInfo.DomId && x.DomGenderId == domInfo.DomGenderId ).Select(x => new RoomModelDto
+                var listPunishment = (await _context.RoomModels.Where(x => x.DomId == domInfo.DomId && x.DomGenderId == domInfo.DomGenderId).Select(x => new RoomModelDto
                 {
                     Id = x.Id,
                     DomId = x.DomId,
-                    RoomName = x.RoomName,  
+                    RoomName = x.RoomName,
                     DomGenderId = x.DomGenderId,
                     DomGenderName = listDomGender.Where(l => l.Id == domInfo.DomGenderId).Select(x => x.DomGenderName).FirstOrDefault(),
-                    ListBed = listBed.Where(b => b.RoomId == x.Id).Select( b => new BedModelDto
+                    ListBed = listBed.Where(b => b.RoomId == x.Id).Select(b => new BedModelDto
                     {
                         Id = b.Id,
                         BedName = b.BedName,
-                        PrisonerBed = prisoner.Where( p => p.DomId == x.DomId && p.RoomId == x.Id && p.BedId == b.Id && p.DomGenderId == x.DomGenderId).Select(
+                        PrisonerBed = prisoner.Where(p => p.DomId == x.DomId && p.RoomId == x.Id && p.BedId == b.Id && p.DomGenderId == x.DomGenderId).Select(
                             p => new PrisonerModelDto
                             {
                                 Id = p.Id,
@@ -49,7 +49,7 @@ namespace TraigiamBE.Controllers
                                 DomGenderId = p.DomGenderId,
                                 DomId = p.DomId,
                                 RoomId = p.RoomId,
-                                BedId = p.BedId, 
+                                BedId = p.BedId,
                                 Crime = p.Crime,
                                 Years = p.Years,
                                 Mananger = p.Mananger,
@@ -58,7 +58,7 @@ namespace TraigiamBE.Controllers
                                 CreateAt = p.CreateAt
                             }
                             ).FirstOrDefault()
-                    } ).ToList(),
+                    }).ToList(),
                 }).ToListAsync()).OrderByDescending(item => item.CreateAt);
                 response.Status = true;
                 response.StatusMessage = "Success";
@@ -99,6 +99,49 @@ namespace TraigiamBE.Controllers
         //        return StatusCode(500, response);
         //    }
         //}
+
+        [HttpPost("limitRoom")]
+        public async Task<ActionResult<IEnumerable<RoomModelDto>>> GetLimitRoom(DomInfoModel domInfo)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var checkBed = await _context.BedModels.Where(b => b.DomGenderId == domInfo.DomGenderId && b.DomId == domInfo.DomId && b.PrisonerId == null).ToListAsync();
+                if (checkBed == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Phòng đã đầy";
+                    return Ok(response);
+                }
+
+                List<RoomModel> listRoom = new List<RoomModel>();
+
+                foreach (var bed in checkBed)
+                {
+                    var room = await _context.RoomModels.FirstOrDefaultAsync(d => d.Id == bed.RoomId);
+
+                    if (room != null)
+                    {
+                        listRoom.Add(room);
+                    };
+                }
+
+                var listRoomDistinct = listRoom.Distinct().ToList();
+
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = listRoomDistinct;
+                return Ok(response);
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "Something went wrong";
+                return BadRequest(response);
+            }
+        }
 
 
         [HttpPost]

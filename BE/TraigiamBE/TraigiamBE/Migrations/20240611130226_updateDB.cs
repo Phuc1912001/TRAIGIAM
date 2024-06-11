@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TraigiamBE.Migrations
 {
-    public partial class update : Migration
+    public partial class updateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,8 @@ namespace TraigiamBE.Migrations
                     BedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoomId = table.Column<long>(type: "bigint", nullable: true),
                     DomId = table.Column<long>(type: "bigint", nullable: true),
+                    DomGenderId = table.Column<long>(type: "bigint", nullable: true),
+                    PrisonerId = table.Column<long>(type: "bigint", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -44,12 +46,30 @@ namespace TraigiamBE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DomGenderModels",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DomGenderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PrisonerId = table.Column<long>(type: "bigint", nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DomGenderModels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DomModels",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DomGenderId = table.Column<long>(type: "bigint", nullable: true),
                     DomName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PrisonerId = table.Column<long>(type: "bigint", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -120,6 +140,7 @@ namespace TraigiamBE.Migrations
                     Cccd = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Mpn = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BandingID = table.Column<long>(type: "bigint", nullable: true),
+                    DomGenderId = table.Column<long>(type: "bigint", nullable: true),
                     DomId = table.Column<long>(type: "bigint", nullable: true),
                     RoomId = table.Column<long>(type: "bigint", nullable: true),
                     BedId = table.Column<long>(type: "bigint", nullable: true),
@@ -162,7 +183,9 @@ namespace TraigiamBE.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: true),
+                    ImageUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -179,6 +202,8 @@ namespace TraigiamBE.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoomName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DomId = table.Column<long>(type: "bigint", nullable: true),
+                    DomGenderId = table.Column<long>(type: "bigint", nullable: true),
+                    PrisonerId = table.Column<long>(type: "bigint", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -245,6 +270,7 @@ namespace TraigiamBE.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true),
+                    TypeVisit = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedByName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ModifiedBy = table.Column<int>(type: "int", nullable: true),
@@ -281,6 +307,9 @@ namespace TraigiamBE.Migrations
 
             migrationBuilder.DropTable(
                 name: "BedModels");
+
+            migrationBuilder.DropTable(
+                name: "DomGenderModels");
 
             migrationBuilder.DropTable(
                 name: "DomModels");

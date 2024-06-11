@@ -2,7 +2,7 @@
 {
     public class RoomModelDto:RoomModel
     {
-        public List<BedModelDto> ListBed { get; set; }
+        public List<BedModelDto>? ListBed { get; set; }
         public string? DomGenderName { get; set; }
     }
 }

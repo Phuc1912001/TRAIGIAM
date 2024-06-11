@@ -155,7 +155,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         domGenderId: domGenderId,
       };
       const { data } = await axios.post(
-        "https://localhost:7120/api/Dom/AllDom",
+        "https://localhost:7120/api/Dom/limitDom",
         model
       );
       setDataDom(data.data);
@@ -185,7 +185,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
           domId: domId,
         };
         const { data } = await axios.post(
-          "https://localhost:7120/api/Room/AllRoom",
+          "https://localhost:7120/api/Room/limitRoom",
           model
         );
         let newData = data.data.map((item: RoomModel) => ({

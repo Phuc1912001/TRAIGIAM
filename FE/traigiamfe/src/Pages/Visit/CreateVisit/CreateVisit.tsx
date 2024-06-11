@@ -1,5 +1,7 @@
 import { PrisonerModel } from "@/common/Model/prisoner";
+import { UserModel } from "@/common/Model/user";
 import { VisitModel } from "@/common/Model/visit";
+import { RoleEnum } from "../../MyProfile/Role.model";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Drawer, Form, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -54,6 +56,7 @@ const CreateVisit = (props: ICreateVisit) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const [data, setData] = useState<any>();
+  const [dataUser, setDataUser] = useState<UserModel>();
 
   const storedUserDataString = localStorage.getItem("userData");
 
@@ -72,6 +75,25 @@ const CreateVisit = (props: ICreateVisit) => {
       closeLoading("getAllPrisoner");
     }
   };
+
+  const getUserById = async () => {
+    if (data?.id) {
+      try {
+        showLoading("getUser");
+        const { data: result } = await axios.get(
+          `https://localhost:7120/api/Register/${data?.id}`
+        );
+        setDataUser(result.data);
+        closeLoading("getUser");
+      } catch (error) {
+        closeLoading("getUser");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserById();
+  }, [data?.id]);
 
   useEffect(() => {
     handleGetAllPrisoner();
@@ -162,9 +184,20 @@ const CreateVisit = (props: ICreateVisit) => {
   const renderBtn = (status: number) => {
     switch (status) {
       case 0:
-        return <div>Chấp Nhận</div>;
+        return (
+          (dataUser?.role === RoleEnum.truongTrai ||
+            dataUser?.role === RoleEnum.giamThi) && (
+            <div onClick={handleOpenModel} className="btn-orange">
+              Chấp Nhận
+            </div>
+          )
+        );
       case 1:
-        return <div>Đã Xong</div>;
+        return (
+          <div onClick={handleOpenModel} className="btn-orange">
+            Đã Xong
+          </div>
+        );
       default:
         break;
     }
@@ -243,9 +276,7 @@ const CreateVisit = (props: ICreateVisit) => {
         Đóng
       </Button>
       {currentRecord?.status !== 2 ? (
-        <div onClick={handleOpenModel} className="btn-orange">
-          {renderBtn(currentRecord?.status ?? 0)}
-        </div>
+        <div>{renderBtn(currentRecord?.status ?? 0)}</div>
       ) : (
         ""
       )}
@@ -376,11 +407,11 @@ const CreateVisit = (props: ICreateVisit) => {
                 },
               ]}
               name="typeVisit"
-              label="Loại ra vào:"
+              label="Loại:"
             >
               <Select
                 rootClassName={styles.emFilterSelectMultiple}
-                placeholder="Chọn loại ra vào"
+                placeholder="Chọn loại"
                 // loading={!ygm}
                 options={optionVisitType}
                 filterOption={filterOption}

@@ -1,13 +1,17 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Image, Input, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import avatar from "../../assets/avatar.jpg";
 import Header from "../../Components/Header/Header";
 import TextItem from "../../Components/TextItem/TextItem";
 import styles from "./MyProfile.module.scss";
 import { RoleEnum } from "./Role.model";
 import defaultImage from "../../assets/default.jpg";
+import { useLoading } from "../../common/Hook/useLoading";
+import { useNotification } from "../../common/Hook/useNotification";
+import axios from "axios";
+import { UserModel } from "@/common/Model/user";
 
 interface IOptionValue {
   label?: string;
@@ -34,6 +38,19 @@ const MyProfile = () => {
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const { showLoading, closeLoading } = useLoading();
+  const notification = useNotification();
+  const [data, setData] = useState<any>();
+  const storedUserDataString = localStorage.getItem("userData");
+  const [dataDetail, setDataDetail] = useState<UserModel>();
+
+  useEffect(() => {
+    if (storedUserDataString) {
+      const storedUserData = JSON.parse(storedUserDataString ?? "");
+
+      setData(storedUserData);
+    }
+  }, [storedUserDataString]);
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
@@ -48,14 +65,92 @@ const MyProfile = () => {
     { label: "Người dùng ", value: RoleEnum.nguoiDung },
   ];
 
-  const onClose = () => {
-    setIsEdit(false);
+  const getUserById = async () => {
+    if (data?.id) {
+      try {
+        showLoading("getUser");
+        const { data: result } = await axios.get(
+          `https://localhost:7120/api/Register/${data?.id}`
+        );
+        setDataDetail(result.data);
+        closeLoading("getUser");
+      } catch (error) {
+        closeLoading("getUser");
+      }
+    }
   };
 
-  const handleOnFinish = () => {};
+  useEffect(() => {
+    getUserById();
+  }, [data?.id]);
+
+  const onClose = () => {
+    setIsEdit(false);
+    setIsConfirm(true);
+    setShơwMessage(false);
+  };
+
+  const handleOnFinish = async () => {
+    if (isConfirm) {
+      try {
+        showLoading("updateProfile");
+        if (dataDetail?.imageUser && dataDetail?.imageUser === null) {
+          setShơwMessage(true);
+          setIsConfirm(false);
+        } else if (
+          values.imageFile === null &&
+          dataDetail?.imageUser === null
+        ) {
+          setShơwMessage(true);
+          setIsConfirm(false);
+        } else {
+          setShơwMessage(false);
+          setIsConfirm(true);
+        }
+
+        await form.validateFields();
+        const value = await form.getFieldsValue();
+
+        const formData = new FormData();
+        formData.append("id", String(dataDetail?.id ?? 0));
+        formData.append("userName", value?.userName);
+        formData.append("password", value?.password);
+        formData.append("role", String(value?.role));
+        formData.append("email", value?.email);
+        formData.append("phoneNumber", value?.phoneNumber);
+        if (dataDetail?.imageUser) {
+          formData.append("imageUser", String(dataDetail?.imageUser));
+        } else {
+          formData.append("imageUser", String(values.imageName));
+        }
+
+        formData.append("fileUser", values.imageFile || "");
+        await axios.put(
+          `https://localhost:7120/api/Register/${data.id}`,
+          formData
+        );
+        setIsEdit(false);
+        getUserById();
+        notification.success(<div>Cập nhập thành công.</div>);
+        closeLoading("updateProfile");
+      } catch (error) {
+        closeLoading("updateProfile");
+      }
+    } else {
+      setShơwMessage(true);
+    }
+  };
 
   const handleShowEdit = () => {
     setIsEdit(true);
+    form.setFieldsValue(dataDetail);
+    const arr = dataDetail?.imageSrc?.split("/");
+    const hasNull = arr?.includes("null");
+    const imgURL = hasNull ? defaultImage : dataDetail?.imageSrc;
+    setValues({
+      ...values,
+      imageSrc: imgURL ?? "",
+    });
   };
 
   const showPreview = (e: any) => {
@@ -91,6 +186,25 @@ const MyProfile = () => {
     setIsConfirm(false);
   };
 
+  const renderRole = (role: number) => {
+    switch (role) {
+      case RoleEnum.truongTrai:
+        return "Trưởng trại";
+      case RoleEnum.giamThi:
+        return "Giám Thị";
+      case RoleEnum.doiTruong:
+        return "Đội Trưởng";
+      case RoleEnum.quanNhan:
+        return "Quân Nhân";
+      case RoleEnum.congAn:
+        return "Công an";
+      case RoleEnum.nguoiDung:
+        return "Người dùng";
+      default:
+        break;
+    }
+  };
+
   return (
     <div>
       <div className="share-sticky">
@@ -104,11 +218,19 @@ const MyProfile = () => {
             <div className={styles.containerInfor}>
               <div className={styles.wrapperInfo}>
                 <div>
-                  <img className={styles.avatar} src={avatar} alt="" />
+                  <img
+                    className={styles.avatar}
+                    src={
+                      dataDetail?.imageSrc ? dataDetail.imageSrc : defaultImage
+                    }
+                    alt=""
+                  />
                 </div>
                 <div>
-                  <h3>Nguyễn Văn A</h3>
-                  <div className={styles.admin}>Vai Trò: Quản trị viên</div>
+                  <h3>{dataDetail?.userName}</h3>
+                  <div className={styles.admin}>
+                    Vai Trò: {renderRole(dataDetail?.role ?? 0)}
+                  </div>
                 </div>
               </div>
               <div className={styles.btnEdit} onClick={handleShowEdit}>
@@ -117,8 +239,10 @@ const MyProfile = () => {
               </div>
             </div>
             <Row style={{ height: "100%" }}>
-              <TextItem label="Email">nguyenvanphuc1912001@gmail.com</TextItem>
-              <TextItem label="Số Điện Thoại">0329609726</TextItem>
+              <TextItem label="Email">{dataDetail?.email ?? "N/A"}</TextItem>
+              <TextItem label="Số Điện Thoại">
+                {dataDetail?.phoneNumber ?? "N/A"}
+              </TextItem>
             </Row>
           </div>
         ) : (
@@ -166,7 +290,7 @@ const MyProfile = () => {
             </Form.Item>
             <Form.Item
               rules={[{ required: true, message: "Vui lòng điền tên." }]}
-              name="prisonerId"
+              name="userName"
               label="Tên người dùng:"
             >
               <Input maxLength={150} />
@@ -174,7 +298,7 @@ const MyProfile = () => {
 
             <Form.Item
               rules={[{ required: true, message: "Vui lòng điền mật khẩu ." }]}
-              name="prisonerId"
+              name="password"
               label="Mật khẩu:"
             >
               <Input maxLength={150} />
@@ -187,7 +311,7 @@ const MyProfile = () => {
                   message: "Vui lòng chọn vai trò.",
                 },
               ]}
-              name="typeVisit"
+              name="role"
               label="Vai trò:"
             >
               <Select

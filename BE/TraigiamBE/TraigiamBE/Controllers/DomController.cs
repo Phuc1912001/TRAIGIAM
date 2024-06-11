@@ -75,6 +75,46 @@ namespace TraigiamBE.Controllers
         //        return StatusCode(500, response);
         //    }
         //}
+        [HttpPost("limitDom")]
+        public async Task<ActionResult<IEnumerable<DomModelDto>>> GetLimitDom(DomInfoModel domInfo)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var checkBed = await _context.BedModels.Where(b => b.DomGenderId == domInfo.DomGenderId && b.PrisonerId == null).ToListAsync();
+
+                if (checkBed == null || checkBed.Count == 0)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Khu đã đầy";
+                    return Ok(response);
+                }
+
+                List<DomModel> listDom = new List<DomModel>();
+
+                foreach (var bed in checkBed)
+                {
+                    var dom = await _context.DomModels.FirstOrDefaultAsync(d => d.Id == bed.DomId);
+                    if (dom != null)
+                    {
+                        listDom.Add(dom);
+                    }
+                }
+
+                var listDomDistinct = listDom.Distinct().ToList();
+
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = listDomDistinct;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "Something went wrong";
+                return BadRequest(response);
+            }
+        }
 
 
         [HttpPost]

@@ -26,6 +26,8 @@
       background-color: rgb(236, 163, 163);
     }
     .wrapper {
+      height: 650px;
+      overflow: scroll;
       display: flex;
       flex-direction: column;
       padding: 6px;

@@ -196,7 +196,7 @@ const CheckInCheckOut = () => {
       },
     },
     {
-      title: "Loại Xuât nhập",
+      title: "Loại Ra vào",
       dataIndex: "emtype",
       key: "emtype",
       render: (_, record) => {

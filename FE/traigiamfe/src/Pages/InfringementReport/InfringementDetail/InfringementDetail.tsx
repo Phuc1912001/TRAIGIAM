@@ -17,6 +17,8 @@ import TextItem from "../../../Components/TextItem/TextItem";
 import StatusStatement from "../../Statement/StatusStatement/StatusStatement";
 import StatusInfringement from "../StatusInfringement/StatusInfringement";
 import styles from "./InfringementDetail.module.scss";
+import { UserModel } from "@/common/Model/user";
+import { RoleEnum } from "../../MyProfile/Role.model";
 
 const InfringementDetail = () => {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const InfringementDetail = () => {
   const notification = useNotification();
   const [data, setData] = useState<any>();
   const storedUserDataString = localStorage.getItem("userData");
+  const [dataUser, setDataUser] = useState<UserModel>();
 
   useEffect(() => {
     if (storedUserDataString) {
@@ -35,6 +38,25 @@ const InfringementDetail = () => {
       setData(storedUserData);
     }
   }, [storedUserDataString]);
+
+  const getUserById = async () => {
+    if (data?.id) {
+      try {
+        showLoading("getUser");
+        const { data: result } = await axios.get(
+          `https://localhost:7120/api/Register/${data?.id}`
+        );
+        setDataUser(result.data);
+        closeLoading("getUser");
+      } catch (error) {
+        closeLoading("getUser");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserById();
+  }, [data?.id]);
 
   const items = [
     {
@@ -266,9 +288,12 @@ const InfringementDetail = () => {
               >
                 Đóng
               </Button>
-              <div onClick={handleOnFinish} className="btn-orange">
-                Xác Nhận
-              </div>
+              {(dataUser?.role === RoleEnum.truongTrai ||
+                dataUser?.role === RoleEnum.giamThi) && (
+                <div onClick={handleOnFinish} className="btn-orange">
+                  Xác Nhận
+                </div>
+              )}
             </div>
           </div>
         </div>

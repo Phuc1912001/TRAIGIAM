@@ -249,7 +249,7 @@ namespace TraigiamBE.Controllers
 
                 var data = _context.Entry(prisonerModel).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-
+                await SaveLocation(prisonerModel);
                 response.Status = true;
                 response.Data = prisonerModel;
                 response.StatusMessage = "Prisoner updated successfully";
@@ -270,31 +270,38 @@ namespace TraigiamBE.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponseModel>> CreatePrisonerModel([FromForm] PrisonerModel employeeModel)
+        public async Task<ActionResult<BaseResponseModel>> CreatePrisonerModel([FromForm] PrisonerModel prisonerModel)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
             {
-                if (employeeModel == null)
+                if (prisonerModel == null)
                 {
                     response.Status = false;
-                    response.StatusMessage = "Employee model is null.";
+                    response.StatusMessage = "Prisoner model is null.";
                     return BadRequest(response);
                 }
 
                 if (ModelState.IsValid)
                 {
-                    if (employeeModel.FilePrisoner != null)
+                    if (prisonerModel.FilePrisoner != null)
                     {
-                        employeeModel.ImagePrisoner = await SaveImage(employeeModel.FilePrisoner);
+                        prisonerModel.ImagePrisoner = await SaveImage(prisonerModel.FilePrisoner);
                     }
 
-                    _context.Prisoner.Add(employeeModel);
+                    // Thêm prisonerModel vào DbSet và lưu thay đổi để có Id
+                    var prisonerEntry = _context.Prisoner.Add(prisonerModel);
                     await _context.SaveChangesAsync();
+
+                    // Lấy lại đối tượng Prisoner sau khi đã lưu để có Id
+                    var savedPrisoner = prisonerEntry.Entity;
+
+                    // Gọi SaveLocation với Prisoner đã có Id
+                    await SaveLocation(savedPrisoner);
 
                     response.Status = true;
                     response.StatusMessage = "Prisoner created successfully";
-                    response.Data = employeeModel;
+                    response.Data = savedPrisoner;
                     return Ok(response);
                 }
                 else
@@ -311,6 +318,7 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+
 
 
         // DELETE: api/Employee/5
@@ -344,6 +352,28 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+        [NonAction]
+        public async Task SaveLocation(PrisonerModel prisonerModel)
+        {
+            if (prisonerModel == null || prisonerModel.Id <= 0)
+            {
+                throw new ArgumentException("Invalid prisoner model or prisoner ID.");
+            }
+           
+            // Cập nhật BedModels
+            var bedRecord = await _context.BedModels
+                .FirstOrDefaultAsync(b => b.Id == prisonerModel.BedId);
+
+            if (bedRecord != null)
+            {
+                bedRecord.PrisonerId = prisonerModel.Id;
+            }
+
+            // Lưu các thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync();
+        }
+
+
 
         [NonAction]
         public async Task<string> SaveImage(IFormFile FilePrisoner)
