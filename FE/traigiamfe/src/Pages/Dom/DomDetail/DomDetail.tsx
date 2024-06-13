@@ -1,13 +1,15 @@
-import { BedModel } from "@/common/Model/bed";
+import { BedModel, BedModelResponse } from "@/common/Model/bed";
 import { RoomModel, RoomModelResponse } from "@/common/Model/Room";
 import {
   DeleteOutlined,
   EditOutlined,
   ExpandOutlined,
+  InfoCircleFilled,
+  MoreOutlined,
   PlusCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Col, Popover, Row } from "antd";
+import { Col, Form, Modal, Popover, Row } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -19,6 +21,7 @@ import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
 import CreateBed from "./CreateBed/CreateBed";
 import CreateRoom from "./CreateRoom/CreateRoom";
 import styles from "./DomDetail.module.scss";
+import MovePrisoner from "./MovePrisoner/MovePrisoner";
 
 const DomDetail = () => {
   const navigate = useNavigate();
@@ -78,6 +81,11 @@ const DomDetail = () => {
   const [currentRecordBed, setCurentRecordBed] = useState<BedModel>();
   const [isOpenModalBed, setIsOpenModalBed] = useState<boolean>(false);
   const [currentRoom, setCurentRoom] = useState<RoomModel>();
+
+  const [currentBed, setCurrentBed] = useState<BedModelResponse>();
+
+  const [isOpenModalMove, setIsOpenModalMove] = useState<boolean>(false);
+  const [type, setType] = useState<string>("view");
 
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
@@ -148,6 +156,24 @@ const DomDetail = () => {
     setResetBed(!resetBed);
     setCurentRoom(item);
   };
+
+  const handleMovePrisoner = (
+    bed: BedModelResponse,
+    item: RoomModelResponse
+  ) => {
+    setIsOpenModalMove(true);
+    setCurrentBed(bed);
+    setCurentRoom(item);
+    setType("edit");
+  };
+
+  const handleViewBed = (bed: BedModelResponse, item: RoomModelResponse) => {
+    setCurrentBed(bed);
+    setType("view");
+    setCurentRoom(item);
+    setIsOpenModalMove(true);
+  };
+
   return (
     <div>
       <div className="share-sticky">
@@ -193,43 +219,44 @@ const DomDetail = () => {
                 <Col sm={12} key={item.id}>
                   <div className={styles.wrapperRoom}>
                     <div className={styles.headRoom}>
-                      <div>{item.roomName}</div>
+                      <h3>{item.roomName}</h3>
 
                       <Popover placement="topLeft" content={content}>
-                        <div className={styles.icon}>div</div>
+                        <div className={styles.icon}>
+                          <MoreOutlined
+                            style={{ fontSize: 20, fontWeight: 600 }}
+                          />
+                        </div>
                       </Popover>
                     </div>
-                    {/* <CardBed
-                                                setOpenCreateBed={setOpenCreateBed}
-                                                setIsEditBed={setIsEditBed}
-                                                setResetBed={setResetBed}
-                                                setRecallBed={setRecallBed}
-                                                item={item}
-                                                setCurentRoom={setCurentRoom}
-                                                resetBed={resetBed}
-                                                setDataBed={setDataBed}
-                                                dataBed={dataBed}
-                                                recallBed={recallBed}
 
-                                            /> */}
                     <Row gutter={[12, 12]}>
                       {item?.listBed?.map((bed) => {
                         return (
                           <Col sm={8} md={4}>
                             <div className={styles.bedRoom}>
-                              <div className={styles.bedInfo}>
-                                {bed?.prisonerBed?.imageSrc ? (
+                              {bed?.prisonerBed?.imageSrc ? (
+                                <div
+                                  className={styles.bedInfo}
+                                  onClick={() => handleViewBed(bed, item)}
+                                >
                                   <img
-                                    style={{ width: "100%" }}
+                                    style={{
+                                      width: "100%",
+                                      objectFit: "cover",
+                                    }}
                                     src={bed?.prisonerBed?.imageSrc}
                                     alt=""
                                   />
-                                ) : (
-                                  <div>
-                                    <ExpandOutlined style={{ fontSize: 18 }} />
-                                  </div>
-                                )}
-                              </div>
+                                </div>
+                              ) : (
+                                <div
+                                  className={styles.bedInfo}
+                                  onClick={() => handleMovePrisoner(bed, item)}
+                                >
+                                  <ExpandOutlined style={{ fontSize: 18 }} />
+                                </div>
+                              )}
                             </div>
                             <div className={styles.bedName}>{bed.bedName}</div>
                           </Col>
@@ -284,6 +311,15 @@ const DomDetail = () => {
       >
         <div>{`Bạn có muốn xóa ${currentRecordRoom?.roomName}`}</div>
       </ModalComponent>
+
+      <MovePrisoner
+        isOpenModalMove={isOpenModalMove}
+        setIsOpenModalMove={setIsOpenModalMove}
+        currentBed={currentBed}
+        currentRoom={currentRoom}
+        getAllRoom={getAllRoom}
+        type={type}
+      />
     </div>
   );
 };

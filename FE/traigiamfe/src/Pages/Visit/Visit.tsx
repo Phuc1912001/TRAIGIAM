@@ -21,6 +21,7 @@ import StatusVisit from "./StatusVisit/StatusVisit";
 import { VisitType } from "./visit.model";
 import styles from "./Visit.module.scss";
 import { useLocation, useParams } from "react-router-dom";
+import Search from "antd/es/input/Search";
 
 const Visit = () => {
   const items = [
@@ -33,6 +34,8 @@ const Visit = () => {
   ];
 
   const [dataVisit, setDataVisit] = useState<VisitModel[]>([]);
+  const [originDataVisit, setOriginDataVisit] = useState<VisitModel[]>([]);
+
   const [openCreateVisit, setOpenCreateVisit] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
@@ -54,6 +57,7 @@ const Visit = () => {
       showLoading("getAllVisit");
       const { data } = await axios.get("https://localhost:7120/api/Visit");
       setDataVisit(data.data);
+      setOriginDataVisit(data.data);
       closeLoading("getAllVisit");
     } catch (error) {
       closeLoading("getAllVisit");
@@ -292,6 +296,17 @@ const Visit = () => {
     },
   ];
 
+  const onSearch = (val: string) => {
+    if (val.trim() === "") {
+      setDataVisit(originDataVisit);
+    } else {
+      const newList = originDataVisit.filter((item: VisitModel) =>
+        item?.prisonerName?.toLowerCase().includes(val.toLowerCase())
+      );
+      setDataVisit(newList);
+    }
+  };
+
   return (
     <div>
       <div className="share-sticky">
@@ -306,7 +321,15 @@ const Visit = () => {
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Thăm Khám
           </div>
-          <div>search</div>
+          <div>
+            <Search
+              placeholder="tìm kiếm theo tên phạm nhân"
+              onSearch={onSearch}
+              style={{ width: 250 }}
+              size="large"
+              allowClear
+            />
+          </div>
         </div>
         <Table
           columns={columns}

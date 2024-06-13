@@ -6,6 +6,7 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import { Table, Tooltip } from "antd";
+import Search from "antd/es/input/Search";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -30,6 +31,10 @@ const CheckInCheckOut = () => {
     },
   ];
   const [dataExternal, setDataExternal] = useState<CheckInCheckOutModel[]>([]);
+  const [dataOriginExternal, setOriginDataExternal] = useState<
+    CheckInCheckOutModel[]
+  >([]);
+
   const [openCreateExternal, setOpenCreateExternal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
@@ -50,6 +55,7 @@ const CheckInCheckOut = () => {
       showLoading("getAllExternal");
       const { data } = await axios.get("https://localhost:7120/api/External");
       setDataExternal(data.data);
+      setOriginDataExternal(data.data);
       closeLoading("getAllExternal");
     } catch (error) {
       closeLoading("getAllExternal");
@@ -281,6 +287,17 @@ const CheckInCheckOut = () => {
     },
   ];
 
+  const onSearch = (val: string) => {
+    if (val.trim() === "") {
+      setDataExternal(dataOriginExternal);
+    } else {
+      const newList = dataOriginExternal.filter((item: CheckInCheckOutModel) =>
+        item?.prisonerName?.toLowerCase().includes(val.toLowerCase())
+      );
+      setDataExternal(newList);
+    }
+  };
+
   return (
     <div>
       <div className="share-sticky">
@@ -296,7 +313,15 @@ const CheckInCheckOut = () => {
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Phiếu Ra Vào
           </div>
-          <div>search</div>
+          <div>
+            <Search
+              placeholder="tìm kiếm theo tên phạm nhân"
+              onSearch={onSearch}
+              style={{ width: 250 }}
+              size="large"
+              allowClear
+            />
+          </div>
         </div>
         <Table
           columns={columns}

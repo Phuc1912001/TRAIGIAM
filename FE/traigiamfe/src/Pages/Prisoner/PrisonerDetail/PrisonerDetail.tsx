@@ -1,3 +1,4 @@
+import { BandingEnum, IBandingMap } from "../../../common/Model/banding";
 import { PrisonerResponse } from "@/common/Model/prisoner";
 import { Row } from "antd";
 import axios from "axios";
@@ -71,9 +72,16 @@ const PrisonerDetail = () => {
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div>
               <h3>{dataDetail?.prisonerName}</h3>
-              <div className={styles.age}>{dataDetail?.prisonerAge} age</div>
+              <div className={styles.age}>{dataDetail?.prisonerAge} tuổi</div>
             </div>
-            <div>{dataDetail?.bandingID}</div>
+            <div>
+              <img
+                alt="banding"
+                src={IBandingMap.get(
+                  (dataDetail?.bandingID ?? 10) as BandingEnum
+                )}
+              />
+            </div>
           </div>
         </div>
         <Row style={{ height: "100%" }}>

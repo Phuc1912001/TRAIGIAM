@@ -22,8 +22,29 @@ namespace TraigiamBE.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PrisonerModel>>> GetAllPrisoner()
+        [HttpGet("getFullList")]
+        public async Task<ActionResult<IEnumerable<PrisonerModel>>> GetFullPrisoner()
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var listPrisoner = await _context.Prisoner.ToListAsync();
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = listPrisoner;
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "Something went wrong: " + ex.Message;
+                return BadRequest(response);
+            }
+        }    
+
+        [HttpPost("getList")]
+        public async Task<ActionResult<IEnumerable<PrisonerModel>>> GetAllPrisoner(DomInfoModel infoModel)
         {
             BaseResponseModel response = new BaseResponseModel();
 
@@ -36,6 +57,7 @@ namespace TraigiamBE.Controllers
                 var bandings = await _context.BandingModels.ToListAsync();
 
                 var listPrisoner = await _context.Prisoner
+                    .Where(p => p.DomGenderId == infoModel.DomGenderId) 
                     .Join(
                         staff,
                         p => p.Mananger,
@@ -352,6 +374,40 @@ namespace TraigiamBE.Controllers
                 return StatusCode(500, response);
             }
         }
+
+        [HttpPost("MoveBed")] 
+        public async Task<ActionResult<BaseResponseModel>> UpdateBedPrisoner( UpdateBedModel updateBedModel  )
+        {
+            BaseResponseModel response = new BaseResponseModel();
+
+            try
+            {
+                var prisoner = await _context.Prisoner.Where(p => p.Id == updateBedModel.PrisonerId).FirstOrDefaultAsync();   
+                if(prisoner == null)
+                {
+                    throw new ArgumentException("prisoner is null.");
+
+                }
+                prisoner.DomGenderId = updateBedModel.DomGenderId;
+                prisoner.DomId = updateBedModel.DomId;
+                prisoner.RoomId = updateBedModel.RoomId;
+                prisoner.BedId = updateBedModel.BedId;
+                await _context.SaveChangesAsync();  
+
+                response.Status = true;
+                response.StatusMessage = "success";
+                response.Data = prisoner;
+                return Ok(response);
+
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
         [NonAction]
         public async Task SaveLocation(PrisonerModel prisonerModel)
         {
@@ -372,6 +428,7 @@ namespace TraigiamBE.Controllers
             // Lưu các thay đổi vào cơ sở dữ liệu
             await _context.SaveChangesAsync();
         }
+
 
 
 

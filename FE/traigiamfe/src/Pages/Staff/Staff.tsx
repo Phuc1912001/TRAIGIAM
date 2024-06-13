@@ -4,6 +4,7 @@ import {
   EditOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
+import Search from "antd/es/input/Search";
 import Table, { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -32,6 +33,8 @@ const Staff = () => {
     imageFile: null,
   };
   const [dataStaff, setDataStaff] = useState<StaffModel[]>([]);
+  const [originDataStaff, setOriginDataStaff] = useState<StaffModel[]>([]);
+
   const [openCreatePrisoner, setOpenCreatePrisoner] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
@@ -50,6 +53,7 @@ const Staff = () => {
       showLoading("getAllStaff");
       const { data } = await axios.get("https://localhost:7120/api/staff");
       setDataStaff(data.data);
+      setOriginDataStaff(data.data);
       closeLoading("getAllStaff");
     } catch (error) {
       closeLoading("getAllStaff");
@@ -173,6 +177,17 @@ const Staff = () => {
     },
   ];
 
+  const onSearch = (val: string) => {
+    if (val.trim() === "") {
+      setDataStaff(originDataStaff);
+    } else {
+      const newList = originDataStaff.filter((item: StaffModel) =>
+        item?.staffName?.toLowerCase().includes(val.toLowerCase())
+      );
+      setDataStaff(newList);
+    }
+  };
+
   return (
     <div>
       <div>
@@ -185,7 +200,15 @@ const Staff = () => {
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Nhân Viên
           </div>
-          <div>search</div>
+          <div>
+            <Search
+              placeholder="tìm kiếm theo tên phạm nhân"
+              onSearch={onSearch}
+              style={{ width: 250 }}
+              size="large"
+              allowClear
+            />
+          </div>
         </div>
         <Table
           columns={columns}

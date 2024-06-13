@@ -4,10 +4,11 @@ import {
   InfoCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Table, Tooltip } from "antd";
+import { Divider, Table, Tooltip } from "antd";
+import Search from "antd/es/input/Search";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../assets/default.jpg";
 import { useLoading } from "../../common/Hook/useLoading";
@@ -19,6 +20,11 @@ import MobileHeader from "../../Components/MobileHeader/MobileHeader";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
 import styles from "./Prisoner.module.scss";
+
+const enum GenderEnum {
+  male = 1,
+  feMale = 2,
+}
 
 const Prisoner = () => {
   const items = [
@@ -44,20 +50,54 @@ const Prisoner = () => {
   const [currentRecord, setCurrentRecord] = useState<PrisonerResponse>();
 
   const [dataPrisoner, setDataPrisoner] = useState<PrisonerResponse[]>([]);
+  const [originalDataPrisoner, setOriginalDataPrisoner] = useState<
+    PrisonerResponse[]
+  >([]);
   const notification = useNotification();
 
   const [values, setValues] = useState(initialFieldValues);
   const [showDelete, setShowDelete] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState(GenderEnum.male);
+  const indicatorRef = useRef<any>(null);
+  const tabRefs = useRef<any>({});
+
+  useEffect(() => {
+    const activeElement = tabRefs.current[activeTab];
+    if (activeElement && indicatorRef.current) {
+      indicatorRef.current.style.width = `${activeElement.offsetWidth}px`;
+      indicatorRef.current.style.left = `${activeElement.offsetLeft}px`;
+    }
+  }, [activeTab]);
 
   const { showLoading, closeLoading } = useLoading();
+
+  const initParam = {
+    domGenderId: activeTab,
+  };
+  const [param, setParam] = useState(initParam);
+
+  const handleChangeTab = (gender: number) => {
+    setActiveTab(gender);
+    setParam({
+      domGenderId: gender,
+    });
+  };
 
   const handleGetAllPrisoner = async () => {
     try {
       showLoading("getAllPrisoner");
-      const { data } = await axios.get("https://localhost:7120/api/prisoner");
+
+      const model = {
+        ...param,
+      };
+      const { data } = await axios.post(
+        "https://localhost:7120/api/Prisoner/getList",
+        model
+      );
       setDataPrisoner(data.data);
+      setOriginalDataPrisoner(data.data);
       closeLoading("getAllPrisoner");
     } catch (error) {
       closeLoading("getAllPrisoner");
@@ -66,7 +106,7 @@ const Prisoner = () => {
 
   useEffect(() => {
     handleGetAllPrisoner();
-  }, []);
+  }, [param]);
 
   useEffect(() => {
     handleGetAllPrisoner();
@@ -206,6 +246,17 @@ const Prisoner = () => {
         ),
     },
   ];
+  const onSearch = (val: string) => {
+    if (val.trim() === "") {
+      setDataPrisoner(originalDataPrisoner);
+    } else {
+      const newListPrisoner = originalDataPrisoner.filter(
+        (item: PrisonerResponse) =>
+          item?.prisonerName?.toLowerCase().includes(val.toLowerCase())
+      );
+      setDataPrisoner(newListPrisoner);
+    }
+  };
 
   return (
     <div>
@@ -217,12 +268,44 @@ const Prisoner = () => {
       </div>
 
       <div className={styles.wrapperContent}>
+        <div className={styles.wrapperHeaderContent}>
+          <div className={styles.wrapperTab}>
+            <div
+              ref={(el) => (tabRefs.current[GenderEnum.male] = el)}
+              onClick={() => handleChangeTab(GenderEnum.male)}
+              className={
+                activeTab === GenderEnum.male ? styles.tab : styles.item
+              }
+            >
+              Nam
+            </div>
+            <div
+              ref={(el) => (tabRefs.current[GenderEnum.feMale] = el)}
+              onClick={() => handleChangeTab(GenderEnum.feMale)}
+              className={
+                activeTab === GenderEnum.feMale ? styles.tab : styles.item
+              }
+            >
+              Nữ
+            </div>
+            <div ref={indicatorRef} className={styles.indicator}></div>
+          </div>
+          <div>
+            <Search
+              placeholder="tìm kiếm theo tên nhân viên"
+              onSearch={onSearch}
+              style={{ width: 250 }}
+              size="large"
+              allowClear
+            />
+          </div>
+        </div>
+        <div className={styles.customDivider}></div>
         <div className={styles.wrapperBtn}>
           <div className={"createBtn"} onClick={handleOpenCreate}>
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Phạm Nhân
           </div>
-          <div>search</div>
         </div>
         <Table
           columns={columns}

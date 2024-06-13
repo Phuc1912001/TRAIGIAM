@@ -17,6 +17,7 @@ import MobileHeader from "../../Components/MobileHeader/MobileHeader";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import CreateUser from "./CreateUser/CreateUser";
 import { RoleEnum } from "../MyProfile/Role.model";
+import Search from "antd/es/input/Search";
 
 const Users = () => {
   const items = [
@@ -33,6 +34,7 @@ const Users = () => {
     imageFile: null,
   };
   const [dataUsers, setDataUsers] = useState<UserModel[]>([]);
+  const [dataOriginUsers, setDataOriginUsers] = useState<UserModel[]>([]);
   const [openCreateUsers, setOpenCreateUsers] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
@@ -51,6 +53,7 @@ const Users = () => {
       showLoading("getAllUsers");
       const { data } = await axios.get("https://localhost:7120/api/Register");
       setDataUsers(data.data);
+      setDataOriginUsers(data.data);
       closeLoading("getAllUsers");
     } catch (error) {
       closeLoading("getAllUsers");
@@ -180,7 +183,16 @@ const Users = () => {
       ),
     },
   ];
-
+  const onSearch = (val: string) => {
+    if (val.trim() === "") {
+      setDataUsers(dataOriginUsers);
+    } else {
+      const newList = dataOriginUsers.filter((item: UserModel) =>
+        item?.userName?.toLowerCase().includes(val.toLowerCase())
+      );
+      setDataUsers(newList);
+    }
+  };
   return (
     <div>
       <div className="share-sticky">
@@ -196,7 +208,15 @@ const Users = () => {
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Người dùng
           </div>
-          <div>search</div>
+          <div>
+            <Search
+              placeholder="tìm kiếm theo tên phạm nhân"
+              onSearch={onSearch}
+              style={{ width: 250 }}
+              size="large"
+              allowClear
+            />
+          </div>
         </div>
         <Table
           columns={columns}

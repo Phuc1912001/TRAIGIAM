@@ -5,6 +5,7 @@ import {
 } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
+import Search from "antd/es/transfer/search";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLoading } from "../../common/Hook/useLoading";
@@ -33,6 +34,9 @@ const Banding = () => {
   ];
 
   const [dataBanding, setDataBanding] = useState<BandingModel[]>([]);
+  const [originDataBanding, setOriginDataBanding] = useState<BandingModel[]>(
+    []
+  );
 
   const [openCreatePunish, setOpenCreatePunish] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -50,6 +54,7 @@ const Banding = () => {
       showLoading("GetAllBanding");
       const { data } = await axios.get("https://localhost:7120/api/Banding");
       setDataBanding(data.data);
+      setOriginDataBanding(data.data);
       closeLoading("GetAllBanding");
     } catch (error) {
       closeLoading("GetAllBanding");
@@ -174,6 +179,16 @@ const Banding = () => {
       ),
     },
   ];
+  const onSearch = (val: string) => {
+    // if (val.trim() === "") {
+    //   setDataBanding(originDataBanding);
+    // } else {
+    //   const newList = originDataBanding.filter((item: BandingModel) =>
+    //     item?.bandingID?.toLowerCase().includes(val.toLowerCase())
+    //   );
+    //   setDataBanding(newList);
+    // }
+  };
   return (
     <div>
       <div className="share-sticky">
@@ -189,7 +204,15 @@ const Banding = () => {
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Xếp Loại
           </div>
-          <div>search</div>
+          <div>
+            {/* <Search
+              placeholder="tìm kiếm theo tên phạm nhân"
+              onSearch={onSearch}
+              style={{ width: 250 }}
+              size="large"
+              allowClear
+            /> */}
+          </div>
         </div>
         <Table
           columns={columns}

@@ -1,0 +1,32 @@
+.titleModel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  .infoIcon {
+    color: rgb(65, 140, 219);
+  }
+}
+
+.wrapperPrisoner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  .imgPrisoner {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+  }
+  .imgBanding {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+}
+
+.wrapperBtn {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+}

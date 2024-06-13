@@ -17,7 +17,7 @@ namespace TraigiamBE.Controllers
         }
 
         [HttpPost("AllRoom")]
-        public async Task<ActionResult<IEnumerable<PunishmentModel>>> GetAllRoom(DomInfoModel domInfo)
+        public async Task<ActionResult<IEnumerable<RoomModelDto>>> GetAllRoom(DomInfoModel domInfo)
         {
             BaseResponseModel response = new BaseResponseModel();
             try
@@ -25,6 +25,7 @@ namespace TraigiamBE.Controllers
                 var listBed = _context.BedModels;
                 var prisoner = _context.Prisoner;
                 var listDomGender = _context.DomGenderModels;
+                var listDom = _context.DomModels;
                 var listPunishment = (await _context.RoomModels.Where(x => x.DomId == domInfo.DomId && x.DomGenderId == domInfo.DomGenderId).Select(x => new RoomModelDto
                 {
                     Id = x.Id,
@@ -32,6 +33,7 @@ namespace TraigiamBE.Controllers
                     RoomName = x.RoomName,
                     DomGenderId = x.DomGenderId,
                     DomGenderName = listDomGender.Where(l => l.Id == domInfo.DomGenderId).Select(x => x.DomGenderName).FirstOrDefault(),
+                    DomName = listDom.Where(l => l.Id == domInfo.DomId).Select(x => x.DomName).FirstOrDefault(),
                     ListBed = listBed.Where(b => b.RoomId == x.Id).Select(b => new BedModelDto
                     {
                         Id = b.Id,

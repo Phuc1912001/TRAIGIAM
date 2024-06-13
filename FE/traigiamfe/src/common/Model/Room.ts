@@ -15,4 +15,5 @@ export interface RoomModelResponse {
   listBed?: BedModelResponse[];
   domGenderId?: number;
   domGenderName?: string;
+  domName?: string;
 }

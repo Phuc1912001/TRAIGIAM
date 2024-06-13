@@ -1,5 +1,47 @@
 .wrapperContent {
   padding: 20px 50px;
+  .wrapperHeaderContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    .wrapperTab {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .tab,
+    .item {
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      border-bottom: 3px solid rgb(210, 208, 208);
+    }
+
+    .tab {
+      color: rgb(187, 9, 9);
+    }
+
+    .tab:hover,
+    .item:hover {
+      background-color: rgb(251, 228, 228);
+    }
+
+    .item {
+      color: black;
+    }
+
+    .indicator {
+      position: absolute;
+      bottom: 0;
+      height: 3px;
+      background-color: rgb(236, 163, 163);
+      transition: left 0.3s ease, width 0.3s ease;
+    }
+  }
+
   .wrapperInfor {
     display: flex;
     align-items: center;
@@ -39,5 +81,10 @@
     display: flex;
     align-items: center;
     gap: 4;
+  }
+  .customDivider {
+    margin-bottom: 15px;
+    height: 1px;
+    background-color: rgb(235, 228, 228);
   }
 }
