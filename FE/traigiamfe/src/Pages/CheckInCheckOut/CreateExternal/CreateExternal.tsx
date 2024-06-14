@@ -87,7 +87,9 @@ const CreateExternal = (props: ICreateExternal) => {
   const handleGetAllPrisoner = async () => {
     try {
       showLoading("getAllPrisoner");
-      const { data } = await axios.get("https://localhost:7120/api/prisoner");
+      const { data } = await axios.get(
+        "https://localhost:7120/api/Prisoner/getFullList"
+      );
       setDataPrisoner(data.data);
       let newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
@@ -204,6 +206,19 @@ const CreateExternal = (props: ICreateExternal) => {
             Vào Trong
           </div>
         );
+      default:
+        break;
+    }
+  };
+
+  const renderBtnConfirm = (status: number) => {
+    switch (status) {
+      case 0:
+        return "Chấp Nhận";
+      case 1:
+        return "Ra Ngoài";
+      case 2:
+        return "Vào Trong";
       default:
         break;
     }
@@ -474,7 +489,7 @@ const CreateExternal = (props: ICreateExternal) => {
         setIsOpenModal={setIsOpenModal}
         handleDelete={handleConfirm}
         title="Xác Nhận Phiếu ra vào"
-        textConfirm={renderBtn(currentRecord?.status ?? 0)}
+        textConfirm={renderBtnConfirm(currentRecord?.status ?? 0)}
       >
         <div>{renderContent(currentRecord?.status ?? 0)}</div>
       </ModalComponent>

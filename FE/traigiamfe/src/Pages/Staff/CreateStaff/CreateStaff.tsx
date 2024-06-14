@@ -227,153 +227,135 @@ const CreateStaff = (props: ICreateStaff) => {
         contentWrapperStyle={{ maxWidth: "calc(100vw - 32px)" }}
       >
         <Form layout="vertical" form={form}>
-          <Row>
-            <Col sm={24}>
-              <Form.Item name="img" label="Chọn Ảnh Đại Diện:">
-                <div className={styles.wrapperImage}>
-                  <div>
-                    <label htmlFor="image-uploader">
-                      <div className={styles.labelImage}>
-                        <PlusOutlined />
-                      </div>
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      id="image-uploader"
-                      onChange={showPreview}
-                      style={{ display: "none" }}
-                    />
+          <Form.Item name="img" label="Chọn Ảnh Đại Diện:">
+            <div className={styles.wrapperImage}>
+              <div>
+                <label htmlFor="image-uploader">
+                  <div className={styles.labelImage}>
+                    <PlusOutlined />
                   </div>
-                  <div>
-                    <div className={styles.imageChoose}>
-                      <Image
-                        rootClassName={styles.images}
-                        preview={{
-                          visible: previewOpen,
-                          movable: false,
-                          onVisibleChange: (visible) => setPreviewOpen(visible),
-                          afterOpenChange: (visible) =>
-                            !visible && setPreviewImage(""),
-                        }}
-                        src={values.imageSrc}
-                      />
-                      {showDelete && (
-                        <div
-                          onClick={handleDeleteImage}
-                          className={styles.icon}
-                        >
-                          <DeleteOutlined />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {showMessage && (
-                  <div style={{ color: "red", marginTop: "10px" }}>
-                    Vui lòng chọn ảnh đại diện.
-                  </div>
-                )}
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng điền tên nhân viên." },
-                ]}
-                name="staffName"
-                label="Tên Nhân Viên:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng điền tuổi nhân viên." },
-                ]}
-                name="staffAge"
-                label="Tuổi:"
-              >
-                <Input maxLength={150} type="number" />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền Giới tính nhân viên.",
-                  },
-                ]}
-                name="staffSex"
-                label="Giới Tính:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền căn cước công dân.",
-                  },
-                ]}
-                name="cccd"
-                label="Căn Cước Công Dân:"
-              >
-                <Input maxLength={150} type="number" />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng điền mã nhân viên." },
-                ]}
-                name="mnv"
-                label="Mã Nhân Viên:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng điền chức vụ của phạm nhân.",
-                  },
-                ]}
-                name="position"
-                label="Chức Vụ:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-
-            <Col sm={24}>
-              <Form.Item
-                rules={[{ required: true, message: "Vui lòng điền quê quán." }]}
-                name="countryside"
-                label="Quê Quán:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                name="isActive"
-                label="Trạng Thái:"
-                valuePropName="checked"
-              >
-                <Switch
-                  checked={currentRecord?.isActive === true}
-                  onChange={onChange}
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="image-uploader"
+                  onChange={showPreview}
+                  style={{ display: "none" }}
                 />
-              </Form.Item>
-            </Col>
-          </Row>
+              </div>
+              <div>
+                <div className={styles.imageChoose}>
+                  <Image
+                    rootClassName={styles.images}
+                    preview={{
+                      visible: previewOpen,
+                      movable: false,
+                      onVisibleChange: (visible) => setPreviewOpen(visible),
+                      afterOpenChange: (visible) =>
+                        !visible && setPreviewImage(""),
+                    }}
+                    src={values.imageSrc}
+                  />
+                  {showDelete && (
+                    <div onClick={handleDeleteImage} className={styles.icon}>
+                      <DeleteOutlined />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {showMessage && (
+              <div style={{ color: "red", marginTop: "10px" }}>
+                Vui lòng chọn ảnh đại diện.
+              </div>
+            )}
+          </Form.Item>
+
+          <Form.Item
+            rules={[
+              { required: true, message: "Vui lòng điền tên nhân viên." },
+            ]}
+            name="staffName"
+            label="Tên Nhân Viên:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
+
+          <Form.Item
+            rules={[
+              { required: true, message: "Vui lòng điền tuổi nhân viên." },
+            ]}
+            name="staffAge"
+            label="Tuổi:"
+          >
+            <Input maxLength={150} type="number" />
+          </Form.Item>
+
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền Giới tính nhân viên.",
+              },
+            ]}
+            name="staffSex"
+            label="Giới Tính:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
+
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền căn cước công dân.",
+              },
+            ]}
+            name="cccd"
+            label="Căn Cước Công Dân:"
+          >
+            <Input maxLength={150} type="number" />
+          </Form.Item>
+
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng điền mã nhân viên." }]}
+            name="mnv"
+            label="Mã Nhân Viên:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
+
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng điền chức vụ của phạm nhân.",
+              },
+            ]}
+            name="position"
+            label="Chức Vụ:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
+
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng điền quê quán." }]}
+            name="countryside"
+            label="Quê Quán:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
+
+          <Form.Item
+            name="isActive"
+            label="Trạng Thái:"
+            valuePropName="checked"
+          >
+            <Switch
+              checked={currentRecord?.isActive === true}
+              onChange={onChange}
+            />
+          </Form.Item>
         </Form>
       </Drawer>
     </div>

@@ -233,10 +233,14 @@ const MyProfile = () => {
                   </div>
                 </div>
               </div>
-              <div className={styles.btnEdit} onClick={handleShowEdit}>
-                <EditOutlined style={{ fontSize: 18 }} />
-                <div>Edit</div>
-              </div>
+              {(dataDetail?.role === RoleEnum.truongTrai ||
+                dataDetail?.role === RoleEnum.doiTruong ||
+                dataDetail?.role === RoleEnum.giamThi) && (
+                <div className={styles.btnEdit} onClick={handleShowEdit}>
+                  <EditOutlined style={{ fontSize: 18 }} />
+                  <div>Edit</div>
+                </div>
+              )}
             </div>
             <Row style={{ height: "100%" }}>
               <TextItem label="Email">{dataDetail?.email ?? "N/A"}</TextItem>

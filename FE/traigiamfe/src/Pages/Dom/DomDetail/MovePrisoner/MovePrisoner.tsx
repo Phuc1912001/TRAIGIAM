@@ -117,7 +117,11 @@ const MovePrisoner = (props: IMovePrisoner) => {
         title={
           <div className={styles.titleModel}>
             <InfoCircleFilled className={styles.infoIcon} />
-            <div>Chuyển chỗ ở Phạm nhân</div>
+            {type === "view" ? (
+              <div>Thông tin chỗ ở của phạm nhân</div>
+            ) : (
+              <div>Chuyển chỗ ở Phạm nhân</div>
+            )}
           </div>
         }
         width={600}
@@ -156,7 +160,7 @@ const MovePrisoner = (props: IMovePrisoner) => {
               />
               <div>
                 <h3>{currentBed?.prisonerBed?.prisonerName}</h3>
-                <div>{currentBed?.prisonerBed?.prisonerAge}</div>
+                <div>{currentBed?.prisonerBed?.prisonerAge} tuổi</div>
               </div>
               <img
                 className={styles.imgBanding}

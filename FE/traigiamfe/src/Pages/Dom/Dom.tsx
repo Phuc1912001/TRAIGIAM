@@ -138,7 +138,7 @@ const Dom = () => {
             <PlusCircleOutlined style={{ fontSize: 18 }} />
             Tạo Khu
           </div>
-          <div>search</div>
+          <div></div>
         </div>
         <div>
           {dataDom.map((item: DomModel) => {

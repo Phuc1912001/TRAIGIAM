@@ -246,8 +246,6 @@ const CreateInfringement = (props: ICreateInfringement) => {
   }, [isEdit, reset]);
 
   const handleOnChange = () => {
-    console.log("alo");
-
     setIsChange(true);
   };
 
@@ -268,122 +266,99 @@ const CreateInfringement = (props: ICreateInfringement) => {
         contentWrapperStyle={{ maxWidth: "calc(100vw - 32px)" }}
       >
         <Form layout="vertical" form={form}>
-          <Row>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng điền mã vi phạm." },
-                ]}
-                name="mvp"
-                label="Mã Vi Phạm:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng điền mã vi phạm." },
-                ]}
-                name="nameIR"
-                label="Tên Vi Phạm:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng chọn phạm nhân." },
-                ]}
-                name="YouthIRIds"
-                label="Các Phạm Nhân:"
-              >
-                <Select
-                  rootClassName={styles.emFilterSelectMultiple}
-                  placeholder="Chọn phạm nhân:"
-                  // loading={!ygm}
-                  mode="multiple"
-                  options={optionPrisoner}
-                  filterOption={filterOption}
-                  onChange={handleOnChange}
-                />
-              </Form.Item>
-            </Col>
-            <Col sm={24} md={12}>
-              <Form.Item
-                name="timeInfringement"
-                label="Ngày Vi Phạm:"
-                required
-                rules={[
-                  { required: true, message: "Vui lòng chọn ngày vi phạm." },
-                ]}
-                rootClassName={styles.dateLabel}
-              >
-                <DatePicker
-                  format="DD MMM YYYY"
-                  inputReadOnly={true}
-                  placeholder="Ngày vi phạm"
-                />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[{ required: true, message: "Vui lòng điền địa điểm." }]}
-                name="location"
-                label="Địa Điểm:"
-              >
-                <Input maxLength={150} />
-              </Form.Item>
-            </Col>
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Vui lòng chọn mức độ.",
-                  },
-                ]}
-                name="rivise"
-                label="Mức Độ:"
-              >
-                <Select
-                  rootClassName={styles.emFilterSelectMultiple}
-                  placeholder="Chọn mức dộ"
-                  // loading={!ygm}
-                  options={optionRivise}
-                  filterOption={filterOption}
-                />
-              </Form.Item>
-            </Col>
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng điền mã vi phạm." }]}
+            name="mvp"
+            label="Mã Vi Phạm:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
 
-            <Col sm={24}>
-              <Form.Item
-                rules={[
-                  { required: true, message: "Vui lòng chọn hình phạt." },
-                ]}
-                name="punishId"
-                label="Hình Phạt:"
-              >
-                <Select
-                  rootClassName={styles.emFilterSelectMultiple}
-                  placeholder="Chọn hình phạt:"
-                  options={optionPunish}
-                  filterOption={filterOption}
-                />
-              </Form.Item>
-            </Col>
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng điền mã vi phạm." }]}
+            name="nameIR"
+            label="Tên Vi Phạm:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
 
-            <Col sm={24}>
-              <Form.Item
-                rules={[{ required: true, message: "Vui lòng điền Mô tả." }]}
-                name="desc"
-                label="Mô Tả:"
-              >
-                <TextArea />
-              </Form.Item>
-            </Col>
-          </Row>
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng chọn phạm nhân." }]}
+            name="YouthIRIds"
+            label="Các Phạm Nhân:"
+          >
+            <Select
+              rootClassName={styles.emFilterSelectMultiple}
+              placeholder="Chọn phạm nhân:"
+              // loading={!ygm}
+              mode="multiple"
+              options={optionPrisoner}
+              filterOption={filterOption}
+              onChange={handleOnChange}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="timeInfringement"
+            label="Ngày Vi Phạm:"
+            required
+            rules={[{ required: true, message: "Vui lòng chọn ngày vi phạm." }]}
+            rootClassName={styles.dateLabel}
+          >
+            <DatePicker
+              format="DD MMM YYYY"
+              inputReadOnly={true}
+              placeholder="Ngày vi phạm"
+            />
+          </Form.Item>
+
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng điền địa điểm." }]}
+            name="location"
+            label="Địa Điểm:"
+          >
+            <Input maxLength={150} />
+          </Form.Item>
+
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn mức độ.",
+              },
+            ]}
+            name="rivise"
+            label="Mức Độ:"
+          >
+            <Select
+              rootClassName={styles.emFilterSelectMultiple}
+              placeholder="Chọn mức dộ"
+              // loading={!ygm}
+              options={optionRivise}
+              filterOption={filterOption}
+            />
+          </Form.Item>
+
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng chọn hình phạt." }]}
+            name="punishId"
+            label="Hình Phạt:"
+          >
+            <Select
+              rootClassName={styles.emFilterSelectMultiple}
+              placeholder="Chọn hình phạt:"
+              options={optionPunish}
+              filterOption={filterOption}
+            />
+          </Form.Item>
+
+          <Form.Item
+            rules={[{ required: true, message: "Vui lòng điền Mô tả." }]}
+            name="desc"
+            label="Mô Tả:"
+          >
+            <TextArea />
+          </Form.Item>
         </Form>
       </Drawer>
     </div>

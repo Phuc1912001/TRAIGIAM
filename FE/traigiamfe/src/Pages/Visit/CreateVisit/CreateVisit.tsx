@@ -63,7 +63,9 @@ const CreateVisit = (props: ICreateVisit) => {
   const handleGetAllPrisoner = async () => {
     try {
       showLoading("getAllPrisoner");
-      const { data } = await axios.get("https://localhost:7120/api/prisoner");
+      const { data } = await axios.get(
+        "https://localhost:7120/api/Prisoner/getFullList"
+      );
       setDataPrisoner(data.data);
       let newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
@@ -198,6 +200,18 @@ const CreateVisit = (props: ICreateVisit) => {
             Đã Xong
           </div>
         );
+      default:
+        break;
+    }
+  };
+
+  const renderBtnConfirm = (status: number) => {
+    switch (status) {
+      case 0:
+        return "Chấp Nhận";
+      case 1:
+        return " Đã Xong";
+
       default:
         break;
     }
@@ -466,7 +480,7 @@ const CreateVisit = (props: ICreateVisit) => {
         setIsOpenModal={setIsOpenModal}
         handleDelete={handleConfirm}
         title="Xác Nhận Phiếu Thăm Khám"
-        textConfirm={renderBtn(currentRecord?.status ?? 0)}
+        textConfirm={renderBtnConfirm(currentRecord?.status ?? 0)}
       >
         <div>{renderContent(currentRecord?.status ?? 0)}</div>
       </ModalComponent>

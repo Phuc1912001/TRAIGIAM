@@ -1,3 +1,4 @@
+import Tab from "../../Components/Tab/Tab";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -59,31 +60,13 @@ const Prisoner = () => {
   const [showDelete, setShowDelete] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState(GenderEnum.male);
-  const indicatorRef = useRef<any>(null);
-  const tabRefs = useRef<any>({});
-
-  useEffect(() => {
-    const activeElement = tabRefs.current[activeTab];
-    if (activeElement && indicatorRef.current) {
-      indicatorRef.current.style.width = `${activeElement.offsetWidth}px`;
-      indicatorRef.current.style.left = `${activeElement.offsetLeft}px`;
-    }
-  }, [activeTab]);
 
   const { showLoading, closeLoading } = useLoading();
 
   const initParam = {
-    domGenderId: activeTab,
+    domGenderId: GenderEnum.male,
   };
   const [param, setParam] = useState(initParam);
-
-  const handleChangeTab = (gender: number) => {
-    setActiveTab(gender);
-    setParam({
-      domGenderId: gender,
-    });
-  };
 
   const handleGetAllPrisoner = async () => {
     try {
@@ -268,39 +251,7 @@ const Prisoner = () => {
       </div>
 
       <div className={styles.wrapperContent}>
-        <div className={styles.wrapperHeaderContent}>
-          <div className={styles.wrapperTab}>
-            <div
-              ref={(el) => (tabRefs.current[GenderEnum.male] = el)}
-              onClick={() => handleChangeTab(GenderEnum.male)}
-              className={
-                activeTab === GenderEnum.male ? styles.tab : styles.item
-              }
-            >
-              Nam
-            </div>
-            <div
-              ref={(el) => (tabRefs.current[GenderEnum.feMale] = el)}
-              onClick={() => handleChangeTab(GenderEnum.feMale)}
-              className={
-                activeTab === GenderEnum.feMale ? styles.tab : styles.item
-              }
-            >
-              Nữ
-            </div>
-            <div ref={indicatorRef} className={styles.indicator}></div>
-          </div>
-          <div>
-            <Search
-              placeholder="tìm kiếm theo tên nhân viên"
-              onSearch={onSearch}
-              style={{ width: 250 }}
-              size="large"
-              allowClear
-            />
-          </div>
-        </div>
-        <div className={styles.customDivider}></div>
+        <Tab onSearch={onSearch} setParam={setParam} />
         <div className={styles.wrapperBtn}>
           <div className={"createBtn"} onClick={handleOpenCreate}>
             <PlusCircleOutlined style={{ fontSize: 18 }} />
