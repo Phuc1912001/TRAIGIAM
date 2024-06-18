@@ -18,7 +18,7 @@ const StatusInfringement = (props: IStatusInfringement) => {
               border: `1px solid #006ac2`,
             }}
           >
-            Chờ Quản Lý
+            Chờ Đội trưởng
           </Tag>
         );
       case 1:
@@ -30,7 +30,7 @@ const StatusInfringement = (props: IStatusInfringement) => {
               border: `1px solid #006ac2`,
             }}
           >
-            Chờ Giám Đốc
+            Chờ Trưởng trại
           </Tag>
         );
       case 2:

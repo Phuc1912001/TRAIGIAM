@@ -93,6 +93,40 @@ namespace TraigiamBE.Controllers
             }
         }
 
+
+        [HttpPost("LimitBedEdit")]
+        public async Task<ActionResult<IEnumerable<BedModel>>> GetLimitBedEdit(DomInfoModel domInfo)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                var checkBed = await _context.BedModels.Where(b => b.DomGenderId == domInfo.DomGenderId && b.DomId == domInfo.DomId && b.RoomId == domInfo.RoomId).ToListAsync();
+                if (checkBed == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Phòng đã đầy";
+                    return Ok(response);
+                }
+
+               
+
+                response.Status = true;
+                response.StatusMessage = "Success";
+                response.Data = checkBed;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = "something went wrong";
+                return BadRequest(response);
+            }
+        }
+
+
+
+
+
         //[HttpGet("id")]
         //public async Task<ActionResult<BaseResponseModel>> GetDetailById(int id)
         //{

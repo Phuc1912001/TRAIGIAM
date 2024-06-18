@@ -238,7 +238,7 @@ const MyProfile = () => {
                 dataDetail?.role === RoleEnum.giamThi) && (
                 <div className={styles.btnEdit} onClick={handleShowEdit}>
                   <EditOutlined style={{ fontSize: 18 }} />
-                  <div>Edit</div>
+                  <div>Sửa</div>
                 </div>
               )}
             </div>

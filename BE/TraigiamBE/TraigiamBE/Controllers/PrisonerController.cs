@@ -41,7 +41,7 @@ namespace TraigiamBE.Controllers
                 response.StatusMessage = "Something went wrong: " + ex.Message;
                 return BadRequest(response);
             }
-        }    
+        }
 
         [HttpPost("getList")]
         public async Task<ActionResult<IEnumerable<PrisonerModel>>> GetAllPrisoner(DomInfoModel infoModel)
@@ -57,7 +57,7 @@ namespace TraigiamBE.Controllers
                 var bandings = await _context.BandingModels.ToListAsync();
 
                 var listPrisoner = await _context.Prisoner
-                    .Where(p => p.DomGenderId == infoModel.DomGenderId) 
+                    .Where(p => p.DomGenderId == infoModel.DomGenderId)
                     .Join(
                         staff,
                         p => p.Mananger,
@@ -80,7 +80,7 @@ namespace TraigiamBE.Controllers
                         Mpn = x.p.Mpn,
                         BandingID = x.p.BandingID,
                         IsActiveBanding = x.b.Status,
-                        DomGenderId= x.p.DomGenderId,
+                        DomGenderId = x.p.DomGenderId,
                         DomId = x.p.DomId,
                         RoomId = x.p.RoomId,
                         BedId = x.p.BedId,
@@ -144,18 +144,18 @@ namespace TraigiamBE.Controllers
                         Cccd = x.Cccd,
                         Mpn = x.Mpn,
                         BandingID = x.BandingID,
-                        DomGenderName = domGender.Where(dg => dg.Id == x.DomGenderId).Select(dg=> dg.DomGenderName).FirstOrDefault(),
+                        DomGenderName = domGender.Where(dg => dg.Id == x.DomGenderId).Select(dg => dg.DomGenderName).FirstOrDefault(),
                         DomId = x.DomId,
                         DomName = dom.Where(d => d.Id == x.DomId).Select(d => d.DomName).FirstOrDefault(),
                         RoomId = x.RoomId,
-                        RoomName = room.Where(r => r.Id == x.RoomId).Select(r=> r.RoomName).FirstOrDefault(),
+                        RoomName = room.Where(r => r.Id == x.RoomId).Select(r => r.RoomName).FirstOrDefault(),
                         BedId = x.BedId,
                         BedName = bed.Where(b => b.Id == x.BedId).Select(b => b.BedName).FirstOrDefault(),
                         Countryside = x.Countryside,
                         Crime = x.Crime,
                         Years = x.Years,
                         Mananger = x.Mananger,
-                        ManangerName = staff.Where(s => s.Id == x.Mananger).Select(s=> s.StaffName).FirstOrDefault(),
+                        ManangerName = staff.Where(s => s.Id == x.Mananger).Select(s => s.StaffName).FirstOrDefault(),
                         ImagePrisoner = x.ImagePrisoner,
                         ImageSrc = $"{Request.Scheme}://{Request.Host}{Request.PathBase}/Images/{x.ImagePrisoner}",
                         ListExternal = externalList.Where(e => e.PrisonerId == id).Select(e => new ExternalModelDto
@@ -226,7 +226,7 @@ namespace TraigiamBE.Controllers
                                 ModifiedBy = s.ModifiedBy,
                                 ModifiedByName = users.Where(u => u.Id == s.ModifiedBy).Select(x => x.UserName).ToString(),
                                 ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, s.ImageStatement),
-                                
+
                             }).ToList(),
 
                     })
@@ -375,15 +375,33 @@ namespace TraigiamBE.Controllers
             }
         }
 
-        [HttpPost("MoveBed")] 
-        public async Task<ActionResult<BaseResponseModel>> UpdateBedPrisoner( UpdateBedModel updateBedModel  )
+        [HttpPost("MoveBed")]
+        public async Task<ActionResult<BaseResponseModel>> UpdateBedPrisoner(UpdateBedModel updateBedModel)
         {
             BaseResponseModel response = new BaseResponseModel();
 
             try
             {
-                var prisoner = await _context.Prisoner.Where(p => p.Id == updateBedModel.PrisonerId).FirstOrDefaultAsync();   
-                if(prisoner == null)
+                var prisoner = await _context.Prisoner.Where(p => p.Id == updateBedModel.PrisonerId).FirstOrDefaultAsync();
+
+                var bedWithPArisoner = await _context.BedModels.Where(b => b.PrisonerId == updateBedModel.PrisonerId).FirstOrDefaultAsync();
+                if (bedWithPArisoner != null)
+                {
+                    bedWithPArisoner.PrisonerId = null;
+                }
+
+                var bed = await _context.BedModels.Where(b => b.Id == updateBedModel.BedId).FirstOrDefaultAsync();
+                if (bed != null)
+                {
+                    bed.PrisonerId = updateBedModel.PrisonerId;
+                    await _context.SaveChangesAsync();
+
+                }
+
+
+
+
+                if (prisoner == null)
                 {
                     throw new ArgumentException("prisoner is null.");
 
@@ -392,7 +410,7 @@ namespace TraigiamBE.Controllers
                 prisoner.DomId = updateBedModel.DomId;
                 prisoner.RoomId = updateBedModel.RoomId;
                 prisoner.BedId = updateBedModel.BedId;
-                await _context.SaveChangesAsync();  
+                await _context.SaveChangesAsync();
 
                 response.Status = true;
                 response.StatusMessage = "success";
@@ -415,7 +433,7 @@ namespace TraigiamBE.Controllers
             {
                 throw new ArgumentException("Invalid prisoner model or prisoner ID.");
             }
-           
+
             // Cập nhật BedModels
             var bedRecord = await _context.BedModels
                 .FirstOrDefaultAsync(b => b.Id == prisonerModel.BedId);

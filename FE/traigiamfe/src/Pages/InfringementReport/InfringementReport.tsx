@@ -251,7 +251,7 @@ const InfringementReport = () => {
         title="Xác xóa vi phạm"
         textConfirm="Xóa Vi Phạm"
       >
-        <div>{`Bạn có muốn xóa vi phạm `}</div>
+        <div>{`Bạn có muốn xóa vi phạm ${currentRecord?.mvp}`}</div>
       </ModalComponent>
     </div>
   );

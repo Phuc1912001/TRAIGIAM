@@ -48,7 +48,7 @@ const PrisonerExternal = (props: IPrisonerExternal) => {
       },
     },
     {
-      title: "Loại Xuât nhập",
+      title: "Loại ra vào",
       dataIndex: "emtype",
       key: "emtype",
       render: (_, record) => {

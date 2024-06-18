@@ -146,7 +146,7 @@ const CreateDom = (props: ICreateDom) => {
           <Form.Item
             rules={[{ required: true, message: "Vui lòng điền tên khu vực." }]}
             name="domGenderName"
-            label="Nhà:"
+            label="Nhà Giam:"
             initialValue={`${state?.domGender?.domGenderName}`}
           >
             <Input maxLength={150} disabled={true} />

@@ -25,7 +25,10 @@ import {
   BandingModel,
   IBandingTextMap,
 } from "../../../common/Model/banding";
-import { PrisonerModel } from "../../../common/Model/prisoner";
+import {
+  PrisonerModel,
+  PrisonerResponse,
+} from "../../../common/Model/prisoner";
 import styles from "./CreatePrisoner.module.scss";
 
 interface IInitValue {
@@ -37,7 +40,7 @@ interface ICreatePrisoner {
   openCreatePrisoner: boolean;
   setOpenCreatePrisoner: React.Dispatch<React.SetStateAction<boolean>>;
   isEdit: boolean;
-  currentRecord?: PrisonerModel;
+  currentRecord?: PrisonerResponse;
   values: IInitValue;
   setValues: React.Dispatch<React.SetStateAction<IInitValue>>;
   showDelete: boolean;
@@ -231,14 +234,43 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     }
   };
 
+  const getAllBedEdit = async () => {
+    try {
+      showLoading("getAllBed");
+      const model = {
+        domGenderId: currentRecord?.domGenderId,
+        domId: currentRecord?.domId,
+        roomId: currentRecord?.roomId,
+      };
+      const { data } = await axios.post(
+        "https://localhost:7120/api/Bed/LimitBedEdit",
+        model
+      );
+      setDataBed(data.data);
+      let newData = data.data.map((item: BedModel) => ({
+        label: item.bedName,
+        value: item.id,
+      }));
+      setOptionBed(newData);
+      closeLoading("getAllBed");
+    } catch (error) {
+      closeLoading("getAllBed");
+    }
+  };
+
   useEffect(() => {
-    getAllBed();
+    if (!isEdit) {
+      getAllBed();
+    }
   }, [roomId]);
 
   useEffect(() => {
     getAllStaff();
     getAllBanding();
     getAllDomGender();
+    if (isEdit) {
+      getAllBedEdit();
+    }
   }, [openCreatePrisoner]);
 
   const handleOnFinish = async () => {

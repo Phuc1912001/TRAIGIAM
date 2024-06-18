@@ -89,7 +89,7 @@ const PrisonerDetail = () => {
           <TextItem label="Giới Tính">{dataDetail?.prisonerSex}</TextItem>
           <TextItem label="Căn Cước Công Dân">{dataDetail?.cccd}</TextItem>
           <TextItem label="Quê Quán">{dataDetail?.countryside}</TextItem>
-          <TextItem label="Nhà">{dataDetail?.domGenderName}</TextItem>
+          <TextItem label="Nhà giam">{dataDetail?.domGenderName}</TextItem>
           <TextItem label="Khu">{dataDetail?.domName}</TextItem>
           <TextItem label="Số Phòng">{dataDetail?.roomName}</TextItem>
           <TextItem label="Số Giường">{dataDetail?.bedName}</TextItem>

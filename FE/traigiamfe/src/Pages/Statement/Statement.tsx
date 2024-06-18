@@ -243,7 +243,7 @@ const Statement = () => {
         title="Xác nhận xóa lời khai"
         textConfirm="Xóa Lời Khai"
       >
-        <div>{`Bạn có muốn xóa lời khai `}</div>
+        <div>{`Bạn có muốn xóa lời khai ${currentRecord?.prisonerName}`}</div>
       </ModalComponent>
     </div>
   );

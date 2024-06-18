@@ -442,7 +442,7 @@ const CreateStatement = (props: ICreateStatement) => {
               <TextItem label="Tên Phạm Nhân">
                 {currentRecord?.prisonerName}
               </TextItem>
-              <TextItem label="Tiên Vi Phạm">{currentRecord?.irName}</TextItem>
+              <TextItem label="Tên Vi Phạm">{currentRecord?.irName}</TextItem>
               <TextItem label="Ngày Khai  Báo">
                 {dayjs(currentRecord?.timeStatement).format("DD-MM-YYYY")}
               </TextItem>
