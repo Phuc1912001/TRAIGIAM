@@ -82,7 +82,10 @@ const Login = () => {
             {isSignUp && (
               <Col sm={24}>
                 <Form.Item
-                  rules={[{ required: true, message: "Vui lòng điền email" }]}
+                  rules={[
+                    { required: true, message: "Vui lòng điền email." },
+                    { type: "email", message: "Email không hợp lệ." },
+                  ]}
                   name="email"
                   label="Email"
                 >
@@ -95,7 +98,15 @@ const Login = () => {
               <Form.Item
                 label="Mật Khẩu"
                 name="password"
-                rules={[{ required: true, message: "Vui lòng điền mật khẩu" }]}
+                rules={[
+                  { required: true, message: "Vui lòng điền mật khẩu" },
+                  {
+                    pattern:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,}$/,
+                    message:
+                      "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
+                  },
+                ]}
               >
                 <Input.Password />
               </Form.Item>

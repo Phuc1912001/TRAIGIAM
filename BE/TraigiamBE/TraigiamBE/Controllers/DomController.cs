@@ -49,32 +49,6 @@ namespace TraigiamBE.Controllers
             }
         }
 
-        //[HttpGet("id")]
-        //public async Task<ActionResult<BaseResponseModel>> GetDetailById(int id)
-        //{
-        //    BaseResponseModel response = new BaseResponseModel();
-        //    try
-        //    {
-        //        var externalModel = await _context.ExternalModels.FindAsync(id);
-        //        if (externalModel == null)
-        //        {
-        //            response.Status = false;
-        //            response.StatusMessage = "External model not found";
-        //            return NotFound(response);
-        //        }
-
-        //        response.Status = true;
-        //        response.StatusMessage = "Successfully retrieved External model by ID";
-        //        response.Data = externalModel;
-        //        return Ok(response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Status = false;
-        //        response.StatusMessage = $"Internal server error: {ex.Message}";
-        //        return StatusCode(500, response);
-        //    }
-        //}
         [HttpPost("limitDom")]
         public async Task<ActionResult<IEnumerable<DomModelDto>>> GetLimitDom(DomInfoModel domInfo)
         {

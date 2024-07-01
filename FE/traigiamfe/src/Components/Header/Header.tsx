@@ -9,7 +9,7 @@ import axios from "axios";
 import { useLoading } from "../../common/Hook/useLoading";
 import { UserModel } from "@/common/Model/user";
 import { RoleEnum } from "../../Pages/MyProfile/Role.model";
-
+import defaultImage from "../../assets/default.jpg";
 interface IItems {
   title: any;
 }
@@ -108,7 +108,11 @@ const Header = (props: IHeader) => {
       </div>
       <Popover placement="bottomLeft" content={content}>
         <div className={styles.wrapperAcount}>
-          <img className={styles.avatar} src={dataDetail?.imageSrc} alt="" />
+          <img
+            className={styles.avatar}
+            src={dataDetail?.imageSrc ?? defaultImage}
+            alt=""
+          />
         </div>
       </Popover>
     </div>

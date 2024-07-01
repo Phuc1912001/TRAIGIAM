@@ -303,7 +303,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         await axios.post("https://localhost:7120/api/Prisoner", formData);
         setOpenCreatePrisoner(false);
         setRecall(!recall);
-        notification.success(<div>Tạo Phạm Nhân Thành Công.</div>);
+        notification.success(<div>Thêm Phạm Nhân Thành Công.</div>);
         closeLoading("createPrisoner");
       } catch (error) {
         closeLoading("createPrisoner");
@@ -364,7 +364,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         Đóng
       </Button>
       <div onClick={handleOnFinish} className="btn-orange">
-        Tạo Phạm Nhân
+        Thêm Phạm Nhân
       </div>
     </div>
   );
@@ -456,7 +456,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
   return (
     <div>
       <Drawer
-        title={isEdit ? "Sửa Phạm Nhân" : "Tạo Phạm Nhân"}
+        title={isEdit ? "Sửa Phạm Nhân" : "Thêm Phạm Nhân"}
         open={openCreatePrisoner}
         placement="right"
         closable={false}
@@ -566,7 +566,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
           <Form.Item
             rules={[{ required: true, message: "Vui lòng chọn cấp bậc." }]}
             name="bandingID"
-            label="Cấp Bậc:"
+            label="Xếp loại:"
           >
             <Select
               rootClassName={styles.emFilterSelectMultiple}

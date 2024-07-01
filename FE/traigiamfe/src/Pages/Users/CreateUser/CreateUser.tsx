@@ -244,8 +244,7 @@ const CreateUser = (props: ICreateUser) => {
     if (isEdit) {
       form.setFieldsValue(currentRecord);
       const arr = currentRecord?.imageSrc?.split("/");
-      const hasNull = arr?.includes("null");
-      const imgURL = hasNull ? defaultImage : currentRecord?.imageSrc;
+      const imgURL = !arr ? defaultImage : currentRecord?.imageSrc;
       setValues({
         ...values,
         imageSrc: imgURL,
@@ -349,7 +348,15 @@ const CreateUser = (props: ICreateUser) => {
               <Input maxLength={150} />
             </Form.Item>
             <Form.Item
-              rules={[{ required: true, message: "Vui lòng điền mật khẩu ." }]}
+              rules={[
+                { required: true, message: "Vui lòng điền mật khẩu" },
+                {
+                  pattern:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,}$/,
+                  message:
+                    "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
+                },
+              ]}
               name="password"
               label="Mật khẩu:"
             >
@@ -375,7 +382,10 @@ const CreateUser = (props: ICreateUser) => {
               />
             </Form.Item>
             <Form.Item
-              rules={[{ required: true, message: "Vui lòng điền email." }]}
+              rules={[
+                { required: true, message: "Vui lòng điền email." },
+                { type: "email", message: "Email không hợp lệ." },
+              ]}
               name="email"
               label="Email:"
             >

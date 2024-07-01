@@ -202,7 +202,7 @@ const Banding = () => {
         <div className={styles.wrapperBtn}>
           <div className={"createBtn"} onClick={handleOpenCreate}>
             <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Xếp Loại
+            Tạo Xếp loại
           </div>
           <div>
             {/* <Search

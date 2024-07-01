@@ -30,15 +30,7 @@ namespace TraigiamBE.Controllers
                         DomId = x.DomId,
                         BedName = x.BedName,
                         RoomId = x.RoomId,
-                        //PrisonerBed =  prisoner.Where(p => p.BedId == x.Id).Select(p => new PrisonerModelDto
-                        //{
-                        //    Id = p.Id,
-                        //    PrisonerName = p.PrisonerName,
-                        //    PrisonerAge = p.PrisonerAge,
-                        //    PrisonerSex = p.PrisonerSex,
-                        //    BandingID = p.BandingID, 
-                        //    ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, p.ImagePrisoner),
-                        //}).FirstOrDefault()
+                        
                     }).ToListAsync()).OrderByDescending(item => item.CreateAt);
                 response.Status = true;
                 response.StatusMessage = "Success";
@@ -122,37 +114,6 @@ namespace TraigiamBE.Controllers
                 return BadRequest(response);
             }
         }
-
-
-
-
-
-        //[HttpGet("id")]
-        //public async Task<ActionResult<BaseResponseModel>> GetDetailById(int id)
-        //{
-        //    BaseResponseModel response = new BaseResponseModel();
-        //    try
-        //    {
-        //        var externalModel = await _context.ExternalModels.FindAsync(id);
-        //        if (externalModel == null)
-        //        {
-        //            response.Status = false;
-        //            response.StatusMessage = "External model not found";
-        //            return NotFound(response);
-        //        }
-
-        //        response.Status = true;
-        //        response.StatusMessage = "Successfully retrieved External model by ID";
-        //        response.Data = externalModel;
-        //        return Ok(response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        response.Status = false;
-        //        response.StatusMessage = $"Internal server error: {ex.Message}";
-        //        return StatusCode(500, response);
-        //    }
-        //}
 
 
         [HttpPost]

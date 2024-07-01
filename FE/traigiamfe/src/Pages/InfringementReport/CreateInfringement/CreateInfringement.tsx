@@ -198,7 +198,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
         Đóng
       </Button>
       <div onClick={handleOnFinish} className="btn-orange">
-        Tạo Phiếm Thăm
+        Tạo Vi phạm
       </div>
     </div>
   );
@@ -214,7 +214,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
         Đóng
       </Button>
       <div onClick={handleOnEdit} className="btn-orange">
-        Sửa Phiếu Thăm
+        Sửa vi phạm
       </div>
     </div>
   );

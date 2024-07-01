@@ -55,6 +55,7 @@ namespace TraigiamBE.Controllers
                 var test = await _context.Prisoner.ToListAsync();
 
                 var bandings = await _context.BandingModels.ToListAsync();
+                var domGender = _context.DomGenderModels;
 
                 var listPrisoner = await _context.Prisoner
                     .Where(p => p.DomGenderId == infoModel.DomGenderId)
@@ -81,6 +82,8 @@ namespace TraigiamBE.Controllers
                         BandingID = x.p.BandingID,
                         IsActiveBanding = x.b.Status,
                         DomGenderId = x.p.DomGenderId,
+                        DomGenderName = domGender.Where(dg => dg.Id == x.p.DomGenderId).Select(dg => dg.DomGenderName).FirstOrDefault(),
+
                         DomId = x.p.DomId,
                         RoomId = x.p.RoomId,
                         BedId = x.p.BedId,
@@ -144,6 +147,7 @@ namespace TraigiamBE.Controllers
                         Cccd = x.Cccd,
                         Mpn = x.Mpn,
                         BandingID = x.BandingID,
+                        DomGenderId= x.DomGenderId,
                         DomGenderName = domGender.Where(dg => dg.Id == x.DomGenderId).Select(dg => dg.DomGenderName).FirstOrDefault(),
                         DomId = x.DomId,
                         DomName = dom.Where(d => d.Id == x.DomId).Select(d => d.DomName).FirstOrDefault(),
@@ -226,9 +230,7 @@ namespace TraigiamBE.Controllers
                                 ModifiedBy = s.ModifiedBy,
                                 ModifiedByName = users.Where(u => u.Id == s.ModifiedBy).Select(x => x.UserName).ToString(),
                                 ImageSrc = string.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, s.ImageStatement),
-
                             }).ToList(),
-
                     })
                     .FirstOrDefaultAsync();
 
@@ -286,10 +288,7 @@ namespace TraigiamBE.Controllers
         }
 
 
-        private bool EmployeeModelExists(int id)
-        {
-            return _context.Prisoner.Any(e => e.Id == id);
-        }
+    
 
         [HttpPost]
         public async Task<ActionResult<BaseResponseModel>> CreatePrisonerModel([FromForm] PrisonerModel prisonerModel)

@@ -95,7 +95,7 @@ const Users = () => {
       getAllUsers();
       setIsOpenModal(false);
       notification.success(<div>Xóa Người dùng Thành Công.</div>);
-      showLoading("delete");
+      closeLoading("delete");
     } catch (error) {
       setIsOpenModal(true);
       closeLoading("delete");
@@ -134,8 +134,9 @@ const Users = () => {
       key: "userName",
       render: (_, record) => {
         const arr = record?.imageSrc?.split("/");
-        const hasNull = arr?.includes("null");
-        const imgURL = hasNull ? defaultImage : record.imageSrc;
+
+        const imgURL = !arr ? defaultImage : record.imageSrc;
+
         return (
           <div className={styles.containerInfor}>
             <div>

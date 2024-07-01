@@ -204,7 +204,7 @@ const Prisoner = () => {
       dataIndex: "dom",
       key: "dom",
       render: (_, record) => {
-        return <div>Nữ</div>;
+        return <div>{record.domGenderName}</div>;
       },
     },
     {
@@ -255,7 +255,7 @@ const Prisoner = () => {
         <div className={styles.wrapperBtn}>
           <div className={"createBtn"} onClick={handleOpenCreate}>
             <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Phạm Nhân
+            Thêm Phạm Nhân
           </div>
         </div>
         <Table

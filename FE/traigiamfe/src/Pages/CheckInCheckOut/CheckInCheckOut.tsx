@@ -348,7 +348,7 @@ const CheckInCheckOut = () => {
         title="Xác xóa ra vào"
         textConfirm="Xóa ra vào"
       >
-        <div>{`Bạn có muốn xóa ra vào của ${currentRecord?.prisonerId}`}</div>
+        <div>{`Bạn có muốn xóa ra vào của ${currentRecord?.prisonerName}`}</div>
       </ModalComponent>
 
       <ModalComponent

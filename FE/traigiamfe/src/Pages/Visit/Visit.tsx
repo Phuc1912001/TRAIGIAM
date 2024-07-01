@@ -357,7 +357,7 @@ const Visit = () => {
         title="Xác phiếu thăm khám"
         textConfirm="Xóa phiếu thăm khám"
       >
-        <div>{`Bạn có muốn xóa phiếu thăm khám của phạm nhân ${currentRecord?.prisonerId}`}</div>
+        <div>{`Bạn có muốn xóa phiếu thăm khám của phạm nhân ${currentRecord?.prisonerName}`}</div>
       </ModalComponent>
 
       <ModalComponent
