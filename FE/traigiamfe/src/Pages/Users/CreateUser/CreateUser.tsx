@@ -13,8 +13,8 @@ import defaultImage from "../../../assets/default.jpg";
 
 interface IInitValue {
   imageName: string;
-  imageSrc: any;
-  imageFile: any;
+  imageSrc: A;
+  imageFile: A;
 }
 
 interface ICreateUser {
@@ -57,7 +57,6 @@ const CreateUser = (props: ICreateUser) => {
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
   const [form] = useForm();
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
@@ -71,7 +70,7 @@ const CreateUser = (props: ICreateUser) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionRoleType = [
     { label: "Trưởng trại", value: RoleEnum.truongTrai },
@@ -173,7 +172,7 @@ const CreateUser = (props: ICreateUser) => {
         Đóng
       </Button>
       <div onClick={handleOnFinish} className="btn-orange">
-        Tạo Người dùng
+        Thêm Người dùng
       </div>
     </div>
   );
@@ -207,9 +206,9 @@ const CreateUser = (props: ICreateUser) => {
     </div>
   );
 
-  const showPreview = (e: any) => {
+  const showPreview = (e: A) => {
     if (e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0];
+      const imageFile = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
         setValues({
@@ -263,7 +262,7 @@ const CreateUser = (props: ICreateUser) => {
             ? "Chi tiết Người dùng"
             : isEdit
             ? "Sửa Người dùng"
-            : "Tạo Người dùng"
+            : "Thêm Người dùng"
         }
         open={openCreateUsers}
         placement="right"

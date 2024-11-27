@@ -116,7 +116,7 @@ const CreateBanding = (props: ICreateBanding) => {
         Đóng
       </Button>
       <div onClick={handleOnFinish} className="btn-orange">
-        Tạo Xếp Loại
+        Tạo Xếp loại
       </div>
     </div>
   );
@@ -132,7 +132,7 @@ const CreateBanding = (props: ICreateBanding) => {
         Đóng
       </Button>
       <div onClick={handleOnEdit} className="btn-orange">
-        Sửa Xếp Loại
+        Sửa Xếp loại
       </div>
     </div>
   );
@@ -171,10 +171,10 @@ const CreateBanding = (props: ICreateBanding) => {
       <Drawer
         title={
           isView
-            ? "Chi tiết Xếp Loại "
+            ? "Chi tiết Xếp loại "
             : isEdit
-            ? "Sửa Xếp Loại"
-            : "Tạo Xếp Loại"
+            ? "Sửa Xếp loại"
+            : "Tạo Xếp loại"
         }
         open={openCreatePunish}
         placement="right"

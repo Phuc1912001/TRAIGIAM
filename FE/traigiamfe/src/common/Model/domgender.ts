@@ -1,4 +1,4 @@
 export interface DomGenderModel {
-    id?:number;
-    domGenderName?:string;
+  id?: number;
+  domGenderName?: string;
 }

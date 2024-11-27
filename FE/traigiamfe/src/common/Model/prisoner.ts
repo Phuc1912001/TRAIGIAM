@@ -21,7 +21,7 @@ export interface PrisonerModel {
   manangerName?: string;
   imagePrisoner?: string;
   imageSrc?: string;
-  filePrisoner?: any;
+  filePrisoner?: A;
 }
 
 export interface PrisonerResponse {
@@ -47,7 +47,7 @@ export interface PrisonerResponse {
   manangerName?: string;
   imagePrisoner?: string;
   imageSrc?: string;
-  filePrisoner?: any;
+  filePrisoner?: A;
   isActiveBanding?: boolean;
   listStatement?: StatmentModel[];
   listExternal?: CheckInCheckOutModel[];

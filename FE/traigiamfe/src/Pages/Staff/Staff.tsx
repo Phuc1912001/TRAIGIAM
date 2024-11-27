@@ -198,7 +198,7 @@ const Staff = () => {
         <div className={styles.wrapperBtn}>
           <div className={"createBtn"} onClick={handleOpenCreate}>
             <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Nhân Viên
+            Thêm Nhân Viên
           </div>
           <div>
             <Search

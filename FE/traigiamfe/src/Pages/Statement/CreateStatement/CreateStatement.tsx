@@ -5,16 +5,7 @@ import {
 import { PrisonerModel } from "@/common/Model/prisoner";
 import { StatmentModel } from "@/common/Model/statement";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Drawer,
-  Form,
-  Image,
-  Row,
-  Select,
-} from "antd";
+import { Button, DatePicker, Drawer, Form, Image, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
@@ -30,8 +21,8 @@ import styles from "./CreateStatement.module.scss";
 
 interface IInitValue {
   imageName: string;
-  imageSrc: any;
-  imageFile: any;
+  imageSrc: A;
+  imageFile: A;
 }
 
 interface ICreateStatement {
@@ -79,7 +70,6 @@ const CreateStatement = (props: ICreateStatement) => {
   const { showLoading, closeLoading } = useLoading();
   const [isOpenModalConfirm, setIsOpenModalConfirm] = useState<boolean>(false);
   const [isOpenModelCancel, setIsOpenModelCancel] = useState<boolean>(false);
-  const [isChange, setIsChange] = useState<boolean>(false);
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
   const [optionIR, setOptionIR] = useState<IOptionValue[]>([]);
   const [dataInfringement, setDataInfringement] = useState<
@@ -91,9 +81,9 @@ const CreateStatement = (props: ICreateStatement) => {
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-  const [prisonerId, setPrisonerId] = useState<any>(0);
+  const [prisonerId, setPrisonerId] = useState<A>(0);
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
 
   const storedUserDataString = localStorage.getItem("userData");
 
@@ -127,7 +117,7 @@ const CreateStatement = (props: ICreateStatement) => {
         "https://localhost:7120/api/Infringement/getPrisonerByIR"
       );
 
-      let newData = data.data.map((item: PrisonerModel) => ({
+      const newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
         value: item.id,
       }));
@@ -144,7 +134,7 @@ const CreateStatement = (props: ICreateStatement) => {
         `https://localhost:7120/api/Infringement/getIRByPrisoner/${prisonerId}`
       );
 
-      let newData = data.data.map((item: InfringementModel) => ({
+      const newData = data.data.map((item: InfringementModel) => ({
         label: item.nameIR,
         value: item.id,
       }));
@@ -300,9 +290,9 @@ const CreateStatement = (props: ICreateStatement) => {
     </div>
   );
 
-  const showPreview = (e: any) => {
+  const showPreview = (e: A) => {
     if (e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0];
+      const imageFile = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
         setValues({
@@ -356,9 +346,9 @@ const CreateStatement = (props: ICreateStatement) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
-  const handleOnChange = (value: any) => {
+  const handleOnChange = (value: A) => {
     setPrisonerId(value);
     form.setFieldValue("irId", "");
     form.setFieldValue("statement", "");

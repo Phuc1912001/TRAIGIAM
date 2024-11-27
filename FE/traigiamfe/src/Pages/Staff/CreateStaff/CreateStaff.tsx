@@ -84,7 +84,7 @@ const CreateStaff = (props: ICreateStaff) => {
         await axios.post("https://localhost:7120/api/Staff", formData);
         setOpenCreatePrisoner(false);
         setRecall(!recall);
-        notification.success(<div>Tạo Nhân Viên Thành Công.</div>);
+        notification.success(<div>Thêm Nhân Viên Thành Công.</div>);
         closeLoading("createStaff");
       } catch (error) {
         closeLoading("createStaff");
@@ -139,7 +139,7 @@ const CreateStaff = (props: ICreateStaff) => {
         Đóng
       </Button>
       <div onClick={handleOnFinish} className="btn-orange">
-        Tạo Nhân Viên
+        Thêm Nhân Viên
       </div>
     </div>
   );
@@ -215,7 +215,7 @@ const CreateStaff = (props: ICreateStaff) => {
   return (
     <div>
       <Drawer
-        title={isEdit ? "Sửa Nhân Viên" : "Tạo Nhân Viên"}
+        title={isEdit ? "Sửa Nhân Viên" : "Thêm Nhân Viên"}
         open={openCreatePrisoner}
         placement="right"
         closable={false}

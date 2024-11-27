@@ -1,14 +1,14 @@
-import EntryIcon from '../../assets/svg/entry.svg'
-import BronzeIcon from '../../assets/svg/bzone.svg'
-import SilverIcon from '../../assets/svg/silver.svg'
-import GoldIcon from '../../assets/svg/gold.svg'
-import DiamondIcon from '../../assets/svg/diamond.svg'
+import EntryIcon from "../../assets/svg/entry.svg";
+import BronzeIcon from "../../assets/svg/bzone.svg";
+import SilverIcon from "../../assets/svg/silver.svg";
+import GoldIcon from "../../assets/svg/gold.svg";
+import DiamondIcon from "../../assets/svg/diamond.svg";
 
 export interface BandingModel {
-    id?:number;
-    bandingID?:number;
-    desc?:String;
-    status?:boolean
+  id?: number;
+  bandingID?: number;
+  desc?: string;
+  status?: boolean;
 }
 
 export const enum BandingEnum {
@@ -25,13 +25,12 @@ export const IBandingMap = new Map<BandingEnum, string>([
   [BandingEnum.Silver, SilverIcon],
   [BandingEnum.Gold, GoldIcon],
   [BandingEnum.Diamond, DiamondIcon],
- 
 ]);
 
 export const IBandingTextMap = new Map<BandingEnum, string>([
-  [BandingEnum.Entry, 'Người Mới'],
-  [BandingEnum.Bronze, 'Đồng'],
-  [BandingEnum.Silver, 'Bạc'],
-  [BandingEnum.Gold, 'Vàng'],
-  [BandingEnum.Diamond, 'Kim Cương'],
+  [BandingEnum.Entry, "Người Mới"],
+  [BandingEnum.Bronze, "Đồng"],
+  [BandingEnum.Silver, "Bạc"],
+  [BandingEnum.Gold, "Vàng"],
+  [BandingEnum.Diamond, "Kim Cương"],
 ]);

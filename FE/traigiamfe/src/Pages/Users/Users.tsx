@@ -4,7 +4,6 @@ import { UserModel } from "@/common/Model/user";
 import React, { useEffect, useState } from "react";
 import defaultImage from "../../assets/default.jpg";
 import styles from "./Users.module.scss";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Table, { ColumnsType } from "antd/es/table";
 import {
@@ -45,8 +44,6 @@ const Users = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<UserModel>();
   const [isView, setIsView] = useState<boolean>(false);
-
-  const navigate = useNavigate();
 
   const getAllUsers = async () => {
     try {
@@ -207,7 +204,7 @@ const Users = () => {
         <div className={styles.wrapperBtn}>
           <div className={"createBtn"} onClick={handleOpenCreate}>
             <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Người dùng
+            Thêm Người dùng
           </div>
           <div>
             <Search

@@ -7,5 +7,5 @@ export interface UserModel {
   email?: string;
   imageUser?: string;
   imageSrc?: string;
-  fileUser?: any;
+  fileUser?: A;
 }

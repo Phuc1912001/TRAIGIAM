@@ -1,4 +1,4 @@
-import { BedModel, BedModelResponse } from "./bed";
+import { BedModelResponse } from "./bed";
 
 export interface RoomModel {
   id?: number;

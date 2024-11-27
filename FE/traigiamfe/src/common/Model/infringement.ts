@@ -1,4 +1,4 @@
-import {  PrisonerResponse } from "./prisoner";
+import { PrisonerResponse } from "./prisoner";
 
 export interface InfringementModel {
   id?: number;
@@ -27,13 +27,13 @@ export interface InfringementResponse {
   YouthIRIds?: number[];
   rivise?: number;
   punishId?: number;
-  punishName?:string;
+  punishName?: string;
   status?: number;
   createdBy?: number;
   createdByName?: string;
   modifiedBy?: number;
   modifiedByName?: string;
-  prisonerName?:string;
+  prisonerName?: string;
   listPrisoner?: PrisonerResponse[];
   listPrisonerStatement?: PrisonerResponse[];
 }
