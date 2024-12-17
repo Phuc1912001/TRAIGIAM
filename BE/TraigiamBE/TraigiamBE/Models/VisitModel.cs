@@ -3,6 +3,9 @@
     public class VisitModel:BaseEntity
     {
         public long? PrisonerId { get; set; }
+        public string? FamilyName { get; set; }
+        public string? FamilyPhone { get; set; }
+        public string?  FamilyAddress { get; set; }
         public string? Desc { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

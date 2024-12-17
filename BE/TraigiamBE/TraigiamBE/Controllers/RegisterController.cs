@@ -58,7 +58,7 @@ namespace TraigiamBE.Controllers
             BaseResponseModel response = new BaseResponseModel();
 
             // Tìm người dùng bằng tên người dùng hoặc email
-            var user = await _context.RegisterModels.FirstOrDefaultAsync(u => u.UserName == loginModel.UserName || u.Email == loginModel.UserName);
+            var user = await _context.RegisterModels.FirstOrDefaultAsync(u =>u.Email == loginModel.UserName && u.Password == loginModel.Password);
 
             if (user == null || user.Password != loginModel.Password)
             {

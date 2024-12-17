@@ -37,6 +37,9 @@ namespace TraigiamBE.Controllers
                 {
                     Id = x.Id,
                     PrisonerId = x.PrisonerId,
+                    FamilyName = x.FamilyName,
+                    FamilyAddress = x.FamilyAddress,
+                    FamilyPhone = x.FamilyPhone,
                     Desc = x.Desc,
                     StartDate = x.StartDate,
                     EndDate = x.EndDate,
@@ -255,6 +258,19 @@ namespace TraigiamBE.Controllers
                 <h3 style='color: #333; font-weight: bold; text-align: center; padding: 20px; background-color: #FF9999;'>
                     Phiếu Thăm Khám
                 </h3>
+                <p style='font-weight: bold; margin: 10px; '>Thông tin của phạm nhân:</p>
+                <table style='width: 97%; border-collapse: collapse; margin: 10px;'>
+                    <tr>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Tên người thân</th>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Số điện thoại người thân</th>
+                        <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Địa chỉ người thân</th>
+                    </tr>
+                    <tr>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{modelPDF?.FamilyName ?? "N/A"}</td>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{modelPDF?.FamilyPhone ?? "N/A"}</td>
+                        <td style='border: 1px solid #333; padding: 8px; text-align:center;'>{modelPDF?.FamilyAddress ?? "N/A"}</td>
+                    </tr>
+                </table>
                 <p style='font-weight: bold;  margin: 10px;'>Thông tin của phạm nhân:</p>
               
                 <table style='width: 100%; border-collapse: collapse; margin: 10px;'>

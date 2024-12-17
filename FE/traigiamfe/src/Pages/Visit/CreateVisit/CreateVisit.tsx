@@ -1,9 +1,8 @@
 import { PrisonerModel } from "@/common/Model/prisoner";
 import { UserModel } from "@/common/Model/user";
 import { VisitModel } from "@/common/Model/visit";
-import { RoleEnum } from "../../MyProfile/Role.model";
 import { CloseOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Drawer, Form, Row, Select } from "antd";
+import { Button, DatePicker, Drawer, Form, Input, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
@@ -13,6 +12,7 @@ import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
 import ModalComponent from "../../../Components/ModalDelete/ModalComponent";
 import TextItem from "../../../Components/TextItem/TextItem";
+import { RoleEnum } from "../../MyProfile/Role.model";
 import StatusVisit from "../StatusVisit/StatusVisit";
 import { VisitType } from "../visit.model";
 import styles from "./CreateVisit.module.scss";
@@ -55,7 +55,7 @@ const CreateVisit = (props: ICreateVisit) => {
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
   const [dataUser, setDataUser] = useState<UserModel>();
 
   const storedUserDataString = localStorage.getItem("userData");
@@ -67,7 +67,7 @@ const CreateVisit = (props: ICreateVisit) => {
         "https://localhost:7120/api/Prisoner/getFullList"
       );
       setDataPrisoner(data.data);
-      let newData = data.data.map((item: PrisonerModel) => ({
+      const newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
         value: item.id,
       }));
@@ -118,7 +118,6 @@ const CreateVisit = (props: ICreateVisit) => {
       showLoading("CreateVisit");
       const value = await form.getFieldsValue();
       await form.validateFields();
-      const startDate = await form.getFieldValue("startDate");
       const model: VisitModel = {
         ...value,
         startDate: dayjs(value.startDate).format(),
@@ -312,7 +311,7 @@ const CreateVisit = (props: ICreateVisit) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionVisitType = [
     { label: "Gặp Người Thân", value: VisitType.gapNguoiThan },
@@ -365,6 +364,15 @@ const CreateVisit = (props: ICreateVisit) => {
         {isView ? (
           <div>
             <Row style={{ height: "100%" }}>
+              <TextItem label="Tên người thân">
+                {currentRecord?.familyName}
+              </TextItem>
+              <TextItem label="Số điện thoại">
+                {currentRecord?.familyPhone}
+              </TextItem>
+              <TextItem label="Địa chỉ người thân">
+                {currentRecord?.familyAddress}
+              </TextItem>
               <TextItem label="Tên Phạm Nhân">
                 {currentRecord?.prisonerName}
               </TextItem>
@@ -400,6 +408,33 @@ const CreateVisit = (props: ICreateVisit) => {
         ) : (
           <Form layout="vertical" form={form}>
             <Form.Item
+              rules={[
+                { required: true, message: "Vui lòng điền tên người thân." },
+              ]}
+              name="familyName"
+              label="Người thân:"
+            >
+              <Input placeholder="tên người thân" />
+            </Form.Item>
+            <Form.Item
+              rules={[
+                { required: true, message: "Vui lòng điền tên người thân." },
+              ]}
+              name="familyPhone"
+              label="Số điện thoại:"
+            >
+              <Input placeholder="số điện thoại của người thân" />
+            </Form.Item>
+            <Form.Item
+              rules={[
+                { required: true, message: "Vui lòng điền tên người thân." },
+              ]}
+              name="familyAddress"
+              label="Địa chỉ người thân:"
+            >
+              <Input placeholder="Địa chỉ người thân" />
+            </Form.Item>
+            <Form.Item
               rules={[{ required: true, message: "Vui lòng điền phạm nhân." }]}
               name="prisonerId"
               label="Phạm Nhân:"
@@ -412,7 +447,6 @@ const CreateVisit = (props: ICreateVisit) => {
                 filterOption={filterOption}
               />
             </Form.Item>
-
             <Form.Item
               rules={[
                 {
@@ -431,7 +465,6 @@ const CreateVisit = (props: ICreateVisit) => {
                 filterOption={filterOption}
               />
             </Form.Item>
-
             <Form.Item
               rules={[{ required: true, message: "Vui lòng điền Mô tả." }]}
               name="desc"
@@ -439,7 +472,6 @@ const CreateVisit = (props: ICreateVisit) => {
             >
               <TextArea />
             </Form.Item>
-
             <Form.Item
               name="startDate"
               label="Ngày Bắt đầu"
@@ -455,7 +487,6 @@ const CreateVisit = (props: ICreateVisit) => {
                 showHour
               />
             </Form.Item>
-
             <Form.Item
               name="endDate"
               label="Ngày kết thúc"
