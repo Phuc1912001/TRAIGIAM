@@ -19,9 +19,7 @@ import { NavLink } from "react-router-dom";
 import styles from "./SideBar.module.scss";
 
 const SideBar = () => {
-  const [isActive, setIsActive] = useState<boolean>(false);
-
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
   const storedUserDataString = localStorage.getItem("userData");
   const [dataDetail, setDataDetail] = useState<UserModel>();
   const { showLoading, closeLoading } = useLoading();
@@ -57,61 +55,61 @@ const SideBar = () => {
     {
       id: 1,
       path: "/prisoner",
-      name: "Phạm Nhân",
+      name: "QL PHẠM NHÂN",
       icon: <TeamOutlined />,
     },
     {
       id: 2,
       path: "/staff",
-      name: "Nhân Viên",
+      name: "QL NHÂN VIÊN",
       icon: <IdcardOutlined />,
     },
     {
       id: 3,
       path: "/infringement",
-      name: "Vi Phạm",
+      name: "QL VI PHẠM",
       icon: <ReconciliationOutlined />,
     },
     {
       id: 4,
       path: "/statement",
-      name: "Lời Khai",
+      name: "QL LỜI KHAI",
       icon: <FileDoneOutlined />,
     },
     {
       id: 5,
       path: "/punishment",
-      name: "Hình Phạt",
+      name: "QL HÌNH PHẠT",
       icon: <BookOutlined />,
     },
     {
       id: 6,
       path: "/externalmoment",
-      name: "Ra Vào",
+      name: "QL RA VÀO",
       icon: <SelectOutlined />,
     },
     {
       id: 7,
       path: "/visit",
-      name: "Thăm Khám",
+      name: "QL THĂM KHÁM",
       icon: <CommentOutlined />,
     },
     {
       id: 8,
       path: "/gender",
-      name: "Nhà Giam",
+      name: "QL NHÀ GIAM",
       icon: <DatabaseOutlined />,
     },
     {
       id: 9,
       path: "/banding",
-      name: "Xếp loại",
+      name: "QL XẾP LOẠI",
       icon: <HomeOutlined />,
     },
     {
       id: 10,
       path: "/user",
-      name: "Người dùng",
+      name: "QL NGƯỜI DÙNG",
       icon:
         dataDetail?.role === RoleEnum.truongTrai ||
         dataDetail?.role === RoleEnum.giamThi ? (
@@ -127,7 +125,7 @@ const SideBar = () => {
           <div>
             <HomeOutlined />
           </div>
-          <div>Trại Giam</div>
+          <div>TRẠI GIAM</div>
         </div>
 
         <div className={styles.wrapper}>

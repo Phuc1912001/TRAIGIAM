@@ -213,7 +213,43 @@ namespace TraigiamBE.Controllers
 
                 response.Status = true;
                 response.StatusMessage = "Visit model confirmed successfully";
-                response.Data = visitModel;  // Trả về đối tượng đã xác nhận
+                response.Data = visitModel;  
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Status = false;
+                response.StatusMessage = $"Internal server error: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpPut("{id}/cancel")]  
+        public async Task<ActionResult<BaseResponseModel>> CancelVisit(long id, ConfirmModel confirmModel)
+        {
+            BaseResponseModel response = new BaseResponseModel();
+            try
+            {
+                // Tìm đối tượng ExternalModel theo ID
+                var visitModel = await _context.VisitModels.FindAsync(id);
+                if (visitModel == null)
+                {
+                    response.Status = false;
+                    response.StatusMessage = "Visit model not found";
+                    return NotFound(response);
+                }
+
+                visitModel.Status = 4;
+                visitModel.ModifiedBy = confirmModel.UserId;
+
+                // Bạn có thể cập nhật các trường khác nếu cần thiết
+                _context.Entry(visitModel).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync(); 
+
+                response.Status = true;
+                response.StatusMessage = "Visit model confirmed successfully";
+                response.Data = visitModel;
                 return Ok(response);
             }
             catch (Exception ex)
@@ -258,7 +294,7 @@ namespace TraigiamBE.Controllers
                 <h3 style='color: #333; font-weight: bold; text-align: center; padding: 20px; background-color: #FF9999;'>
                     Phiếu Thăm Khám
                 </h3>
-                <p style='font-weight: bold; margin: 10px; '>Thông tin của phạm nhân:</p>
+                <p style='font-weight: bold; margin: 10px; '>Thông tin của người thân phạm nhân:</p>
                 <table style='width: 97%; border-collapse: collapse; margin: 10px;'>
                     <tr>
                         <th style='border: 1px solid #333; padding: 8px; background-color: #FF9999;'>Tên người thân</th>

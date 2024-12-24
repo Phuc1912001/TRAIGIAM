@@ -182,6 +182,26 @@ const CreateVisit = (props: ICreateVisit) => {
     }
   };
 
+  const handleCancel = async () => {
+    try {
+      showLoading("CancelVisit");
+      const model = {
+        userId: data.id,
+      };
+      await axios.put(
+        `https://localhost:7120/api/Visit/${currentRecord?.id}/cancel`,
+        model
+      );
+      notification.success(<div>Cặp nhập thành công.</div>);
+      setOpenCreateVisit(false);
+      setRecall(!recall);
+      setIsOpenModal(false);
+      closeLoading("CancelVisit");
+    } catch (error) {
+      closeLoading("CancelVisit");
+    }
+  };
+
   const renderBtn = (status: number) => {
     switch (status) {
       case 0:
@@ -292,6 +312,18 @@ const CreateVisit = (props: ICreateVisit) => {
         <div>{renderBtn(currentRecord?.status ?? 0)}</div>
       ) : (
         ""
+      )}
+      {currentRecord?.status === 0 && (
+        <div>
+          <Button
+            onClick={() => {
+              handleCancel();
+            }}
+            style={{ minWidth: 80 }}
+          >
+            Hủy Phiếu
+          </Button>
+        </div>
       )}
     </div>
   );
