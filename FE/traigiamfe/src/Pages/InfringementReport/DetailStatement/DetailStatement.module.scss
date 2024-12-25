@@ -1,0 +1,14 @@
+.imageChoose {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .images {
+    img {
+      height: 80px;
+      width: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+}

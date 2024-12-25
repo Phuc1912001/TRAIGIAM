@@ -19,6 +19,7 @@ import StatusInfringement from "../StatusInfringement/StatusInfringement";
 import styles from "./InfringementDetail.module.scss";
 import { UserModel } from "@/common/Model/user";
 import { RoleEnum } from "../../MyProfile/Role.model";
+import DetailStatement from "../DetailStatement/DetailStatement";
 
 const InfringementDetail = () => {
   const navigate = useNavigate();
@@ -28,9 +29,14 @@ const InfringementDetail = () => {
   const { showLoading, closeLoading } = useLoading();
   const [openModel, setOpenModel] = useState<boolean>(false);
   const notification = useNotification();
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
   const storedUserDataString = localStorage.getItem("userData");
   const [dataUser, setDataUser] = useState<UserModel>();
+
+  const [currentStatement, setCurrentStatement] = useState<StatmentModel>({});
+  const [openStatement, setOpenStatement] = useState<boolean>(false);
+
+  console.log("currentStatement", currentStatement);
 
   useEffect(() => {
     if (storedUserDataString) {
@@ -98,9 +104,9 @@ const InfringementDetail = () => {
   };
 
   const handleToView = (record: StatmentModel) => {
-    // setIsView(true)
-    // setCurrentRecord(record)
-    // setOpenCreateStatement(true);
+    console.log("record", record);
+    setCurrentStatement(record);
+    setOpenStatement(true);
   };
 
   const handleCancel = () => {
@@ -137,7 +143,11 @@ const InfringementDetail = () => {
       key: "prisonerName",
       render: (_, record) => {
         return (
-          <div onClick={() => handleToView(record)} className={styles.name}>
+          <div
+            style={{ cursor: "pointer", fontWeight: 600 }}
+            onClick={() => handleToView(record)}
+            className={styles.name}
+          >
             {record.prisonerName}
           </div>
         );
@@ -290,7 +300,8 @@ const InfringementDetail = () => {
               </Button>
               {dataDetail?.status === 0 ? (
                 <div>
-                  {dataUser?.role === RoleEnum.doiTruong && (
+                  {(dataUser?.role === RoleEnum.truongTrai ||
+                    dataUser?.role === RoleEnum.giamThi) && (
                     <div onClick={handleOnFinish} className="btn-orange">
                       Xác Nhận
                     </div>
@@ -299,8 +310,7 @@ const InfringementDetail = () => {
               ) : (
                 <div>
                   {dataDetail?.status === 1 &&
-                    (dataUser?.role === RoleEnum.truongTrai ||
-                      dataUser?.role === RoleEnum.giamThi) && (
+                    dataUser?.role === RoleEnum.truongTrai && (
                       <div onClick={handleOnFinish} className="btn-orange">
                         Xác Nhận
                       </div>
@@ -324,6 +334,11 @@ const InfringementDetail = () => {
           <span> {dataDetail?.mvp}</span>.
         </div>
       </ModalComponent>
+      <DetailStatement
+        openStatement={openStatement}
+        setOpenStatement={setOpenStatement}
+        currentStatement={currentStatement}
+      />
     </div>
   );
 };

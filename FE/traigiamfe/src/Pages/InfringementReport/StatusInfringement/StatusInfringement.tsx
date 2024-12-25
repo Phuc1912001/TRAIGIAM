@@ -5,7 +5,6 @@ interface IStatusInfringement {
 
 const StatusInfringement = (props: IStatusInfringement) => {
   const { status } = props;
-  console.log("status", status);
 
   const renderStatus = (status: number) => {
     switch (status) {
@@ -18,7 +17,7 @@ const StatusInfringement = (props: IStatusInfringement) => {
               border: `1px solid #006ac2`,
             }}
           >
-            Chờ Đội trưởng
+            Chờ Giám thị
           </Tag>
         );
       case 1:

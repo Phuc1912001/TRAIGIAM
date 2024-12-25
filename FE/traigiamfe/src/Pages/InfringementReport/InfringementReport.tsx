@@ -177,9 +177,11 @@ const InfringementReport = () => {
       key: "status",
       render: (_, record) => (
         <div className={styles.wrapperAction}>
-          <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-            <EditOutlined style={{ fontSize: 18 }} />
-          </div>
+          {record.status !== 2 && (
+            <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
+              <EditOutlined style={{ fontSize: 18 }} />
+            </div>
+          )}
 
           <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
             <DeleteOutlined style={{ fontSize: 18 }} />
