@@ -157,7 +157,7 @@ const StaffDetail = () => {
 
           <TextItem label="Căn Cước Công Dân">{dataDetail?.cccd}</TextItem>
           <TextItem label="Quê Quán">{dataDetail?.countryside}</TextItem>
-          <TextItem label="Số Phòng">{dataDetail?.position}</TextItem>
+          <TextItem label="Chức vụ">{dataDetail?.position}</TextItem>
         </Row>
         <h3 className={styles.titleList}>Đang quản lý những phạm nhân:</h3>
         <Table
