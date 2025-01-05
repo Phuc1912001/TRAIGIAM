@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Breadcrumb, Popover } from "antd";
-import styles from "./Header.module.scss";
-import avatar from "../../assets/avatar.jpg";
-import { useNavigate } from "react-router-dom";
-import { contextUser } from "../../App";
-import { useContext } from "react";
-import axios from "axios";
-import { useLoading } from "../../common/Hook/useLoading";
 import { UserModel } from "@/common/Model/user";
+import { Breadcrumb, Popover } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { RoleEnum } from "../../Pages/MyProfile/Role.model";
 import defaultImage from "../../assets/default.jpg";
+import { useLoading } from "../../common/Hook/useLoading";
+import styles from "./Header.module.scss";
 interface IItems {
-  title: any;
+  title: A;
 }
 
 interface IHeader {
@@ -30,7 +27,7 @@ const Header = (props: IHeader) => {
     localStorage.removeItem("userData");
     navigate("/login");
   };
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
   const { showLoading, closeLoading } = useLoading();
   const [dataDetail, setDataDetail] = useState<UserModel>();
 
@@ -74,14 +71,8 @@ const Header = (props: IHeader) => {
         return "Trưởng trại";
       case RoleEnum.giamThi:
         return "Giám Thị";
-      case RoleEnum.doiTruong:
-        return "Đội Trưởng";
-      case RoleEnum.quanNhan:
-        return "Quân Nhân";
       case RoleEnum.congAn:
         return "Công an";
-      case RoleEnum.nguoiDung:
-        return "Người dùng";
       default:
         break;
     }

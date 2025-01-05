@@ -108,18 +108,13 @@ const Users = () => {
   const renderRole = (role: number) => {
     switch (role) {
       case RoleEnum.truongTrai:
-        return "Trưởng trại";
+        return "Giám thị";
       case RoleEnum.giamThi:
-        return "Giám Thị";
-      case RoleEnum.doiTruong:
-        return "Đội Trưởng";
-      case RoleEnum.quanNhan:
-        return "Quân Nhân";
+        return "Đội trưởng";
       case RoleEnum.congAn:
-        return "Công an";
-      case RoleEnum.nguoiDung:
-        return "Người dùng";
+        return "Sĩ quan";
       default:
+        return "Chưa có";
         break;
     }
   };

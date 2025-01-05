@@ -1,17 +1,16 @@
+import { UserModel } from "@/common/Model/user";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Image, Input, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import avatar from "../../assets/avatar.jpg";
+import defaultImage from "../../assets/default.jpg";
+import { useLoading } from "../../common/Hook/useLoading";
+import { useNotification } from "../../common/Hook/useNotification";
 import Header from "../../Components/Header/Header";
 import TextItem from "../../Components/TextItem/TextItem";
 import styles from "./MyProfile.module.scss";
 import { RoleEnum } from "./Role.model";
-import defaultImage from "../../assets/default.jpg";
-import { useLoading } from "../../common/Hook/useLoading";
-import { useNotification } from "../../common/Hook/useNotification";
-import axios from "axios";
-import { UserModel } from "@/common/Model/user";
 
 interface IOptionValue {
   label?: string;
@@ -40,7 +39,7 @@ const MyProfile = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
   const storedUserDataString = localStorage.getItem("userData");
   const [dataDetail, setDataDetail] = useState<UserModel>();
 
@@ -54,15 +53,12 @@ const MyProfile = () => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionRoleType = [
-    { label: "Trưởng trại", value: RoleEnum.truongTrai },
-    { label: "Giám Thị", value: RoleEnum.giamThi },
-    { label: "Đội trưởng", value: RoleEnum.doiTruong },
-    { label: "Quân nhân ", value: RoleEnum.quanNhan },
-    { label: "Công an ", value: RoleEnum.congAn },
-    { label: "Người dùng ", value: RoleEnum.nguoiDung },
+    { label: "Giám thị", value: RoleEnum.truongTrai },
+    { label: "Đội trưởng", value: RoleEnum.giamThi },
+    { label: "Sĩ quan ", value: RoleEnum.congAn },
   ];
 
   const getUserById = async () => {
@@ -153,9 +149,9 @@ const MyProfile = () => {
     });
   };
 
-  const showPreview = (e: any) => {
+  const showPreview = (e: A) => {
     if (e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0];
+      const imageFile = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
         setValues({
@@ -189,17 +185,11 @@ const MyProfile = () => {
   const renderRole = (role: number) => {
     switch (role) {
       case RoleEnum.truongTrai:
-        return "Trưởng trại";
+        return "Giám thị";
       case RoleEnum.giamThi:
-        return "Giám Thị";
-      case RoleEnum.doiTruong:
-        return "Đội Trưởng";
-      case RoleEnum.quanNhan:
-        return "Quân Nhân";
+        return "Đội trưởng";
       case RoleEnum.congAn:
-        return "Công an";
-      case RoleEnum.nguoiDung:
-        return "Người dùng";
+        return "Sĩ quan";
       default:
         break;
     }
