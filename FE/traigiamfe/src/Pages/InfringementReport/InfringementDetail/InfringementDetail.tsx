@@ -300,8 +300,8 @@ const InfringementDetail = () => {
               </Button>
               {dataDetail?.status === 0 ? (
                 <div>
-                  {(dataUser?.role === RoleEnum.truongTrai ||
-                    dataUser?.role === RoleEnum.giamThi) && (
+                  {(dataUser?.role === RoleEnum.giamthi ||
+                    dataUser?.role === RoleEnum.doitruong) && (
                     <div onClick={handleOnFinish} className="btn-orange">
                       Xác Nhận
                     </div>
@@ -310,7 +310,7 @@ const InfringementDetail = () => {
               ) : (
                 <div>
                   {dataDetail?.status === 1 &&
-                    dataUser?.role === RoleEnum.truongTrai && (
+                    dataUser?.role === RoleEnum.giamthi && (
                       <div onClick={handleOnFinish} className="btn-orange">
                         Xác Nhận
                       </div>

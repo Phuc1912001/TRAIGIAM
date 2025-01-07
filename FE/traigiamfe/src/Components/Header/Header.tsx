@@ -67,12 +67,12 @@ const Header = (props: IHeader) => {
 
   const renderRole = (role: number) => {
     switch (role) {
-      case RoleEnum.truongTrai:
-        return "Trưởng trại";
-      case RoleEnum.giamThi:
+      case RoleEnum.giamthi:
         return "Giám Thị";
-      case RoleEnum.congAn:
-        return "Công an";
+      case RoleEnum.doitruong:
+        return "Đội trưởng";
+      case RoleEnum.siquan:
+        return "Sĩ quan";
       default:
         break;
     }

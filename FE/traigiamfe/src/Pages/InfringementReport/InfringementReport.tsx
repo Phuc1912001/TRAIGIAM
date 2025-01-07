@@ -9,7 +9,7 @@ import Search from "antd/es/input/Search";
 import Table, { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
@@ -19,6 +19,8 @@ import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import CreateInfringement from "./CreateInfringement/CreateInfringement";
 import styles from "./InfringementReport.module.scss";
 import StatusInfringement from "./StatusInfringement/StatusInfringement";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const InfringementReport = () => {
   const items = [
@@ -40,13 +42,20 @@ const InfringementReport = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<InfringementResponse>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
   const navigate = useNavigate();
+
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const getAllInfringement = async () => {
     try {
@@ -80,7 +89,6 @@ const InfringementReport = () => {
     setOpenCreateInfringement(true);
     setIsEdit(true);
     setCurentRecord(record);
-    setShowDelete(true);
     setReset(!reset);
   };
 
@@ -171,24 +179,34 @@ const InfringementReport = () => {
         );
       },
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "status",
-      key: "status",
-      render: (_, record) => (
-        <div className={styles.wrapperAction}>
-          {record.status !== 2 && (
-            <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-              <EditOutlined style={{ fontSize: 18 }} />
-            </div>
-          )}
+    ...(dataDetail?.role === RoleEnum.siquan
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "status",
+            key: "status",
+            render: (_: A, record: A) => (
+              <div className={styles.wrapperAction}>
+                {record.status !== 2 && (
+                  <div
+                    className={"editBtn"}
+                    onClick={() => handleOpenEdit(record)}
+                  >
+                    <EditOutlined style={{ fontSize: 18 }} />
+                  </div>
+                )}
 
-          <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-            <DeleteOutlined style={{ fontSize: 18 }} />
-          </div>
-        </div>
-      ),
-    },
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenDelete(record)}
+                >
+                  <DeleteOutlined style={{ fontSize: 18 }} />
+                </div>
+              </div>
+            ),
+          },
+        ]
+      : []),
   ];
 
   const onSearch = (val: string) => {
@@ -213,10 +231,15 @@ const InfringementReport = () => {
 
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Vi Phạm
-          </div>
+          {dataDetail?.role === RoleEnum.siquan ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Tạo Vi Phạm
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div>
             <Search
               placeholder="tìm kiếm theo tên phạm nhân"
@@ -250,7 +273,7 @@ const InfringementReport = () => {
         isOpenModal={isOpenModal}
         setIsOpenModal={setIsOpenModal}
         handleDelete={handleDeleteInfringement}
-        title="Xác xóa vi phạm"
+        title="Xác nhận xóa vi phạm"
         textConfirm="Xóa Vi Phạm"
       >
         <div>{`Bạn có muốn xóa vi phạm ${currentRecord?.mvp}`}</div>

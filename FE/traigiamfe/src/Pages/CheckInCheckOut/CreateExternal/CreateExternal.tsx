@@ -187,8 +187,8 @@ const CreateExternal = (props: ICreateExternal) => {
     switch (status) {
       case 0:
         return (
-          (dataUser?.role === RoleEnum.truongTrai ||
-            dataUser?.role === RoleEnum.giamThi) && (
+          (dataUser?.role === RoleEnum.giamthi ||
+            dataUser?.role === RoleEnum.doitruong) && (
             <div onClick={handleOpenModel} className="btn-orange">
               Chấp Nhận
             </div>

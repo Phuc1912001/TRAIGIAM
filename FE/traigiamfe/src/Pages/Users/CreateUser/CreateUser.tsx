@@ -73,17 +73,17 @@ const CreateUser = (props: ICreateUser) => {
     ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionRoleType = [
-    { label: "Giám thị", value: RoleEnum.truongTrai },
-    { label: "Đội trưởng", value: RoleEnum.giamThi },
-    { label: "Sĩ quan", value: RoleEnum.congAn },
+    { label: "Giám thị", value: RoleEnum.giamthi },
+    { label: "Đội trưởng", value: RoleEnum.doitruong },
+    { label: "Sĩ quan", value: RoleEnum.siquan },
   ];
   const renderRole = (role: number) => {
     switch (role) {
-      case RoleEnum.truongTrai:
+      case RoleEnum.giamthi:
         return "Giám thị";
-      case RoleEnum.giamThi:
+      case RoleEnum.doitruong:
         return "Đội trưởng";
-      case RoleEnum.congAn:
+      case RoleEnum.siquan:
         return "Sĩ quan";
       default:
         break;

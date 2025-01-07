@@ -1,6 +1,3 @@
-import { useLoading } from "../../common/Hook/useLoading";
-import { UserModel } from "@/common/Model/user";
-import { RoleEnum } from "../../Pages/MyProfile/Role.model";
 import {
   BookOutlined,
   CommentOutlined,
@@ -13,44 +10,10 @@ import {
   TeamOutlined,
   UserAddOutlined,
 } from "@ant-design/icons/lib/icons";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./SideBar.module.scss";
 
 const SideBar = () => {
-  const [data, setData] = useState<A>();
-  const storedUserDataString = localStorage.getItem("userData");
-  const [dataDetail, setDataDetail] = useState<UserModel>();
-  const { showLoading, closeLoading } = useLoading();
-
-  useEffect(() => {
-    if (storedUserDataString) {
-      const storedUserData = JSON.parse(storedUserDataString ?? "");
-
-      setData(storedUserData);
-    }
-  }, [storedUserDataString]);
-
-  const getUserById = async () => {
-    if (data?.id) {
-      try {
-        showLoading("getUser");
-        const { data: result } = await axios.get(
-          `https://localhost:7120/api/Register/${data?.id}`
-        );
-        setDataDetail(result.data);
-        closeLoading("getUser");
-      } catch (error) {
-        closeLoading("getUser");
-      }
-    }
-  };
-
-  useEffect(() => {
-    getUserById();
-  }, [data?.id]);
-
   const listNav = [
     {
       id: 1,
@@ -110,11 +73,7 @@ const SideBar = () => {
       id: 10,
       path: "/user",
       name: "QL NGƯỜI DÙNG",
-      icon:
-        dataDetail?.role === RoleEnum.truongTrai ||
-        dataDetail?.role === RoleEnum.giamThi ? (
-          <UserAddOutlined />
-        ) : null,
+      icon: <UserAddOutlined />,
     },
   ];
 

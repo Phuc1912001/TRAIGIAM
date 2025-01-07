@@ -8,7 +8,7 @@ import { Tooltip } from "antd";
 import Search from "antd/es/input/Search";
 import Table, { ColumnsType } from "antd/es/table";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
 import Header from "../../Components/Header/Header";
@@ -17,6 +17,8 @@ import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import CreatePunishment from "./CreatePunishment/CreatePunishment";
 import styles from "./Punishment.module.scss";
 import StatusPunish from "./StatusPunish/StatusPunish";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const Punishment = () => {
   const items = [
@@ -42,6 +44,14 @@ const Punishment = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
+
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const getAllPunishment = async () => {
     try {
@@ -150,21 +160,31 @@ const Punishment = () => {
         );
       },
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => (
-        <div className={styles.wrapperAction}>
-          <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-            <EditOutlined style={{ fontSize: 18 }} />
-          </div>
-          <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-            <DeleteOutlined style={{ fontSize: 18 }} />
-          </div>
-        </div>
-      ),
-    },
+    ...(dataDetail?.role === RoleEnum.giamthi
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "action",
+            key: "action",
+            render: (_: A, record: A) => (
+              <div className={styles.wrapperAction}>
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenEdit(record)}
+                >
+                  <EditOutlined style={{ fontSize: 18 }} />
+                </div>
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenDelete(record)}
+                >
+                  <DeleteOutlined style={{ fontSize: 18 }} />
+                </div>
+              </div>
+            ),
+          },
+        ]
+      : []),
   ];
   const onSearch = (val: string) => {
     if (val.trim() === "") {
@@ -187,10 +207,15 @@ const Punishment = () => {
 
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Hình Phạt
-          </div>
+          {dataDetail?.role === RoleEnum.giamthi ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Tạo Hình Phạt
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div>
             <Search
               placeholder="tìm kiếm theo tên Phạm nhân"

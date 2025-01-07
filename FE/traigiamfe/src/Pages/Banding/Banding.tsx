@@ -5,9 +5,8 @@ import {
 } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
-import Search from "antd/es/transfer/search";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
 import {
@@ -19,9 +18,11 @@ import {
 import Header from "../../Components/Header/Header";
 import MobileHeader from "../../Components/MobileHeader/MobileHeader";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
 import StatusPunish from "../Punishment/StatusPunish/StatusPunish";
 import styles from "./Banding.module.scss";
 import CreateBanding from "./CreateBanding/CreateBanding";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const Banding = () => {
   const items = [
@@ -34,27 +35,30 @@ const Banding = () => {
   ];
 
   const [dataBanding, setDataBanding] = useState<BandingModel[]>([]);
-  const [originDataBanding, setOriginDataBanding] = useState<BandingModel[]>(
-    []
-  );
 
   const [openCreatePunish, setOpenCreatePunish] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<BandingModel>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
 
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
+
   const getAllBanding = async () => {
     try {
       showLoading("GetAllBanding");
       const { data } = await axios.get("https://localhost:7120/api/Banding");
       setDataBanding(data.data);
-      setOriginDataBanding(data.data);
       closeLoading("GetAllBanding");
     } catch (error) {
       closeLoading("GetAllBanding");
@@ -80,7 +84,6 @@ const Banding = () => {
     setOpenCreatePunish(true);
     setIsEdit(true);
     setCurentRecord(record);
-    setShowDelete(true);
     setReset(!reset);
   };
 
@@ -163,32 +166,33 @@ const Banding = () => {
         );
       },
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => (
-        <div className={styles.wrapperAction}>
-          <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-            <EditOutlined style={{ fontSize: 18 }} />
-          </div>
-          <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-            <DeleteOutlined style={{ fontSize: 18 }} />
-          </div>
-        </div>
-      ),
-    },
+    ...(dataDetail?.role === RoleEnum.giamthi
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "action",
+            key: "action",
+            render: (_: A, record: A) => (
+              <div className={styles.wrapperAction}>
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenEdit(record)}
+                >
+                  <EditOutlined style={{ fontSize: 18 }} />
+                </div>
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenDelete(record)}
+                >
+                  <DeleteOutlined style={{ fontSize: 18 }} />
+                </div>
+              </div>
+            ),
+          },
+        ]
+      : []),
   ];
-  const onSearch = (val: string) => {
-    // if (val.trim() === "") {
-    //   setDataBanding(originDataBanding);
-    // } else {
-    //   const newList = originDataBanding.filter((item: BandingModel) =>
-    //     item?.bandingID?.toLowerCase().includes(val.toLowerCase())
-    //   );
-    //   setDataBanding(newList);
-    // }
-  };
+
   return (
     <div>
       <div className="share-sticky">
@@ -200,19 +204,16 @@ const Banding = () => {
 
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Xếp loại
-          </div>
-          <div>
-            {/* <Search
-              placeholder="tìm kiếm theo tên phạm nhân"
-              onSearch={onSearch}
-              style={{ width: 250 }}
-              size="large"
-              allowClear
-            /> */}
-          </div>
+          {dataDetail?.role === RoleEnum.giamthi ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Tạo Xếp loại
+            </div>
+          ) : (
+            <div></div>
+          )}
+
+          <div></div>
         </div>
         <Table
           columns={columns}

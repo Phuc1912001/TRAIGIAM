@@ -1,15 +1,13 @@
-import Tab from "../../Components/Tab/Tab";
 import {
   DeleteOutlined,
   EditOutlined,
   InfoCircleOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Divider, Table, Tooltip } from "antd";
-import Search from "antd/es/input/Search";
+import { Table, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../assets/default.jpg";
 import { useLoading } from "../../common/Hook/useLoading";
@@ -19,8 +17,11 @@ import { PrisonerResponse } from "../../common/Model/prisoner";
 import Header from "../../Components/Header/Header";
 import MobileHeader from "../../Components/MobileHeader/MobileHeader";
 import ModalComponent from "../../Components/ModalDelete/ModalComponent";
+import Tab from "../../Components/Tab/Tab";
 import CreatePrisoner from "./CreatePrisoner/CreatePrisoner";
 import styles from "./Prisoner.module.scss";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const enum GenderEnum {
   male = 1,
@@ -49,6 +50,14 @@ const Prisoner = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [namePrisoner, setNamePrisoner] = useState<PrisonerResponse>();
   const [currentRecord, setCurrentRecord] = useState<PrisonerResponse>();
+
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const [dataPrisoner, setDataPrisoner] = useState<PrisonerResponse[]>([]);
   const [originalDataPrisoner, setOriginalDataPrisoner] = useState<
@@ -95,7 +104,7 @@ const Prisoner = () => {
     handleGetAllPrisoner();
   }, [recall]);
 
-  const handleNavigate = (record: any) => {
+  const handleNavigate = (record: A) => {
     navigate(`/prisoner/${record.id}`);
   };
   const handleOpenCreate = () => {
@@ -212,22 +221,32 @@ const Prisoner = () => {
       dataIndex: "manangerName",
       key: "manangerName",
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) =>
-        record.isActiveBanding && (
-          <div className={styles.wrapperAction}>
-            <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-              <EditOutlined style={{ fontSize: 18 }} />
-            </div>
-            <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-              <DeleteOutlined style={{ fontSize: 18 }} />
-            </div>
-          </div>
-        ),
-    },
+    ...(dataDetail?.role === RoleEnum.siquan
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "action",
+            key: "action",
+            render: (_: A, record: A) =>
+              record.isActiveBanding && (
+                <div className={styles.wrapperAction}>
+                  <div
+                    className={"editBtn"}
+                    onClick={() => handleOpenEdit(record)}
+                  >
+                    <EditOutlined style={{ fontSize: 18 }} />
+                  </div>
+                  <div
+                    className={"editBtn"}
+                    onClick={() => handleOpenDelete(record)}
+                  >
+                    <DeleteOutlined style={{ fontSize: 18 }} />
+                  </div>
+                </div>
+              ),
+          },
+        ]
+      : []),
   ];
   const onSearch = (val: string) => {
     if (val.trim() === "") {
@@ -252,12 +271,15 @@ const Prisoner = () => {
 
       <div className={styles.wrapperContent}>
         <Tab onSearch={onSearch} setParam={setParam} />
-        <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Thêm Phạm Nhân
+        {dataDetail?.role === RoleEnum.siquan && (
+          <div className={styles.wrapperBtn}>
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Thêm Phạm Nhân
+            </div>
           </div>
-        </div>
+        )}
+
         <Table
           columns={columns}
           dataSource={dataPrisoner}

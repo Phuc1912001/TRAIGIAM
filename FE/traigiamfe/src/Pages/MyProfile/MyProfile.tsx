@@ -56,9 +56,9 @@ const MyProfile = () => {
     ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionRoleType = [
-    { label: "Giám thị", value: RoleEnum.truongTrai },
-    { label: "Đội trưởng", value: RoleEnum.giamThi },
-    { label: "Sĩ quan ", value: RoleEnum.congAn },
+    { label: "Giám thị", value: RoleEnum.giamthi },
+    { label: "Đội trưởng", value: RoleEnum.doitruong },
+    { label: "Sĩ quan ", value: RoleEnum.siquan },
   ];
 
   const getUserById = async () => {
@@ -184,11 +184,11 @@ const MyProfile = () => {
 
   const renderRole = (role: number) => {
     switch (role) {
-      case RoleEnum.truongTrai:
+      case RoleEnum.giamthi:
         return "Giám thị";
-      case RoleEnum.giamThi:
+      case RoleEnum.doitruong:
         return "Đội trưởng";
-      case RoleEnum.congAn:
+      case RoleEnum.siquan:
         return "Sĩ quan";
       default:
         break;
@@ -223,9 +223,9 @@ const MyProfile = () => {
                   </div>
                 </div>
               </div>
-              {(dataDetail?.role === RoleEnum.truongTrai ||
+              {(dataDetail?.role === RoleEnum.giamthi ||
                 dataDetail?.role === RoleEnum.doiTruong ||
-                dataDetail?.role === RoleEnum.giamThi) && (
+                dataDetail?.role === RoleEnum.doitruong) && (
                 <div className={styles.btnEdit} onClick={handleShowEdit}>
                   <EditOutlined style={{ fontSize: 18 }} />
                   <div>Sửa</div>

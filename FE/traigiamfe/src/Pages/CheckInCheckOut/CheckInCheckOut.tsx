@@ -10,7 +10,7 @@ import Search from "antd/es/input/Search";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
@@ -20,6 +20,8 @@ import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import styles from "./CheckInCheckOut.module.scss";
 import CreateExternal from "./CreateExternal/CreateExternal";
 import StatusExternal from "./StatusExternal/StatusExternal";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const CheckInCheckOut = () => {
   const items = [
@@ -39,7 +41,6 @@ const CheckInCheckOut = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<CheckInCheckOutModel>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -47,6 +48,14 @@ const CheckInCheckOut = () => {
 
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
+
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const { state } = useLocation();
 
@@ -81,7 +90,6 @@ const CheckInCheckOut = () => {
     setOpenCreateExternal(true);
     setIsEdit(true);
     setCurentRecord(record);
-    setShowDelete(true);
     setReset(!reset);
   };
 
@@ -133,7 +141,7 @@ const CheckInCheckOut = () => {
   const handleExport = async () => {
     showLoading();
 
-    let model = {
+    const model = {
       prisonerId: currentRecord?.prisonerId,
       recordId: currentRecord?.id,
       fileName: `${currentRecord?.prisonerName}.pdf`,
@@ -152,17 +160,15 @@ const CheckInCheckOut = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", model.fileName); // File name specified in the model
+      link.setAttribute("download", model.fileName);
       document.body.appendChild(link);
       link.click();
 
-      // Cleanup
       link?.parentNode?.removeChild(link);
       window.URL.revokeObjectURL(url);
       setIsOpenModalExport(false);
     } catch (error) {
       console.error("Error during PDF generation:", error);
-      // Handle error appropriately
     } finally {
       closeLoading();
     }
@@ -237,54 +243,66 @@ const CheckInCheckOut = () => {
         return <div>{dayjs(record?.endDate).format("DD-MM-YYYY HH:mm")}</div>;
       },
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "status",
-      key: "status",
-      render: (_, record) => (
-        <div className={styles.wrapperAction}>
-          {record.status === 0 && (
-            <Tooltip
-              placement="top"
-              title={<div className={"customTooltip"}>{`Sửa phiếu`}</div>}
-              color="#ffffff"
-              arrow={true}
-            >
-              <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-                <EditOutlined style={{ fontSize: 18 }} />
-              </div>
-            </Tooltip>
-          )}
+    ...(dataDetail?.role === RoleEnum.siquan
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "status",
+            key: "status",
+            render: (_: A, record: A) => (
+              <div className={styles.wrapperAction}>
+                {record.status === 0 && (
+                  <Tooltip
+                    placement="top"
+                    title={<div className={"customTooltip"}>{`Sửa phiếu`}</div>}
+                    color="#ffffff"
+                    arrow={true}
+                  >
+                    <div
+                      className={"editBtn"}
+                      onClick={() => handleOpenEdit(record)}
+                    >
+                      <EditOutlined style={{ fontSize: 18 }} />
+                    </div>
+                  </Tooltip>
+                )}
 
-          {record.status == 1 && (
-            <Tooltip
-              placement="top"
-              title={<div className={"customTooltip"}>{`Xuất phiếu`}</div>}
-              color="#ffffff"
-              arrow={true}
-            >
-              <div
-                className={"editBtn"}
-                onClick={() => handleOpenModelExport(record)}
-              >
-                <FilePdfOutlined style={{ fontSize: 18 }} />
-              </div>
-            </Tooltip>
-          )}
+                {record.status == 1 && (
+                  <Tooltip
+                    placement="top"
+                    title={
+                      <div className={"customTooltip"}>{`Xuất phiếu`}</div>
+                    }
+                    color="#ffffff"
+                    arrow={true}
+                  >
+                    <div
+                      className={"editBtn"}
+                      onClick={() => handleOpenModelExport(record)}
+                    >
+                      <FilePdfOutlined style={{ fontSize: 18 }} />
+                    </div>
+                  </Tooltip>
+                )}
 
-          <Tooltip
-            placement="top"
-            title={<div className={"customTooltip"}>{`Xóa phiếu`}</div>}
-            color="#ffffff"
-            arrow={true}
-          >
-            <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-              <DeleteOutlined style={{ fontSize: 18 }} />
-            </div>
-          </Tooltip>
-        </div>
-      ),
-    },
+                <Tooltip
+                  placement="top"
+                  title={<div className={"customTooltip"}>{`Xóa phiếu`}</div>}
+                  color="#ffffff"
+                  arrow={true}
+                >
+                  <div
+                    className={"editBtn"}
+                    onClick={() => handleOpenDelete(record)}
+                  >
+                    <DeleteOutlined style={{ fontSize: 18 }} />
+                  </div>
+                </Tooltip>
+              </div>
+            ),
+          },
+        ]
+      : []),
   ];
 
   const onSearch = (val: string) => {
@@ -309,10 +327,15 @@ const CheckInCheckOut = () => {
 
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Phiếu Ra Vào
-          </div>
+          {dataDetail?.role === RoleEnum.siquan ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Tạo Phiếu Ra Vào
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div>
             <Search
               placeholder="tìm kiếm theo tên phạm nhân"
@@ -345,7 +368,7 @@ const CheckInCheckOut = () => {
         isOpenModal={isOpenModal}
         setIsOpenModal={setIsOpenModal}
         handleDelete={handleDeletePrisoner}
-        title="Xác xóa ra vào"
+        title="Xác nhận xóa ra vào"
         textConfirm="Xóa ra vào"
       >
         <div>{`Bạn có muốn xóa ra vào của ${currentRecord?.prisonerName}`}</div>
