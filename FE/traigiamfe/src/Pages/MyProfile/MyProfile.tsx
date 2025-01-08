@@ -224,7 +224,6 @@ const MyProfile = () => {
                 </div>
               </div>
               {(dataDetail?.role === RoleEnum.giamthi ||
-                dataDetail?.role === RoleEnum.doiTruong ||
                 dataDetail?.role === RoleEnum.doitruong) && (
                 <div className={styles.btnEdit} onClick={handleShowEdit}>
                   <EditOutlined style={{ fontSize: 18 }} />
