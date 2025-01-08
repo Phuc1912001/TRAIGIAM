@@ -7,7 +7,7 @@ import {
 import Search from "antd/es/input/Search";
 import Table, { ColumnsType } from "antd/es/table";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../assets/default.jpg";
 import { useLoading } from "../../common/Hook/useLoading";
@@ -18,6 +18,8 @@ import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import CreateStatement from "./CreateStatement/CreateStatement";
 import styles from "./Statement.module.scss";
 import StatusStatement from "./StatusStatement/StatusStatement";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const Statement = () => {
   const items = [
@@ -51,6 +53,14 @@ const Statement = () => {
   const notification = useNotification();
   const navigate = useNavigate();
   const [values, setValues] = useState(initialFieldValues);
+
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const handleGetAllStatement = async () => {
     try {
@@ -159,22 +169,32 @@ const Statement = () => {
         );
       },
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) =>
-        record.status === 0 && (
-          <div className={styles.wrapperAction}>
-            <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-              <EditOutlined style={{ fontSize: 18 }} />
-            </div>
-            <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-              <DeleteOutlined style={{ fontSize: 18 }} />
-            </div>
-          </div>
-        ),
-    },
+    ...(dataDetail?.role === RoleEnum.siquan
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "action",
+            key: "action",
+            render: (_: A, record: A) =>
+              record.status === 0 && (
+                <div className={styles.wrapperAction}>
+                  <div
+                    className={"editBtn"}
+                    onClick={() => handleOpenEdit(record)}
+                  >
+                    <EditOutlined style={{ fontSize: 18 }} />
+                  </div>
+                  <div
+                    className={"editBtn"}
+                    onClick={() => handleOpenDelete(record)}
+                  >
+                    <DeleteOutlined style={{ fontSize: 18 }} />
+                  </div>
+                </div>
+              ),
+          },
+        ]
+      : []),
   ];
 
   const onSearch = (val: string) => {
@@ -198,10 +218,15 @@ const Statement = () => {
       </div>
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Lời Khai
-          </div>
+          {dataDetail?.role === RoleEnum.siquan ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Tạo Lời Khai
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div>
             <Search
               placeholder="tìm kiếm theo tên phạm nhân"

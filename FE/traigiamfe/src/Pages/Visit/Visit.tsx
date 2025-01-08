@@ -1,4 +1,3 @@
-import { useExportPDF } from "../../common/Hook/useExportPDF";
 import { VisitModel } from "@/common/Model/visit";
 import {
   DeleteOutlined,
@@ -7,10 +6,12 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import { Table, Tooltip } from "antd";
+import Search from "antd/es/input/Search";
 import { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
 import Header from "../../Components/Header/Header";
@@ -20,8 +21,8 @@ import CreateVisit from "./CreateVisit/CreateVisit";
 import StatusVisit from "./StatusVisit/StatusVisit";
 import { VisitType } from "./visit.model";
 import styles from "./Visit.module.scss";
-import { useLocation, useParams } from "react-router-dom";
-import Search from "antd/es/input/Search";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
+import { RoleEnum } from "../MyProfile/Role.model";
 
 const Visit = () => {
   const items = [
@@ -40,7 +41,6 @@ const Visit = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<VisitModel>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -50,7 +50,13 @@ const Visit = () => {
 
   const { state } = useLocation();
 
-  const handleDownload = useExportPDF();
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const getAllVisit = async () => {
     try {
@@ -83,7 +89,6 @@ const Visit = () => {
     setOpenCreateVisit(true);
     setIsEdit(true);
     setCurentRecord(record);
-    setShowDelete(true);
     setReset(!reset);
   };
 
@@ -155,7 +160,7 @@ const Visit = () => {
   const handleExport = async () => {
     showLoading();
 
-    let model = {
+    const model = {
       prisonerId: currentRecord?.prisonerId,
       recordId: currentRecord?.id,
       fileName: `${currentRecord?.prisonerName}.pdf`,
@@ -239,61 +244,69 @@ const Visit = () => {
         return <div>{dayjs(record?.endDate).format("DD-MM-YYYY HH:mm")}</div>;
       },
     },
-    {
-      title: "Hoạt Động",
-      dataIndex: "status",
-      key: "status",
-      render: (_, record) => (
-        <div>
-          <div className={styles.wrapperAction}>
-            {record.status === 0 && (
-              <Tooltip
-                placement="top"
-                title={<div className={"customTooltip"}>{`Sửa phiếu`}</div>}
-                color="#ffffff"
-                arrow={true}
-              >
-                <div
-                  className={"editBtn"}
-                  onClick={() => handleOpenEdit(record)}
-                >
-                  <EditOutlined style={{ fontSize: 18 }} />
-                </div>
-              </Tooltip>
-            )}
-            {record.status == 1 && (
-              <Tooltip
-                placement="top"
-                title={<div className={"customTooltip"}>{`Xuất phiếu`}</div>}
-                color="#ffffff"
-                arrow={true}
-              >
-                <div
-                  className={"editBtn"}
-                  onClick={() => handleOpenModelExport(record)}
-                >
-                  <FilePdfOutlined style={{ fontSize: 18 }} />
-                </div>
-              </Tooltip>
-            )}
+    ...(dataDetail?.role === RoleEnum.siquan
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "status",
+            key: "status",
+            render: (_: A, record: A) => (
+              <div>
+                <div className={styles.wrapperAction}>
+                  {record.status === 0 && (
+                    <Tooltip
+                      placement="top"
+                      title={
+                        <div className={"customTooltip"}>{`Sửa phiếu`}</div>
+                      }
+                      color="#ffffff"
+                      arrow={true}
+                    >
+                      <div
+                        className={"editBtn"}
+                        onClick={() => handleOpenEdit(record)}
+                      >
+                        <EditOutlined style={{ fontSize: 18 }} />
+                      </div>
+                    </Tooltip>
+                  )}
+                  {record.status == 1 && (
+                    <Tooltip
+                      placement="top"
+                      title={
+                        <div className={"customTooltip"}>{`Xuất phiếu`}</div>
+                      }
+                      color="#ffffff"
+                      arrow={true}
+                    >
+                      <div
+                        className={"editBtn"}
+                        onClick={() => handleOpenModelExport(record)}
+                      >
+                        <FilePdfOutlined style={{ fontSize: 18 }} />
+                      </div>
+                    </Tooltip>
+                  )}
 
-            <Tooltip
-              placement="top"
-              title={<div className={"customTooltip"}>{`Xóa phiếu`}</div>}
-              color="#ffffff"
-              arrow={true}
-            >
-              <div
-                className={"editBtn"}
-                onClick={() => handleOpenDelete(record)}
-              >
-                <DeleteOutlined style={{ fontSize: 18 }} />
+                  <Tooltip
+                    placement="top"
+                    title={<div className={"customTooltip"}>{`Xóa phiếu`}</div>}
+                    color="#ffffff"
+                    arrow={true}
+                  >
+                    <div
+                      className={"editBtn"}
+                      onClick={() => handleOpenDelete(record)}
+                    >
+                      <DeleteOutlined style={{ fontSize: 18 }} />
+                    </div>
+                  </Tooltip>
+                </div>
               </div>
-            </Tooltip>
-          </div>
-        </div>
-      ),
-    },
+            ),
+          },
+        ]
+      : []),
   ];
 
   const onSearch = (val: string) => {
@@ -317,10 +330,15 @@ const Visit = () => {
       </div>
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Tạo Thăm Khám
-          </div>
+          {dataDetail?.role === RoleEnum.siquan ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Tạo Thăm Khám
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div>
             <Search
               placeholder="tìm kiếm theo tên phạm nhân"

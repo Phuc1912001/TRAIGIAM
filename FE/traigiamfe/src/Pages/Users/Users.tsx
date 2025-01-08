@@ -1,7 +1,7 @@
 import { useLoading } from "../../common/Hook/useLoading";
 import { useNotification } from "../../common/Hook/useNotification";
 import { UserModel } from "@/common/Model/user";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import defaultImage from "../../assets/default.jpg";
 import styles from "./Users.module.scss";
 import axios from "axios";
@@ -17,6 +17,7 @@ import ModalComponent from "../../Components/ModalDelete/ModalComponent";
 import CreateUser from "./CreateUser/CreateUser";
 import { RoleEnum } from "../MyProfile/Role.model";
 import Search from "antd/es/input/Search";
+import { LayoutContext } from "../../Layout/contextLayout/contextLayout";
 
 const Users = () => {
   const items = [
@@ -44,6 +45,14 @@ const Users = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<UserModel>();
   const [isView, setIsView] = useState<boolean>(false);
+
+  const context = useContext(LayoutContext);
+  if (!context) {
+    throw new Error(
+      "LayoutContext must be used within a LayoutContextProvider"
+    );
+  }
+  const { dataDetail } = context;
 
   const getAllUsers = async () => {
     try {
@@ -159,22 +168,31 @@ const Users = () => {
       dataIndex: "phoneNumber",
       key: "phoneNumber",
     },
-
-    {
-      title: "Hoạt Động",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => (
-        <div className={styles.wrapperAction}>
-          <div className={"editBtn"} onClick={() => handleOpenEdit(record)}>
-            <EditOutlined style={{ fontSize: 18 }} />
-          </div>
-          <div className={"editBtn"} onClick={() => handleOpenDelete(record)}>
-            <DeleteOutlined style={{ fontSize: 18 }} />
-          </div>
-        </div>
-      ),
-    },
+    ...(dataDetail?.role === RoleEnum.giamthi
+      ? [
+          {
+            title: "Hoạt Động",
+            dataIndex: "action",
+            key: "action",
+            render: (_: A, record: A) => (
+              <div className={styles.wrapperAction}>
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenEdit(record)}
+                >
+                  <EditOutlined style={{ fontSize: 18 }} />
+                </div>
+                <div
+                  className={"editBtn"}
+                  onClick={() => handleOpenDelete(record)}
+                >
+                  <DeleteOutlined style={{ fontSize: 18 }} />
+                </div>
+              </div>
+            ),
+          },
+        ]
+      : []),
   ];
   const onSearch = (val: string) => {
     if (val.trim() === "") {
@@ -197,10 +215,15 @@ const Users = () => {
 
       <div className={styles.wrapperContent}>
         <div className={styles.wrapperBtn}>
-          <div className={"createBtn"} onClick={handleOpenCreate}>
-            <PlusCircleOutlined style={{ fontSize: 18 }} />
-            Thêm Người dùng
-          </div>
+          {dataDetail?.role === RoleEnum.giamthi ? (
+            <div className={"createBtn"} onClick={handleOpenCreate}>
+              <PlusCircleOutlined style={{ fontSize: 18 }} />
+              Thêm Người dùng
+            </div>
+          ) : (
+            <div></div>
+          )}
+
           <div>
             <Search
               placeholder="tìm kiếm theo tên phạm nhân"
