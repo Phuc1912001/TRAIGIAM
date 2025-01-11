@@ -8,14 +8,14 @@ const enum GenderEnum {
 
 interface ITab {
   onSearch: (value: string) => void;
-  setParam: (params: any) => void;
+  setParam: (params: A) => void;
 }
 
 const Tab = (props: ITab) => {
   const { onSearch, setParam } = props;
   const [activeTab, setActiveTab] = useState(GenderEnum.male);
-  const indicatorRef = useRef<any>(null);
-  const tabRefs = useRef<any>({});
+  const indicatorRef = useRef<A>(null);
+  const tabRefs = useRef<A>({});
 
   useEffect(() => {
     const activeElement = tabRefs.current[activeTab];

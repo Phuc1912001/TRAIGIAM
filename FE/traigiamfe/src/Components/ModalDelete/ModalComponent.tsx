@@ -1,5 +1,5 @@
 import { InfoCircleFilled } from "@ant-design/icons";
-import { Divider, Modal } from "antd";
+import { Modal } from "antd";
 import React from "react";
 import styles from "./ModalComponent.module.scss";
 
@@ -8,8 +8,8 @@ interface IModalComponent {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleDelete?: () => void;
   children: React.ReactNode;
-  title: any;
-  textConfirm: any;
+  title: A;
+  textConfirm: A;
 }
 
 const ModalComponent = (props: IModalComponent) => {
