@@ -39,7 +39,7 @@ export const contextUser = createContext<IContext | undefined>(undefined);
 function App() {
   const { isLoading } = useLoading();
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
   const storedUserDataString = localStorage.getItem("userData");
   const [dataDetail, setDataDetail] = useState<UserModel>({});
   const { showLoading, closeLoading } = useLoading();

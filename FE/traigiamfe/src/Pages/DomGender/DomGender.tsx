@@ -51,7 +51,6 @@ const DomGender = () => {
   const handleOpenCreate = () => {
     setOpenCreateDomGender(true);
     setIsEdit(false);
-    setIsView(false);
     setReset(!reset);
   };
 

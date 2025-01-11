@@ -44,8 +44,6 @@ const Dom = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
-  console.log("showDelete", showDelete);
 
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<DomModel>();
@@ -91,7 +89,6 @@ const Dom = () => {
     setOpenCreateDom(true);
     setIsEdit(true);
     setCurentRecord(record);
-    setShowDelete(true);
     setReset(!reset);
   };
 

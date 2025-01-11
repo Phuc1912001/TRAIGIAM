@@ -77,9 +77,8 @@ const CreateStatement = (props: ICreateStatement) => {
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
 
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  // const [previewImage, setPreviewImage] = useState("");
   const [prisonerId, setPrisonerId] = useState<A>(0);
-  console.log("previewImage", previewImage);
 
   const [data, setData] = useState<A>();
 
@@ -464,8 +463,8 @@ const CreateStatement = (props: ICreateStatement) => {
                     visible: previewOpen,
                     movable: false,
                     onVisibleChange: (visible) => setPreviewOpen(visible),
-                    afterOpenChange: (visible) =>
-                      !visible && setPreviewImage(""),
+                    // afterOpenChange: (visible) =>
+                    //   !visible && setPreviewImage(""),
                   }}
                   src={currentRecord?.imageSrc}
                 />
@@ -580,8 +579,8 @@ const CreateStatement = (props: ICreateStatement) => {
                         visible: previewOpen,
                         movable: false,
                         onVisibleChange: (visible) => setPreviewOpen(visible),
-                        afterOpenChange: (visible) =>
-                          !visible && setPreviewImage(""),
+                        // afterOpenChange: (visible) =>
+                        //   !visible && setPreviewImage(""),
                       }}
                       src={values.imageSrc}
                     />

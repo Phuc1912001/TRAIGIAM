@@ -60,10 +60,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
   } = props;
   const [form] = useForm();
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  // const [previewImage, setPreviewImage] = useState("");
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
-  console.log("previewImage", previewImage);
 
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
@@ -478,8 +477,8 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
                       visible: previewOpen,
                       movable: false,
                       onVisibleChange: (visible) => setPreviewOpen(visible),
-                      afterOpenChange: (visible) =>
-                        !visible && setPreviewImage(""),
+                      // afterOpenChange: (visible) =>
+                      //   !visible && setPreviewImage(""),
                     }}
                     src={values.imageSrc}
                   />

@@ -239,8 +239,6 @@ const CreateInfringement = (props: ICreateInfringement) => {
     setIsChange(true);
   };
 
-  console.log("isChange", isChange);
-
   return (
     <div>
       <Drawer

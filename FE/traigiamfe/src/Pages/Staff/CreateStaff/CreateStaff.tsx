@@ -48,9 +48,8 @@ const CreateStaff = (props: ICreateStaff) => {
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  // const [previewImage, setPreviewImage] = useState("");
   const [form] = useForm();
-  console.log("previewImage", previewImage);
 
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
@@ -252,8 +251,8 @@ const CreateStaff = (props: ICreateStaff) => {
                       visible: previewOpen,
                       movable: false,
                       onVisibleChange: (visible) => setPreviewOpen(visible),
-                      afterOpenChange: (visible) =>
-                        !visible && setPreviewImage(""),
+                      // afterOpenChange: (visible) =>
+                      //   !visible && setPreviewImage(""),
                     }}
                     src={values.imageSrc}
                   />
