@@ -4,12 +4,11 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExpandOutlined,
-  InfoCircleFilled,
   MoreOutlined,
   PlusCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Col, Form, Modal, Popover, Row } from "antd";
+import { Col, Popover, Row } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,9 +24,7 @@ import MovePrisoner from "./MovePrisoner/MovePrisoner";
 
 const DomDetail = () => {
   const navigate = useNavigate();
-  const handleNavigateToList = () => {
-    navigate("/gender/dom");
-  };
+
   const { state } = useLocation();
 
   const handleNavigateToDom = () => {
@@ -70,8 +67,6 @@ const DomDetail = () => {
   const [currentRecordRoom, setCurentRecordRoom] = useState<RoomModel>();
   const [isOpenModalRoom, setIsOpenModalRoom] = useState<boolean>(false);
 
-  const [dataBed, setDataBed] = useState<BedModel[]>([]);
-
   const [openCreateBed, setOpenCreateBed] = useState<boolean>(false);
   const [isEditBed, setIsEditBed] = useState<boolean>(false);
 
@@ -79,7 +74,6 @@ const DomDetail = () => {
 
   const [recallBed, setRecallBed] = useState<boolean>(false);
   const [currentRecordBed, setCurentRecordBed] = useState<BedModel>();
-  const [isOpenModalBed, setIsOpenModalBed] = useState<boolean>(false);
   const [currentRoom, setCurentRoom] = useState<RoomModel>();
 
   const [currentBed, setCurrentBed] = useState<BedModelResponse>();

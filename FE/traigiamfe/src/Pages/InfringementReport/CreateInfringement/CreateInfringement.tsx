@@ -5,16 +5,7 @@ import {
 import { PrisonerModel } from "@/common/Model/prisoner";
 import { PunishmentModel } from "@/common/Model/punishment";
 import { CloseOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  DatePicker,
-  Drawer,
-  Form,
-  Input,
-  Row,
-  Select,
-} from "antd";
+import { Button, DatePicker, Drawer, Form, Input, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
@@ -50,7 +41,6 @@ const CreateInfringement = (props: ICreateInfringement) => {
     setRecall,
     reset,
     currentRecord,
-    isView,
     setIsView,
   } = props;
 
@@ -59,11 +49,11 @@ const CreateInfringement = (props: ICreateInfringement) => {
   const { showLoading, closeLoading } = useLoading();
 
   const [optionPunish, setOptionPunish] = useState<IOptionValue[]>([]);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  // const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
 
   const storedUserDataString = localStorage.getItem("userData");
 
@@ -72,7 +62,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
       showLoading("getAllPunish");
       const { data } = await axios.get("https://localhost:7120/api/Punish");
 
-      let newData = data.data.map((item: PunishmentModel) => ({
+      const newData = data.data.map((item: PunishmentModel) => ({
         label: item.punishName,
         value: item.id,
       }));
@@ -90,7 +80,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
         "https://localhost:7120/api/Prisoner/getFullList"
       );
 
-      let newData = data.data.map((item: PrisonerModel) => ({
+      const newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
         value: item.id,
       }));
@@ -121,7 +111,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const handleOnFinish = async () => {
     try {
@@ -171,7 +161,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
         createdBy: data.id,
         YouthIRIds: isChange
           ? value.YouthIRIds
-          : value.YouthIRIds.map((item: any) => item.value),
+          : value.YouthIRIds.map((item: A) => item.value),
       };
       await axios.put(
         `https://localhost:7120/api/Infringement/${currentRecord?.id}`,
@@ -227,7 +217,7 @@ const CreateInfringement = (props: ICreateInfringement) => {
 
   useEffect(() => {
     if (isEdit) {
-      let newData: any = currentRecord?.listPrisoner?.map(
+      const newData: A = currentRecord?.listPrisoner?.map(
         (item: PrisonerModel) => ({
           label: item.prisonerName,
           value: item.id,

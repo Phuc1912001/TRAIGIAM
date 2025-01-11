@@ -45,6 +45,8 @@ const Dom = () => {
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(false);
+  console.log("showDelete", showDelete);
+
   const [recall, setRecall] = useState<boolean>(false);
   const [currentRecord, setCurentRecord] = useState<DomModel>();
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -63,7 +65,7 @@ const Dom = () => {
   const getAllDom = async () => {
     try {
       showLoading("getAllDom");
-      const model: any = {
+      const model: A = {
         domGenderId: state?.domGender?.id ?? 0,
       };
       const { data } = await axios.post(
@@ -84,7 +86,7 @@ const Dom = () => {
     getAllDom();
   }, [recall]);
 
-  const handleOpenEdit = (record: DomModel, e: any) => {
+  const handleOpenEdit = (record: DomModel, e: A) => {
     e.stopPropagation();
     setOpenCreateDom(true);
     setIsEdit(true);
@@ -93,7 +95,7 @@ const Dom = () => {
     setReset(!reset);
   };
 
-  const handleOpenDelete = (record: DomModel, e: any) => {
+  const handleOpenDelete = (record: DomModel, e: A) => {
     e.stopPropagation();
     setIsOpenModal(true);
     setCurentRecord(record);

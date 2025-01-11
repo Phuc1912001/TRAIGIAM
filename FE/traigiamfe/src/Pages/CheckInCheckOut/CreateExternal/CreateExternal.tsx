@@ -2,7 +2,7 @@ import { CheckInCheckOutModel } from "@/common/Model/checkincheckout";
 import { PrisonerModel } from "@/common/Model/prisoner";
 import { RoleEnum } from "../../MyProfile/Role.model";
 import { CloseOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Drawer, Form, Row, Select } from "antd";
+import { Button, DatePicker, Drawer, Form, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
@@ -49,12 +49,11 @@ const CreateExternal = (props: ICreateExternal) => {
   const [form] = useForm();
   const notification = useNotification();
   const { showLoading, closeLoading } = useLoading();
-  const [dataPrisoner, setDataPrisoner] = useState<PrisonerModel[]>([]);
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [dataUser, setDataUser] = useState<UserModel>();
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<A>();
 
   const storedUserDataString = localStorage.getItem("userData");
 
@@ -90,8 +89,7 @@ const CreateExternal = (props: ICreateExternal) => {
       const { data } = await axios.get(
         "https://localhost:7120/api/Prisoner/getFullList"
       );
-      setDataPrisoner(data.data);
-      let newData = data.data.map((item: PrisonerModel) => ({
+      const newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
         value: item.id,
       }));
@@ -117,8 +115,6 @@ const CreateExternal = (props: ICreateExternal) => {
       const value = await form.getFieldsValue();
       await form.validateFields();
 
-      const currentDateTime = dayjs();
-
       const model: CheckInCheckOutModel = {
         ...value,
         startDate: dayjs(value.startDate).format(),
@@ -141,7 +137,6 @@ const CreateExternal = (props: ICreateExternal) => {
       showLoading("editExternal");
       const value = await form.getFieldsValue();
       await form.validateFields();
-      const currentDateTime = dayjs();
 
       const model: CheckInCheckOutModel = {
         ...value,
@@ -315,7 +310,7 @@ const CreateExternal = (props: ICreateExternal) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionEMType = [
     { label: "Nhập Viện", value: 1 },

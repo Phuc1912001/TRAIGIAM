@@ -1,5 +1,5 @@
 import { CloseOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Row, Select, Switch } from "antd";
+import { Button, Drawer, Form, Select, Switch } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
@@ -156,7 +156,7 @@ const CreateBanding = (props: ICreateBanding) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const optionBaningType = [
     { label: "Người Mới", value: BandingEnum.Entry },

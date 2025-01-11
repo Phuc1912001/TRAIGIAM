@@ -1,15 +1,14 @@
+import { DomGenderModel } from "@/common/Model/domgender";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { Col, Row } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLoading } from "../../common/Hook/useLoading";
 import Header from "../../Components/Header/Header";
 import MobileHeader from "../../Components/MobileHeader/MobileHeader";
-import React, { useEffect, useState } from "react";
-import styles from "./DomGender.module.scss";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import { DomGenderModel } from "@/common/Model/domgender";
-import { useLoading } from "../../common/Hook/useLoading";
-import { useNotification } from "../../common/Hook/useNotification";
-import { useNavigate } from "react-router-dom";
 import CreateDomGender from "./CreateDomGender/CreateDomGender";
-import axios from "axios";
-import { Col, Row } from "antd";
+import styles from "./DomGender.module.scss";
 
 const DomGender = () => {
   const items = [
@@ -28,12 +27,9 @@ const DomGender = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isView, setIsView] = useState<boolean>(false);
   const [reset, setReset] = useState<boolean>(false);
-  const [showDelete, setShowDelete] = useState<boolean>(false);
-  const [recall, setRecall] = useState<boolean>(false);
-  const [currentRecord, setCurentRecord] = useState<DomGenderModel>();
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  console.log("isView", isView);
+
   const { showLoading, closeLoading } = useLoading();
-  const notification = useNotification();
 
   const navigate = useNavigate();
 

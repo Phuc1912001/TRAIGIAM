@@ -1,6 +1,6 @@
 import { StaffModel } from "@/common/Model/staff";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Image, Input, Row, Switch } from "antd";
+import { Button, Drawer, Form, Image, Input, Switch } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -11,8 +11,8 @@ import styles from "./CreateStaff.module.scss";
 
 interface IInitValue {
   imageName: string;
-  imageSrc: any;
-  imageFile: any;
+  imageSrc: A;
+  imageFile: A;
 }
 
 interface ICreateStaff {
@@ -50,6 +50,7 @@ const CreateStaff = (props: ICreateStaff) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [form] = useForm();
+  console.log("previewImage", previewImage);
 
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
@@ -160,9 +161,9 @@ const CreateStaff = (props: ICreateStaff) => {
     </div>
   );
 
-  const showPreview = (e: any) => {
+  const showPreview = (e: A) => {
     if (e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0];
+      const imageFile = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
         setValues({

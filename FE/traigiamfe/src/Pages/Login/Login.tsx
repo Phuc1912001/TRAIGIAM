@@ -1,10 +1,8 @@
 import { Button, Col, Form, Input, Row } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { contextUser } from "../../App";
-import { useLoading } from "../../common/Hook/useLoading";
 import styles from "./Login.module.scss";
 
 interface loginModel {
@@ -18,7 +16,6 @@ const Login = () => {
   const [form] = useForm();
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { showLoading, closeLoading } = useLoading();
 
   const onFinish = async (value: loginModel) => {
     try {
@@ -52,7 +49,7 @@ const Login = () => {
           setIsSignUp(false);
         }
       }
-    } catch (error: any) {
+    } catch (error: A) {
       console.log(error);
     }
   };

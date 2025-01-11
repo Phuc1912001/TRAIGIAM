@@ -1,23 +1,21 @@
 import { BedModelResponse } from "@/common/Model/bed";
-import { RoomModel, RoomModelResponse } from "@/common/Model/Room";
-import TextItem from "../../../../Components/TextItem/TextItem";
-import { InfoCircleFilled } from "@ant-design/icons";
-import { Button, Col, Divider, Form, Input, Modal, Row, Select } from "antd";
-import { useForm } from "antd/es/form/Form";
-import useFormInstance from "antd/es/form/hooks/useFormInstance";
-import React, { useEffect, useState } from "react";
-import styles from "./MovePrisoner.module.scss";
 import { PrisonerResponse } from "@/common/Model/prisoner";
-import { useLoading } from "../../../../common/Hook/useLoading";
+import { RoomModelResponse } from "@/common/Model/Room";
+import { InfoCircleFilled } from "@ant-design/icons";
+import { Button, Divider, Form, Modal, Row, Select } from "antd";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLoading } from "../../../../common/Hook/useLoading";
 import { BandingEnum, IBandingMap } from "../../../../common/Model/banding";
+import TextItem from "../../../../Components/TextItem/TextItem";
+import styles from "./MovePrisoner.module.scss";
 
 interface IMovePrisoner {
   isOpenModalMove: boolean;
   setIsOpenModalMove: React.Dispatch<React.SetStateAction<boolean>>;
   currentBed?: BedModelResponse;
   currentRoom?: RoomModelResponse;
-  getAllRoom?: any;
+  getAllRoom?: A;
   type?: string;
 }
 
@@ -39,6 +37,8 @@ const MovePrisoner = (props: IMovePrisoner) => {
   const { showLoading, closeLoading } = useLoading();
 
   const [listPrisoner, setListPrisoner] = useState<PrisonerResponse[]>([]);
+  console.log("listPrisoner", listPrisoner);
+
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
 
   console.log("type", type);
@@ -54,7 +54,7 @@ const MovePrisoner = (props: IMovePrisoner) => {
         model
       );
       setListPrisoner(data.data);
-      let newData = data.data.map((item: PrisonerResponse) => ({
+      const newData = data.data.map((item: PrisonerResponse) => ({
         label: item.prisonerName,
         value: item.id,
       }));
@@ -78,11 +78,9 @@ const MovePrisoner = (props: IMovePrisoner) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const handleFinish = async () => {
-    console.log("alo");
-
     const value = await form.getFieldsValue();
     try {
       showLoading("moveBed");

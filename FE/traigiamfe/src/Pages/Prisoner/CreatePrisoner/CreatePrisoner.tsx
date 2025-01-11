@@ -3,17 +3,7 @@ import { DomModel } from "@/common/Model/dom";
 import { RoomModel } from "@/common/Model/Room";
 import { StaffModel } from "@/common/Model/staff";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Col,
-  Drawer,
-  Form,
-  Image,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-} from "antd";
+import { Button, Drawer, Form, Image, Input, InputNumber, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -25,16 +15,13 @@ import {
   BandingModel,
   IBandingTextMap,
 } from "../../../common/Model/banding";
-import {
-  PrisonerModel,
-  PrisonerResponse,
-} from "../../../common/Model/prisoner";
+import { PrisonerResponse } from "../../../common/Model/prisoner";
 import styles from "./CreatePrisoner.module.scss";
 
 interface IInitValue {
   imageName: string;
-  imageSrc: any;
-  imageFile: any;
+  imageSrc: A;
+  imageFile: A;
 }
 interface ICreatePrisoner {
   openCreatePrisoner: boolean;
@@ -76,6 +63,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
   const [previewImage, setPreviewImage] = useState("");
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
+  console.log("previewImage", previewImage);
 
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
@@ -84,10 +72,10 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     setIsConfirm(true);
     setShơwMessage(false);
   };
-  const [dataStaff, setDataStaff] = useState<StaffModel[]>([]);
-  const [dataDom, setDataDom] = useState<DomModel[]>([]);
-  const [dataRoom, setDataRoom] = useState<RoomModel[]>([]);
-  const [dataBed, setDataBed] = useState<BedModel[]>([]);
+  // const [dataStaff, setDataStaff] = useState<StaffModel[]>([]);
+  // const [dataDom, setDataDom] = useState<DomModel[]>([]);
+  // const [dataRoom, setDataRoom] = useState<RoomModel[]>([]);
+  // const [dataBed, setDataBed] = useState<BedModel[]>([]);
   const [optionStaff, setOptionStaff] = useState<IOptionValue[]>([]);
   const [optionBanding, setOptionBanding] = useState<IOptionValue[]>([]);
   const [optionDomGender, setOptionDomGender] = useState<IOptionValue[]>([]);
@@ -101,8 +89,8 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
       const { data } = await axios.get(
         "https://localhost:7120/api/staff/staffActive"
       );
-      setDataStaff(data.data);
-      let newData = data.data.map((item: StaffModel) => ({
+      // setDataStaff(data.data);
+      const newData = data.data.map((item: StaffModel) => ({
         label: item.staffName,
         value: item.id,
       }));
@@ -118,8 +106,8 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
       const { data } = await axios.get(
         "https://localhost:7120/api/banding/isActive"
       );
-      setDataStaff(data.data);
-      let newData = data.data.map((item: BandingModel) => ({
+      // setDataStaff(data.data);
+      const newData = data.data.map((item: BandingModel) => ({
         label: (
           <div>{IBandingTextMap.get(item.bandingID ?? BandingEnum.Entry)}</div>
         ),
@@ -140,7 +128,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     try {
       showLoading("getAllDomGender");
       const { data } = await axios.get("https://localhost:7120/api/DomGender");
-      let newData = data.data.map((item: DomModel) => ({
+      const newData = data.data.map((item: DomModel) => ({
         label: item.domGenderName,
         value: item.id,
       }));
@@ -161,13 +149,11 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         "https://localhost:7120/api/Dom/limitDom",
         model
       );
-      setDataDom(data.data);
-      let newData = data.data.map((item: DomModel) => ({
+      // setDataDom(data.data);
+      const newData = data.data.map((item: DomModel) => ({
         label: item.domName,
         value: item.id,
       }));
-      console.log("newData", newData);
-
       setOptionDom(newData);
       closeLoading("getAllDom");
     } catch (error) {
@@ -191,11 +177,11 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
           "https://localhost:7120/api/Room/limitRoom",
           model
         );
-        let newData = data.data.map((item: RoomModel) => ({
+        const newData = data.data.map((item: RoomModel) => ({
           label: item.roomName,
           value: item.id,
         }));
-        setDataRoom(data.data);
+        // setDataRoom(data.data);
         setOptionRoom(newData);
 
         closeLoading("getAllRoom");
@@ -221,8 +207,8 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
           "https://localhost:7120/api/Bed/LimitBed",
           model
         );
-        setDataBed(data.data);
-        let newData = data.data.map((item: BedModel) => ({
+        // setDataBed(data.data);
+        const newData = data.data.map((item: BedModel) => ({
           label: item.bedName,
           value: item.id,
         }));
@@ -246,8 +232,8 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
         "https://localhost:7120/api/Bed/LimitBedEdit",
         model
       );
-      setDataBed(data.data);
-      let newData = data.data.map((item: BedModel) => ({
+      // setDataBed(data.data);
+      const newData = data.data.map((item: BedModel) => ({
         label: item.bedName,
         value: item.id,
       }));
@@ -401,9 +387,9 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
     }
   }, [isEdit, reset]);
 
-  const showPreview = (e: any) => {
+  const showPreview = (e: A) => {
     if (e.target.files && e.target.files[0]) {
-      let imageFile = e.target.files[0];
+      const imageFile = e.target.files[0];
       const reader = new FileReader();
       reader.onload = (x) => {
         setValues({
@@ -436,7 +422,7 @@ const CreatePrisoner = (props: ICreatePrisoner) => {
 
   const filterOption = (input: string, option?: IOptionValue) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase()) ||
-    ((option as any)?.email || "").toLowerCase().includes(input.toLowerCase());
+    ((option as A)?.email || "").toLowerCase().includes(input.toLowerCase());
 
   const handleOnChangeDomGender = () => {
     form.setFieldValue("domId", "");

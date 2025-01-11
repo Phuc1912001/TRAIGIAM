@@ -51,7 +51,7 @@ const CreateVisit = (props: ICreateVisit) => {
   const notification = useNotification();
   const { showLoading, closeLoading } = useLoading();
 
-  const [dataPrisoner, setDataPrisoner] = useState<VisitModel[]>([]);
+  // const [dataPrisoner, setDataPrisoner] = useState<VisitModel[]>([]);
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
@@ -66,7 +66,7 @@ const CreateVisit = (props: ICreateVisit) => {
       const { data } = await axios.get(
         "https://localhost:7120/api/Prisoner/getFullList"
       );
-      setDataPrisoner(data.data);
+      // setDataPrisoner(data.data);
       const newData = data.data.map((item: PrisonerModel) => ({
         label: item.prisonerName,
         value: item.id,
@@ -206,8 +206,7 @@ const CreateVisit = (props: ICreateVisit) => {
     switch (status) {
       case 0:
         return (
-          (dataUser?.role === RoleEnum.giamthi ||
-            dataUser?.role === RoleEnum.doitruong) && (
+          dataUser?.role === RoleEnum.doitruong && (
             <div onClick={handleOpenModel} className="btn-orange">
               Chấp Nhận
             </div>
@@ -313,7 +312,7 @@ const CreateVisit = (props: ICreateVisit) => {
       ) : (
         ""
       )}
-      {currentRecord?.status === 0 && (
+      {currentRecord?.status === 0 && dataUser?.role === RoleEnum.doitruong && (
         <div>
           <Button
             onClick={() => {

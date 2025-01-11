@@ -1,10 +1,10 @@
 import { PunishmentModel } from "@/common/Model/punishment";
 import { CloseOutlined } from "@ant-design/icons";
-import { Button, Col, Drawer, Form, Input, Row, Switch } from "antd";
+import { Button, Drawer, Form, Input, Switch } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
 import TextItem from "../../../Components/TextItem/TextItem";
@@ -38,14 +38,14 @@ const CreatePunishment = (props: ICreatePunish) => {
     setIsView,
   } = props;
 
-  const [isConfirm, setIsConfirm] = useState<boolean>(true);
+  // const [isConfirm, setIsConfirm] = useState<boolean>(true);
   const [form] = useForm();
   const notification = useNotification();
   const { showLoading, closeLoading } = useLoading();
 
   const onClose = () => {
     setOpenCreatePunish(false);
-    setIsConfirm(true);
+    // setIsConfirm(true);
     setIsView(false);
   };
 

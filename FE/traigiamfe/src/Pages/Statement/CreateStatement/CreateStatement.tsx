@@ -1,7 +1,4 @@
-import {
-  InfringementModel,
-  InfringementResponse,
-} from "@/common/Model/infringement";
+import { InfringementModel } from "@/common/Model/infringement";
 import { PrisonerModel } from "@/common/Model/prisoner";
 import { StatmentModel } from "@/common/Model/statement";
 import { CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
@@ -72,9 +69,9 @@ const CreateStatement = (props: ICreateStatement) => {
   const [isOpenModelCancel, setIsOpenModelCancel] = useState<boolean>(false);
   const [optionPrisoner, setOptionPrisoner] = useState<IOptionValue[]>([]);
   const [optionIR, setOptionIR] = useState<IOptionValue[]>([]);
-  const [dataInfringement, setDataInfringement] = useState<
-    InfringementResponse[]
-  >([]);
+  // const [dataInfringement, setDataInfringement] = useState<
+  //   InfringementResponse[]
+  // >([]);
 
   const [showMessage, setShơwMessage] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(true);
@@ -82,26 +79,27 @@ const CreateStatement = (props: ICreateStatement) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [prisonerId, setPrisonerId] = useState<A>(0);
+  console.log("previewImage", previewImage);
 
   const [data, setData] = useState<A>();
 
   const storedUserDataString = localStorage.getItem("userData");
 
-  const getAllInfringement = async () => {
-    try {
-      showLoading("getAllExternal");
-      const { data } = await axios.get(
-        "https://localhost:7120/api/Infringement"
-      );
-      setDataInfringement(data.data);
-      closeLoading("getAllExternal");
-    } catch (error) {
-      closeLoading("getAllExternal");
-    }
-  };
-  useEffect(() => {
-    getAllInfringement();
-  }, []);
+  // const getAllInfringement = async () => {
+  //   try {
+  //     showLoading("getAllExternal");
+  //     const { data } = await axios.get(
+  //       "https://localhost:7120/api/Infringement"
+  //     );
+  //     setDataInfringement(data.data);
+  //     closeLoading("getAllExternal");
+  //   } catch (error) {
+  //     closeLoading("getAllExternal");
+  //   }
+  // };
+  // useEffect(() => {
+  //   getAllInfringement();
+  // }, []);
 
   useEffect(() => {
     if (storedUserDataString) {

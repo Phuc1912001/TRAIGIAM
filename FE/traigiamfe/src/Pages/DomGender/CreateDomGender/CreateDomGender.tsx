@@ -1,12 +1,12 @@
+import { DomGenderModel } from "@/common/Model/domgender";
+import { CloseOutlined } from "@ant-design/icons";
+import { Button, Drawer, Form, Input } from "antd";
+import { useForm } from "antd/es/form/Form";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { useLoading } from "../../../common/Hook/useLoading";
 import { useNotification } from "../../../common/Hook/useNotification";
-import { DomGenderModel } from "@/common/Model/domgender";
-import { useForm } from "antd/es/form/Form";
-import React, { useEffect } from "react";
 import styles from "./CreateDomGender.module.scss";
-import axios from "axios";
-import { Button, Col, Drawer, Form, Input, Row } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
 
 interface ICreateDomGender {
   openCreateDomGender: boolean;
@@ -26,7 +26,6 @@ const CreateDomGender = (props: ICreateDomGender) => {
     isEdit,
     reset,
     currentRecord,
-    isView,
     setIsView,
     getAllDomGender,
   } = props;
@@ -60,6 +59,8 @@ const CreateDomGender = (props: ICreateDomGender) => {
     try {
       showLoading("editDomGender");
       const value = await form.getFieldsValue();
+      console.log("value", value);
+
       await form.validateFields();
       const model: DomGenderModel = {
         id: currentRecord?.id,
