@@ -219,8 +219,8 @@ const CreateInfringement = (props: ICreateInfringement) => {
     if (isEdit) {
       const newData: A = currentRecord?.listPrisoner?.map(
         (item: PrisonerModel) => ({
-          label: item.prisonerName,
-          value: item.id,
+          label: item?.prisonerName ?? "Không tồn tại",
+          value: item?.id,
         })
       );
       setOptionPrisoner(newData);

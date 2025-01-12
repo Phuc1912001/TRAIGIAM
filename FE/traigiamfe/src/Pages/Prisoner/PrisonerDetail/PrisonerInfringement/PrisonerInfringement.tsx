@@ -17,7 +17,7 @@ const PrisonerInfringement = (props: IPrisonerInfringement) => {
   const navigate = useNavigate();
 
   const handleToView = (record: InfringementResponse) => {
-    navigate(`/infringement/${record.id}`);
+    navigate(`/infringement/${record?.id ?? ""}`);
   };
 
   const columns: ColumnsType<InfringementResponse> = [
@@ -43,7 +43,7 @@ const PrisonerInfringement = (props: IPrisonerInfringement) => {
         const content = (
           <div>
             {record.listPrisoner?.map((item) => (
-              <div key={item.id}>{item?.prisonerName}</div>
+              <div key={item?.id}>{item?.prisonerName ?? "Không tồn tại"}</div>
             ))}
           </div>
         );

@@ -114,7 +114,7 @@ const InfringementReport = () => {
   };
 
   const handleToView = (record: InfringementResponse) => {
-    navigate(`/infringement/${record.id}`);
+    navigate(`/infringement/${record?.id}`);
   };
 
   const columns: ColumnsType<InfringementResponse> = [
@@ -135,18 +135,19 @@ const InfringementReport = () => {
       dataIndex: "ListPrisoner",
       key: "ListPrisoner",
       render: (_, record) => {
-        const prisonerName = record?.listPrisoner?.[0]?.prisonerName ?? "N/A";
+        const prisonerName =
+          record?.listPrisoner?.[0]?.prisonerName ?? "Không tồn tại";
 
         const content = (
           <div>
-            {record.listPrisoner?.map((item) => (
-              <div key={item.id}>{item?.prisonerName}</div>
+            {record?.listPrisoner?.map((item) => (
+              <div key={item?.id}>{item?.prisonerName}</div>
             ))}
           </div>
         );
         return (
           <div className={styles.wrapperPrisoner}>
-            <div>{prisonerName}</div>
+            <div>{prisonerName ?? "Không tồn tại"}</div>
             <Popover placement="top" content={content}>
               <div className={styles.wrapperCount}>
                 <div>{record.listPrisoner?.length}</div>

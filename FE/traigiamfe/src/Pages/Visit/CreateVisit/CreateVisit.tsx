@@ -405,7 +405,7 @@ const CreateVisit = (props: ICreateVisit) => {
                 {currentRecord?.familyAddress}
               </TextItem>
               <TextItem label="Tên Phạm Nhân">
-                {currentRecord?.prisonerName}
+                {currentRecord?.prisonerName ?? "Không tồn tại"}
               </TextItem>
               <TextItem label="Loại">
                 {genderVisitType(currentRecord?.typeVisit ?? 0)}

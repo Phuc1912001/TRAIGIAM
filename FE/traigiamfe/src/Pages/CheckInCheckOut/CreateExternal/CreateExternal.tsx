@@ -370,7 +370,7 @@ const CreateExternal = (props: ICreateExternal) => {
           <div>
             <Row style={{ height: "100%" }}>
               <TextItem label="Tên Phạm Nhân">
-                {currentRecord?.prisonerName}
+                {currentRecord?.prisonerName ?? "Không tồn tại"}
               </TextItem>
               <TextItem label="Loại Phiếu Ra vào">
                 {genderEMType(currentRecord?.emtype ?? 1)}

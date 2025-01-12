@@ -202,7 +202,7 @@ const CheckInCheckOut = () => {
       render: (_, record) => {
         return (
           <div onClick={() => handleToView(record)} className={styles.name}>
-            {record.prisonerName}
+            {record.prisonerName ?? "Không tồn tại"}
           </div>
         );
       },
