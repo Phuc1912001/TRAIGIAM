@@ -61,7 +61,7 @@ namespace TraigiamBE.Controllers
                             }
                             ).FirstOrDefault()
                     }).ToList(),
-                }).ToListAsync()).OrderByDescending(item => item.CreateAt);
+                }).ToListAsync()).OrderBy(item => item.CreateAt);
                 response.Status = true;
                 response.StatusMessage = "Success";
                 response.Data = listPunishment;

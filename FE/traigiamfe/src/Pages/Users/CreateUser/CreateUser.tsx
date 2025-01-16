@@ -31,6 +31,7 @@ interface ICreateUser {
   isView: boolean;
   setIsView: React.Dispatch<React.SetStateAction<boolean>>;
   getAllUsers: () => void;
+  dataDetail?: A;
 }
 
 interface IOptionValue {
@@ -53,6 +54,7 @@ const CreateUser = (props: ICreateUser) => {
     isView,
     setIsView,
     getAllUsers,
+    dataDetail,
   } = props;
   const { showLoading, closeLoading } = useLoading();
   const notification = useNotification();
@@ -280,7 +282,10 @@ const CreateUser = (props: ICreateUser) => {
               <TextItem label="Vai trò">
                 {renderRole(currentRecord?.role ?? 0)}
               </TextItem>
-              <TextItem label="Mật Khẩu">{currentRecord?.password}</TextItem>
+              {dataDetail?.role === RoleEnum.giamthi && (
+                <TextItem label="Mật Khẩu">{currentRecord?.password}</TextItem>
+              )}
+
               <TextItem label="Số điện thoại">
                 {currentRecord?.phoneNumber}
               </TextItem>

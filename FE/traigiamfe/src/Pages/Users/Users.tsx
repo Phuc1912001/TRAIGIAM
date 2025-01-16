@@ -256,6 +256,7 @@ const Users = () => {
         isView={isView}
         setIsView={setIsView}
         getAllUsers={getAllUsers}
+        dataDetail={dataDetail}
       />
 
       <ModalComponent
@@ -271,4 +272,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Users; 
